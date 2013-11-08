@@ -1442,8 +1442,13 @@ containing a value of this type.
         public static final int abs__up=0x7f04000b;
         public static final int action_settings=0x7f040074;
         public static final int asdas=0x7f040041;
+<<<<<<< HEAD
         public static final int category=0x7f040064;
         public static final int clock=0x7f040067;
+=======
+        public static final int category=0x7f040065;
+        public static final int clock=0x7f040068;
+>>>>>>> 7bac1165d02e76dfc534346ef0a97757e59ed464
         public static final int com_facebook_login_activity_progress_bar=0x7f040045;
         public static final int com_facebook_picker_activity_circle=0x7f040044;
         public static final int com_facebook_picker_checkbox=0x7f040047;
@@ -1465,6 +1470,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040055;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040056;
         public static final int disableHome=0x7f040009;
+<<<<<<< HEAD
         public static final int distance=0x7f04006a;
         public static final int divider=0x7f040062;
         public static final int edit_query=0x7f040031;
@@ -1475,6 +1481,19 @@ containing a value of this type.
         public static final int frame_middle=0x7f04005f;
         public static final int frame_right=0x7f040066;
         public static final int frame_top=0x7f04005e;
+=======
+        public static final int distance=0x7f04006b;
+        public static final int divider=0x7f040063;
+        public static final int edit_query=0x7f040031;
+        public static final int fb_login=0x7f04003d;
+        public static final int filterButton=0x7f04005c;
+        public static final int fragmentlayout=0x7f04005d;
+        public static final int frame_bottom=0x7f04006c;
+        public static final int frame_left=0x7f040061;
+        public static final int frame_middle=0x7f040060;
+        public static final int frame_right=0x7f040067;
+        public static final int frame_top=0x7f04005f;
+>>>>>>> 7bac1165d02e76dfc534346ef0a97757e59ed464
         public static final int fullscreen=0x7f040013;
         public static final int gp_login=0x7f04003e;
         public static final int homeAsUp=0x7f040006;
@@ -1482,16 +1501,26 @@ containing a value of this type.
         public static final int imageView=0x7f040040;
         public static final int large=0x7f040016;
         public static final int left=0x7f040010;
+<<<<<<< HEAD
         public static final int left_layout=0x7f040061;
         public static final int listMode=0x7f040002;
         public static final int mainLayout=0x7f040058;
         public static final int margin=0x7f040012;
         public static final int marker=0x7f040069;
         public static final int menu_frame=0x7f04005d;
+=======
+        public static final int left_layout=0x7f040062;
+        public static final int listMode=0x7f040002;
+        public static final int mainLayout=0x7f040058;
+        public static final int margin=0x7f040012;
+        public static final int marker=0x7f04006a;
+        public static final int menu_frame=0x7f04005e;
+>>>>>>> 7bac1165d02e76dfc534346ef0a97757e59ed464
         public static final int none=0x7f040017;
         public static final int normal=0x7f040001;
         public static final int page_swiper=0x7f040073;
         public static final int picker_subtitle=0x7f040052;
+<<<<<<< HEAD
         public static final int post_list_layout=0x7f04006c;
         public static final int post_list_view=0x7f04006d;
         public static final int post_title=0x7f040063;
@@ -1500,6 +1529,14 @@ containing a value of this type.
         public static final int right_layout=0x7f040065;
         public static final int row_icon=0x7f04006f;
         public static final int row_title=0x7f040070;
+=======
+        public static final int post_title=0x7f040064;
+        public static final int profilePictureView=0x7f04003f;
+        public static final int right=0x7f040011;
+        public static final int right_layout=0x7f040066;
+        public static final int row_icon=0x7f04006d;
+        public static final int row_title=0x7f04006e;
+>>>>>>> 7bac1165d02e76dfc534346ef0a97757e59ed464
         public static final int satellite=0x7f040018;
         public static final int selected_view=0x7f040014;
         public static final int showCustom=0x7f040008;
@@ -1511,8 +1548,12 @@ containing a value of this type.
         public static final int swipe_layout=0x7f040072;
         public static final int tabMode=0x7f040003;
         public static final int terrain=0x7f040019;
+<<<<<<< HEAD
         public static final int textView1=0x7f04006e;
         public static final int time=0x7f040068;
+=======
+        public static final int time=0x7f040069;
+>>>>>>> 7bac1165d02e76dfc534346ef0a97757e59ed464
         public static final int titleLogo=0x7f04005b;
         public static final int topBar=0x7f040059;
         public static final int useLogo=0x7f040004;
