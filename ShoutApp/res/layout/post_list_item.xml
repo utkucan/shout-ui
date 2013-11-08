@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="85dp"
-    android:layout_margin="4dp"
-    android:orientation="vertical" >
+    android:background="@drawable/app_bg_small"
+    android:orientation="vertical"
+    android:padding="4dp" >
 
     <FrameLayout
         android:id="@+id/frame_top"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/frame_top" >
 
@@ -18,19 +17,17 @@
 
     <RelativeLayout
         android:id="@+id/frame_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/frame_bottom"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+        android:layout_width="fill_parent"
+        android:layout_height="67dp"
         android:layout_below="@id/frame_top" >
         
         <FrameLayout
-	        android:id="@+id/frame_left"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_alignParentLeft="true"
-	        android:background="@drawable/frame_left" >
+            android:id="@+id/frame_left"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/frame_left"
+            android:paddingLeft="1dp" >
 	
 	    </FrameLayout>
 
@@ -71,7 +68,7 @@
         <FrameLayout
             android:id="@+id/divider"
             android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/right_layout"
             android:background="#ebebeb" >
 
@@ -79,8 +76,8 @@
 
         <RelativeLayout
             android:id="@+id/right_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="92dp"
+            android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/frame_right"
             android:background="#ffffff"
             android:padding="10dp" >
@@ -99,7 +96,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_toRightOf="@+id/clock"
                 android:text="15:30"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#787878"
                 android:textSize="11sp" />
 
             <ImageView
@@ -118,7 +115,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@+id/marker"
                 android:text="4,8 km"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#787878"
                 android:textSize="11sp" />
 
         </RelativeLayout>
@@ -126,7 +123,7 @@
         <FrameLayout
             android:id="@+id/frame_right"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
 	        android:background="@drawable/frame_right" >
         </FrameLayout>
@@ -135,11 +132,9 @@
 
     <FrameLayout
         android:id="@+id/frame_bottom"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/frame_middle"
         android:background="@drawable/frame_bottom" >
     </FrameLayout>
 
