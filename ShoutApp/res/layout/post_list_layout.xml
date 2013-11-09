@@ -4,16 +4,26 @@
     android:layout_height="match_parent"
     android:id="@+id/post_list_layout" >
 
-    <ListView
-        android:id="@+id/post_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <!-- <ListView
+	        android:id="@+id/post_list_view"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+		    android:divider="@null"
+		    android:dividerHeight="0dp"
+		    android:paddingLeft="7dp"
+		    android:paddingRight="7dp"
+		    android:paddingTop="7dp"
+		    android:scrollbars="none" >
+	    </ListView> -->
+	<com.shoutapp.RefreshableListView  
+	    android:layout_width="match_parent" 
+	    android:layout_height="match_parent"
+	    android:id="@+id/post_list_view"
 	    android:divider="@null"
 	    android:dividerHeight="0dp"
 	    android:paddingLeft="7dp"
 	    android:paddingRight="7dp"
-	    android:paddingTop="7dp"
-	    android:scrollbars="none" >
-    </ListView>
-
+	    android:layout_marginTop="7dp"
+	    android:scrollbars="none" />
 </RelativeLayout>
+

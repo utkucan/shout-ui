@@ -2,24 +2,23 @@ package com.shoutapp;
 
 import java.util.ArrayList;
 
-import com.shoutapp.SlidingMenuBaseActivity.MenuListFragment;
+import com.shoutapp.RefreshableListView.OnRefreshListener;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,11 +26,14 @@ import android.widget.TextView;
 public class MainActivity extends BaseActivity{
 
 	private Context cxt;
+	Activity currentactivity;
 	ViewPager pager;
+	RefreshableListView postListView;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		cxt = this;
+		currentactivity = this;
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
@@ -68,6 +70,32 @@ public class MainActivity extends BaseActivity{
 			}
 		}
 	};
+	ArrayList<SampleItem> items;
+	public ArrayList<SampleItem> getPosts(){
+		
+		items = new ArrayList<MainActivity.SampleItem>();
+//		items.add(new SampleItem("", "","",""));
+		items.add(new SampleItem("Karným Aç", "Yemek","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
+		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
+		
+		return items;
+	}
 	
 	public class SampleItem {
 		public String title;
@@ -90,29 +118,50 @@ public class MainActivity extends BaseActivity{
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item, null);         
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item, null);
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.post_title);
-			String a = getItem(position).title;
 			title.setText(getItem(position).title);
 			
 			TextView category = (TextView) convertView.findViewById(R.id.category);
-			String b = getItem(position).category;
 			category.setText(getItem(position).category);
 			
 			TextView time = (TextView) convertView.findViewById(R.id.time);
-			String c = getItem(position).time;
 			time.setText(getItem(position).time);
 			
 			TextView distance = (TextView) convertView.findViewById(R.id.distance);
-			String d = getItem(position).distance;
 			distance.setText(getItem(position).distance);
 
+			if(getItem(position).title != ""){
+				ProgressBar bar = (ProgressBar)convertView.findViewById(R.id.post_loading);
+				bar.setVisibility(View.INVISIBLE);
+			}
 			return convertView;
 		}
 
 	}
 
+	private class NewDataTask extends AsyncTask<Void, Void, SampleItem> {
+
+        @Override
+        protected SampleItem doInBackground(Void... params) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {}
+            
+            return new SampleItem("new item", "yemek", "05:30", "9 km");
+        }
+
+        @Override
+        protected void onPostExecute(SampleItem result) {
+        	items.add(0, result);
+            // This should be called after refreshing finished
+        	postListView.completeRefreshing();
+
+            super.onPostExecute(result);
+        }
+    }
+	
     public class SwipePagerAdapter extends PagerAdapter{
 
                 
@@ -135,47 +184,25 @@ public class MainActivity extends BaseActivity{
                 @Override
                 public Object instantiateItem(ViewGroup collection, int position) {
                 	View v;
+//                	ListView lv = null;
                 	if(position == 0){
                 		v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
                 		
-                		ListView lv = (ListView)v.findViewById(R.id.post_list_view);
-                		ArrayList<SampleItem> items = new ArrayList<MainActivity.SampleItem>();
-                		items.add(new SampleItem("Karným Aç", "Yemek","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-                		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-                		lv.setAdapter(new SampleAdapter(cxt, R.id.post_list_view, items));
-                		
+                		postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
+                		postListView.setAdapter(new SampleAdapter(cxt, R.id.post_list_view, getPosts()));
+                		postListView.setOnRefreshListener(new OnRefreshListener() {
+							
+							@Override
+							public void onRefresh(RefreshableListView listView) {
+								// TODO Auto-generated method stub
+								new NewDataTask().execute();
+							}
+						});
                 	}else{
                 		v= LayoutInflater.from(getBaseContext()).inflate(R.layout.post_map, null);
                 	}
-                	
-                	
-//                        TextView tv = new TextView(cxt);
-//                        tv.setText(getString(R.string.app_message) + position);
-//                        tv.setTextColor(Color.WHITE);
-//                        tv.setTextSize(30);
-                        
-                        
-                        
-                        
-                        collection.addView(v,position);
-                        
-                        return v;
+                    collection.addView(v,position);
+                    return v;
                 }
 
             /**
