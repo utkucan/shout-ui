@@ -243,7 +243,15 @@ public class MainActivity extends BaseActivity{
              * page views.
              */
                 @Override
-                public void finishUpdate(ViewGroup arg0) {}
+                public void finishUpdate(ViewGroup arg0) {
+                	if(pager.getCurrentItem()==0){
+                		ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
+        				btn.setBackgroundResource(R.drawable.map_icon);
+        			}else{
+        				ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
+        				btn.setBackgroundResource(R.drawable.menu_icon);
+        			}
+                }
                 
 
                 @Override

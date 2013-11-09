@@ -280,7 +280,7 @@ public class RefreshableListView extends ListView {
             if (msg.arg1 >= limit) {
                 setHeaderHeight(msg.arg1);
                 int displacement = (msg.arg1 - limit) / 10;
-                if (displacement == 0) {
+                if (displacement == 10) {
                     mHandler.sendMessage(mHandler.obtainMessage(msg.what, msg.arg1 - 1, 0));
                 } else {
                     mHandler.sendMessage(mHandler.obtainMessage(msg.what, msg.arg1 - displacement,
