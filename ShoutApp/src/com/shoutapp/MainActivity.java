@@ -13,10 +13,12 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,7 +27,7 @@ import android.widget.TextView;
 public class MainActivity extends BaseActivity{
 
 	private Context cxt;
-	
+	ViewPager pager;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -40,72 +42,32 @@ public class MainActivity extends BaseActivity{
         swipeLayout.setLayoutParams(lp);
         mainLayout.addView(swipe);
         SwipePagerAdapter adapter = new SwipePagerAdapter();
-        ViewPager pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
+        pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
         pager.setAdapter(adapter);
         
-        
-        
-//        ViewPager pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
-//        
-//        View postListLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
-////		RelativeLayout post_list_layout = (RelativeLayout)postListLayout.findViewById(R.id.post_list_layout);
-//        
-//		pager.addView(postListLayout);
-//		
-//		View postMapLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_map, null);
-//		pager.addView(postMapLayout);
-		
-		
-        
-        
-		
-		
-//		View postListLayout = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
-//		RelativeLayout post_list_layout = (RelativeLayout)postListLayout.findViewById(R.id.post_list_layout);
-		
-//		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//                RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-//        post_list_layout.setLayoutParams(lp);
-        
-//        mainLayout.addView(post_list_layout);
-        
-//		ListView lv = (ListView)findViewById(R.id.post_list_view);
-//		ArrayList<SampleItem> items = new ArrayList<MainActivity.SampleItem>();
-//		items.add(new SampleItem("Karným Aç", "Yemek","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//		lv.setAdapter(new SampleAdapter(this, R.id.post_list_view, items));
-        
-		
-        
-//		ListFragment mFrag;
-//		if (savedInstanceState == null) {
-//			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
-//			mFrag = new PostListFragment();
-//			t.replace(R.id.framelayout, mFrag);
-//			t.commit();
-//		} else {
-//			mFrag = (ListFragment)this.getSupportFragmentManager().findFragmentById(R.id.framelayout);
-//		}
+        RelativeLayout change_view_btn_holder = (RelativeLayout)findViewById(R.id.change_view_btn_holder);
+        change_view_btn_holder.setOnClickListener(changeViewClickListener);
+        ImageButton change_view_btn = (ImageButton)findViewById(R.id.change_view_btn);
+        change_view_btn.setOnClickListener(changeViewClickListener);
 
 	}
+	
+	OnClickListener changeViewClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if(pager.getCurrentItem()==0){
+				pager.setCurrentItem(1, true);
+				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
+				btn.setBackgroundResource(R.drawable.menu_icon);
+			}else{
+				pager.setCurrentItem(0, true);
+				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
+				btn.setBackgroundResource(R.drawable.map_icon);
+			}
+		}
+	};
 	
 	public class SampleItem {
 		public String title;
@@ -269,85 +231,5 @@ public class MainActivity extends BaseActivity{
                 public void startUpdate(ViewGroup arg0) {}
         
     }
-	
-	
-	
-	
-	
-//	public static class PostListFragment extends ListFragment{
-//		
-//		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//			return inflater.inflate(R.layout.post_list, null);
-//		}
-//		
-//		public void onActivityCreated(Bundle savedInstanceState) {
-//			super.onActivityCreated(savedInstanceState);
-//			SampleAdapter adapter = new SampleAdapter(getActivity());
-//			
-//			adapter.add(new SampleItem("Karným Aç", "Yemek","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			adapter.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-//			adapter.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-//			setListAdapter(adapter);
-//		}
-//
-//		private class SampleItem {
-//			public String title;
-//			public String category;
-//			public String time;
-//			public String distance;
-//			public SampleItem(String title, String category,String time,String distance) {
-//				this.title = title; 
-//				this.category = category;
-//				this.time = time; 
-//				this.distance = distance;
-//			}
-//		}
-//
-//		public class SampleAdapter extends ArrayAdapter<SampleItem> {
-//
-//			public SampleAdapter(Context context) {
-//				super(context, 0);
-//			}
-//
-//			public View getView(int position, View convertView, ViewGroup parent) {
-//				if (convertView == null) {
-//					convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item, null);
-//				}
-//				TextView title = (TextView) convertView.findViewById(R.id.post_title);
-//				String a = getItem(position).title;
-//				title.setText(getItem(position).title);
-//				
-//				TextView category = (TextView) convertView.findViewById(R.id.category);
-//				String b = getItem(position).category;
-//				category.setText(getItem(position).category);
-//				
-//				TextView time = (TextView) convertView.findViewById(R.id.time);
-//				String c = getItem(position).time;
-//				time.setText(getItem(position).time);
-//				
-//				TextView distance = (TextView) convertView.findViewById(R.id.distance);
-//				String d = getItem(position).distance;
-//				distance.setText(getItem(position).distance);
-//
-//				return convertView;
-//			}
-//
-//		}
-//	}
 
 }

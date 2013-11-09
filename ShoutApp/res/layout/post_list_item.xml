@@ -76,11 +76,13 @@
 
         <RelativeLayout
             android:id="@+id/right_layout"
-            android:layout_width="92dp"
+            android:layout_width="96dp"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/frame_right"
             android:background="#ffffff"
-            android:padding="10dp" >
+            android:paddingBottom="8dp"
+            android:paddingLeft="18dp"
+            android:paddingTop="8dp" >
 
             <ImageView
                 android:id="@+id/clock"

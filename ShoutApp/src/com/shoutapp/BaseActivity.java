@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 public class BaseActivity extends SlidingMenuBaseActivity{
-
-	ImageButton slidingMenuBtn;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -21,15 +20,29 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 		setSlidingActionBarEnabled(true);
 		setContentView(R.layout.main_frame);
 		
-		slidingMenuBtn = (ImageButton)findViewById(R.id.slidingMenuButton);
-		slidingMenuBtn.setOnClickListener(new OnClickListener() {
+		RelativeLayout slidingMenuBtnHolder = (RelativeLayout)findViewById(R.id.slidingMenuButtonHolder);
+		slidingMenuBtnHolder.setOnClickListener(slidingMenuClickListener);
+		ImageButton slidingMenuBtn = (ImageButton)findViewById(R.id.slidingMenuButton);
+		slidingMenuBtn.setOnClickListener(slidingMenuClickListener);
+		
+		RelativeLayout filterButtonHolder = (RelativeLayout)findViewById(R.id.filterButtonHolder);
+		filterButtonHolder.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				SlidingMenu sm = getSlidingMenu();
-				sm.toggle(true);
+				
 			}
 		});
 	}
+	
+	OnClickListener slidingMenuClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			SlidingMenu sm = getSlidingMenu();
+			sm.toggle(true);
+		}
+	};
 }
