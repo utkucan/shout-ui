@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/app_bg_small"
     android:paddingLeft="7dp"
-	    android:paddingRight="7dp">
+    android:paddingRight="7dp" >
+
     <RelativeLayout
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
