@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -34,17 +35,23 @@ public class MainActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
+		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+		
+//		pager = new ViewPager(this);
+//		middleFrame.addView(pager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 											      RelativeLayout.LayoutParams.WRAP_CONTENT,
 											      RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
+//        lp.addRule(RelativeLayout.ABOVE,R.id.post_view_bottom_bar);
         swipeLayout.setLayoutParams(lp);
         mainLayout.addView(swipe);
-        SwipePagerAdapter adapter = new SwipePagerAdapter();
         pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
+        SwipePagerAdapter adapter = new SwipePagerAdapter();
         pager.setAdapter(adapter);
         
         RelativeLayout change_view_btn_holder = (RelativeLayout)findViewById(R.id.change_view_btn_holder);
@@ -131,11 +138,6 @@ public class MainActivity extends BaseActivity{
 			
 			TextView distance = (TextView) convertView.findViewById(R.id.distance);
 			distance.setText(getItem(position).distance);
-
-			if(getItem(position).title != ""){
-				ProgressBar bar = (ProgressBar)convertView.findViewById(R.id.post_loading);
-				bar.setVisibility(View.INVISIBLE);
-			}
 			return convertView;
 		}
 

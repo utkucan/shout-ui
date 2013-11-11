@@ -13,31 +13,12 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/title_bar_repeat" >
 
-        <!-- <ImageButton
-            android:id="@+id/slidingMenuButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/menu_icon"
-            android:scaleType="center" /> -->
-
         <ImageView
             android:id="@+id/titleLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@drawable/logo_title" />
-        
-        <!-- <ImageButton
-            android:id="@+id/filterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
-            android:background="@drawable/search_icon" /> -->
 
     </RelativeLayout>
 
@@ -74,4 +55,68 @@
             android:layout_centerInParent="true"
             android:background="@drawable/search_icon" />
     </RelativeLayout>
+    
+    <!-- <RelativeLayout
+        android:id="@+id/midle_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/post_view_bottom_bar"
+        android:layout_below="@+id/topBar" >
+    </RelativeLayout>
+    
+    
+    <RelativeLayout
+        android:id="@+id/post_view_bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_bar_repeat" >
+    </RelativeLayout>
+
+    
+    <ImageButton
+        android:id="@+id/add_post_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/post_view_bottom_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/add_event_button" />
+
+    <RelativeLayout
+        android:id="@+id/change_view_btn_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/post_view_bottom_bar"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/add_post_btn"
+        android:layout_alignTop="@id/post_view_bottom_bar" >
+
+        <ImageButton
+            android:id="@+id/change_view_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/map_icon" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/profile_btn_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/post_view_bottom_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/post_view_bottom_bar"
+        android:layout_toLeftOf="@id/add_post_btn" >
+
+        <ImageButton
+            android:id="@+id/profile_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/user_icon" />
+
+    </RelativeLayout> -->
 </RelativeLayout>

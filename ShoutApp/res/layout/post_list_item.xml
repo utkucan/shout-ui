@@ -62,13 +62,6 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#f37f77"
                 android:textSize="9sp" />
-            
-            <ProgressBar
-		        android:id="@+id/post_loading"
-		        style="?android:attr/progressBarStyleSmall"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_centerInParent="true" />
 
         </RelativeLayout>
 

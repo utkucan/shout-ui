@@ -10,13 +10,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/post_view_bottom_bar" />
     
-	<!-- <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom_bar_shadow" >
-    </RelativeLayout> -->
-    
     <RelativeLayout
         android:id="@+id/post_view_bottom_bar"
         android:layout_width="fill_parent"
