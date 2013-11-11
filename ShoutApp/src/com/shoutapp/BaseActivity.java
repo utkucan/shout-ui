@@ -13,10 +13,7 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
-//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//		
+
 		setSlidingActionBarEnabled(true);
 		setContentView(R.layout.main_frame);
 		
@@ -26,6 +23,8 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 		slidingMenuBtn.setOnClickListener(slidingMenuClickListener);
 		
 		RelativeLayout filterButtonHolder = (RelativeLayout)findViewById(R.id.filterButtonHolder);
+		
+		// filtre butonuna basýlýnca bu kod calýþacak inþallah
 		filterButtonHolder.setOnClickListener(new OnClickListener() {
 			
 			@Override

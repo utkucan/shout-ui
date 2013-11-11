@@ -14,8 +14,11 @@
         android:allowBackup="true" 
         android:icon="@drawable/ic_launcher" 
         android:label="@string/app_name" 
-        android:theme="@android:style/Theme.NoTitleBar"
+        android:theme="@style/ShoutAppTheme"
+        
         android:debuggable="true">
+ <!--        android:theme="@android:style/Theme.NoTitleBar"
+        android:theme="@android:style/Theme.Holo.Light" -->
         <activity 
             android:name="com.shoutapp.LoginActivity" 
             android:label="@string/app_name">
@@ -35,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="AddPostActivity"></activity>
     </application>
 
 </manifest>

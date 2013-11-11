@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_post_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_bg_small" >
+
+    <RelativeLayout
+        android:id="@+id/add_post_view_bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_bar_repeat" >
+
+        <RelativeLayout
+            android:id="@+id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+        </RelativeLayout>
+        
+        
+        <RelativeLayout
+            android:id="@+id/save_btn_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/center"
+            android:layout_centerVertical="true" >
+	
+	        <ImageButton
+	            android:id="@+id/save_btn"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:background="@drawable/save" />
+	    </RelativeLayout>
+	
+	    <RelativeLayout
+	        android:id="@+id/cancel_btn_holder"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_toRightOf="@+id/center"
+	        android:layout_centerVertical="true" >
+	
+	        <ImageButton
+	            android:id="@+id/cancel_btn"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:background="@drawable/cancel" />
+	    </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_post_view_bottom_bar"
+        android:layout_alignParentTop="true"
+        android:padding="12dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" >
+	             <ImageView
+                android:id="@+id/map"
+                android:layout_width="fill_parent"
+                android:layout_height="165dp"
+                android:background="@drawable/map2" />
+
+	             <Button
+	                 android:id="@+id/button1"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_alignBottom="@+id/map"
+	                 android:layout_alignParentRight="true"
+	                 android:layout_marginBottom="6dp"
+	                 android:layout_marginRight="7dp"
+	                 android:background="#f1675b"
+	                 android:paddingBottom="13dp"
+	                 android:paddingLeft="19dp"
+	                 android:paddingRight="19dp"
+	                 android:paddingTop="13dp"
+	                 android:text="Konumu Değiştir"
+	                 android:textColor="#ffffff"
+	                 android:textSize="9sp" />
+
+	        </RelativeLayout>
+           
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:padding="7dp" >
+
+                <com.shoutapp.NoDefaultSpinner
+                    android:id="@+id/categoryList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Categories"
+                    android:prompt="@string/Category" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <EditText
+                        android:id="@+id/time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="time"
+                        android:text="Başlangıç Saati" />
+
+                    <Spinner
+                        android:id="@+id/duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine" />
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textMultiLine" >
+
+                    <requestFocus />
+                </EditText>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        
+
+    </ScrollView>
+
+</RelativeLayout>

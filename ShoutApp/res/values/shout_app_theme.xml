@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ShoutAppTheme" parent="@android:style/Theme.Holo.Light">
+
+        <!-- hide the Window Title -->
+        <item name="android:windowNoTitle">true</item>
+
+        <!-- You could change the scrollbar, checkbox style, anything! -->
+    </style>
+    
+</resources>

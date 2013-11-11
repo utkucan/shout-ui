@@ -6,6 +6,7 @@ import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -37,17 +38,13 @@ public class MainActivity extends BaseActivity{
 		currentactivity = this;
 		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
-		
-//		pager = new ViewPager(this);
-//		middleFrame.addView(pager, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		
+
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 											      RelativeLayout.LayoutParams.WRAP_CONTENT,
 											      RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
-//        lp.addRule(RelativeLayout.ABOVE,R.id.post_view_bottom_bar);
         swipeLayout.setLayoutParams(lp);
         mainLayout.addView(swipe);
         pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
@@ -58,6 +55,18 @@ public class MainActivity extends BaseActivity{
         change_view_btn_holder.setOnClickListener(changeViewClickListener);
         ImageButton change_view_btn = (ImageButton)findViewById(R.id.change_view_btn);
         change_view_btn.setOnClickListener(changeViewClickListener);
+        
+        ImageButton add_post_btn = (ImageButton)findViewById(R.id.add_post_btn);
+        add_post_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+		        Intent i = new Intent();
+		        i.setClassName("com.shoutapp", "com.shoutapp.AddPostActivity");
+		        startActivity(i);
+			}
+		});
 
 	}
 	
@@ -143,6 +152,7 @@ public class MainActivity extends BaseActivity{
 
 	}
 
+	// serverdan gelenler bu kodun içinde listeye eklenecek, ona göre modifiye et
 	private class NewDataTask extends AsyncTask<Void, Void, SampleItem> {
 
         @Override
