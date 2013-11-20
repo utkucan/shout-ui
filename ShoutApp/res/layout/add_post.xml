@@ -78,7 +78,7 @@
                 android:background="@drawable/map2" />
 
 	             <Button
-	                 android:id="@+id/button1"
+	                 android:id="@+id/change_location"
 	                 android:layout_width="wrap_content"
 	                 android:layout_height="wrap_content"
 	                 android:layout_alignBottom="@+id/map"
@@ -101,56 +101,144 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical"
-                android:padding="7dp" >
+                android:padding="20dp" >
 
                 <com.shoutapp.NoDefaultSpinner
                     android:id="@+id/categoryList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:entries="@array/Categories"
                     android:prompt="@string/Category" />
 
-                <LinearLayout
+                <!-- <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
 
                     <EditText
                         android:id="@+id/time"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:ems="10"
                         android:inputType="time"
-                        android:text="Başlangıç Saati" />
+                        android:text="Start Time" />
 
-                    <Spinner
+                    <EditText
                         android:id="@+id/duration"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:spinnerMode="dropdown" />
+                        android:text="Duration"/>
 
                 </LinearLayout>
+ -->
 
-                <TimePicker
-                    android:id="@+id/timePicker1"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_marginTop="50dp" >
+
+                    <RelativeLayout
+                        android:id="@+id/timeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/timeAndDurationCenter" >
+
+                        <EditText
+	                        android:id="@+id/time"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="match_parent"
+	                        android:layout_weight="1"
+	                        android:inputType="time"
+	                        android:text="Start Time" />
+                        
+                        <!-- <TextView
+                            android:id="@+id/StartTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Start Time"
+                            android:textSize="16sp"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/startTimeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/StartTime"
+                            android:layout_marginTop="5dp"
+                            android:text="00:00"
+                            android:textSize="12sp"
+                            android:layout_centerHorizontal="true" /> -->
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/timeAndDurationCenter"
+                        android:layout_width="22dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" >
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/durationLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_toRightOf="@+id/timeAndDurationCenter"  >
+                        
+                        <EditText
+	                        android:id="@+id/duration"
+	                        android:layout_width="match_parent"
+	                        android:layout_height="match_parent"
+	                        android:layout_weight="1"
+	                        android:text="Duration"/>
+                        
+                        <!-- <TextView
+                            android:id="@+id/durationTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Duration"
+                            android:textSize="16sp"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/durationText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/durationTitle"
+                            android:layout_marginTop="5dp"
+                            android:text="0 min"
+                            android:textSize="12sp"
+                            android:layout_centerHorizontal="true" /> -->
+                    </RelativeLayout>
+				<!-- <View
+				    android:layout_width="fill_parent"
+				    android:layout_height="1dp"
+				    android:layout_alignParentBottom="true"
+				    android:background="@android:color/darker_gray"/> -->
+                </RelativeLayout>
 
                 <EditText
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
                     android:ems="10"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:text="Title" />
 
                 <EditText
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
                     android:ems="10"
-                    android:inputType="textMultiLine" >
+                    android:gravity="center_vertical|top"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="150dp"
+                    android:scrollHorizontally="true"
+                    android:text="Description" >
 
                     <requestFocus />
                 </EditText>
