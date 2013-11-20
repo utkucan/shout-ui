@@ -2,8 +2,8 @@ package com.shoutapp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Bitmap.Config;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.AbsListView.LayoutParams;
 
 public class RefreshableListView extends ListView {
 	private View mHeaderContainer = null;
