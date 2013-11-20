@@ -59,6 +59,8 @@ public class MainActivity extends BaseActivity{
         ImageButton add_post_btn = (ImageButton)findViewById(R.id.add_post_btn);
         add_post_btn.setOnClickListener(new OnClickListener() {
 			
+        	
+        	
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -79,11 +81,16 @@ public class MainActivity extends BaseActivity{
 				pager.setCurrentItem(1, true);
 				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.menu_icon);
+			
 			}else{
 				pager.setCurrentItem(0, true);
 				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.map_icon);
+				
+				
+				
 			}
+			
 		}
 	};
 	ArrayList<SampleItem> items;
