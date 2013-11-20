@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.method.DateTimeKeyListener;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,10 +21,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
@@ -38,6 +42,9 @@ public class AddPostActivity extends BaseActivity {
 	EditText saat;
 	EditText duration;
 	Context appContext;
+	ScrollView scrollv;
+	RelativeLayout mapLay;
+	boolean isMapLayHeightSet = false;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -100,8 +107,21 @@ public class AddPostActivity extends BaseActivity {
 			}
 		});
         
-//        EditText description = (EditText)findViewById(R.id.description);
-//        description.clearFocus();
+        mapLay = (RelativeLayout)findViewById(R.id.mapLay);
+        scrollv = (ScrollView)findViewById(R.id.addPostScrollView);
+        ViewTreeObserver vto = scrollv.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+            	if(!isMapLayHeightSet){
+	            	int h = scrollv.getMeasuredHeight();
+	            	mapLay.getLayoutParams().height = h/2;
+	            	isMapLayHeightSet = true;
+            	}
+//            	int h = scrollv.getMeasuredHeight();
+//            	mapLay.getLayoutParams().height = h/2;
+                return true;
+            }
+        });
 
 	}
 	

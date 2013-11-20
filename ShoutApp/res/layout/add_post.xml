@@ -56,7 +56,7 @@
     </RelativeLayout>
 
     <ScrollView
-        android:id="@+id/scrollView1"
+        android:id="@+id/addPostScrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/add_post_view_bottom_bar"
@@ -65,17 +65,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical" >
 
             <RelativeLayout
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent" >
-	             <ImageView
-                android:id="@+id/map"
+                android:id="@+id/mapLay"
                 android:layout_width="fill_parent"
-                android:layout_height="165dp"
-                android:background="@drawable/map2" />
+                android:layout_height="match_parent" >
+
+	             <ImageView
+	                 android:id="@+id/map"
+	                 android:layout_width="fill_parent"
+	                 android:layout_height="fill_parent"
+	                 android:background="@drawable/map2" />
 
 	             <Button
 	                 android:id="@+id/change_location"
@@ -95,7 +97,7 @@
 	                 android:textSize="9sp" />
 
 	        </RelativeLayout>
-           
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,28 +112,6 @@
                     android:layout_marginTop="15dp"
                     android:entries="@array/Categories"
                     android:prompt="@string/Category" />
-
-                <!-- <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <EditText
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:inputType="time"
-                        android:text="Start Time" />
-
-                    <EditText
-                        android:id="@+id/duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="Duration"/>
-
-                </LinearLayout>
- -->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -149,27 +129,8 @@
 	                        android:id="@+id/time"
 	                        android:layout_width="match_parent"
 	                        android:layout_height="match_parent"
-	                        android:layout_weight="1"
 	                        android:inputType="time"
 	                        android:text="Start Time" />
-                        
-                        <!-- <TextView
-                            android:id="@+id/StartTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Start Time"
-                            android:textSize="16sp"
-                            android:layout_centerHorizontal="true" />
-
-                        <TextView
-                            android:id="@+id/startTimeText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/StartTime"
-                            android:layout_marginTop="5dp"
-                            android:text="00:00"
-                            android:textSize="12sp"
-                            android:layout_centerHorizontal="true" /> -->
 
                     </RelativeLayout>
 
@@ -191,32 +152,10 @@
 	                        android:id="@+id/duration"
 	                        android:layout_width="match_parent"
 	                        android:layout_height="match_parent"
-	                        android:layout_weight="1"
 	                        android:text="Duration"/>
-                        
-                        <!-- <TextView
-                            android:id="@+id/durationTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Duration"
-                            android:textSize="16sp"
-                            android:layout_centerHorizontal="true" />
 
-                        <TextView
-                            android:id="@+id/durationText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/durationTitle"
-                            android:layout_marginTop="5dp"
-                            android:text="0 min"
-                            android:textSize="12sp"
-                            android:layout_centerHorizontal="true" /> -->
                     </RelativeLayout>
-				<!-- <View
-				    android:layout_width="fill_parent"
-				    android:layout_height="1dp"
-				    android:layout_alignParentBottom="true"
-				    android:background="@android:color/darker_gray"/> -->
+
                 </RelativeLayout>
 
                 <EditText
@@ -239,8 +178,6 @@
                     android:maxHeight="150dp"
                     android:scrollHorizontally="true"
                     android:text="Description" >
-
-                    <requestFocus />
                 </EditText>
 
             </LinearLayout>
