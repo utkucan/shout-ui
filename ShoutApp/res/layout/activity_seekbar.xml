@@ -56,11 +56,34 @@
             android:text="Spor" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/CheckBox2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Parti" />
 
+        <CheckBox
+            android:id="@+id/CheckBox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spor" />
+
+        <CheckBox
+            android:id="@+id/CheckBox4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parti" />
+
+        <CheckBox
+            android:id="@+id/checkBox5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parti" />
+
+        <CheckBox
+            android:id="@+id/CheckBox6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parti" />
     </LinearLayout>
 
 </LinearLayout>
