@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/app_bg_small"
+        android:orientation="vertical"
+        android:padding="2dp" >
+
+		<FrameLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/frame_top" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" >
+             
+             <FrameLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="fill_parent"
+                 android:layout_gravity="left"
+                 android:background="@drawable/frame_left" />
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_weight="2"
+                 android:background="#ffffff"
+                 android:orientation="horizontal" >
+                 
+		         <LinearLayout
+		             android:id="@+id/left_layout"
+		             android:layout_width="wrap_content"
+		             android:layout_height="wrap_content"
+		             android:layout_weight="1"
+		             android:padding="8dp"
+		             android:orientation="vertical" >
+		             
+		            <TextView
+		                android:id="@+id/post_title"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:minHeight="34dp"
+		                android:paddingLeft="7dp"
+		                android:paddingRight="7dp"
+		                android:text="Yarım saat içinde çılgın bir parti başlıyor... Yarım saat içinde çılgın bir parti başlıyor..."
+		                android:textAppearance="?android:attr/textAppearanceSmall"
+		                android:textColor="#000000"
+		                android:textSize="13sp" />
+		            
+		            <TextView
+		                android:id="@+id/category"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:paddingLeft="7dp"
+		                android:text="Yemek"
+		                android:textAppearance="?android:attr/textAppearanceSmall"
+		                android:textColor="#f37f77"
+		                android:textSize="9sp"
+		                android:paddingTop="7dp" />
+		
+		        </LinearLayout>
+		
+		        <FrameLayout
+		            android:id="@+id/divider"
+		            android:layout_width="1dp"
+		            android:layout_height="fill_parent"
+		            android:background="#ebebeb" >
+		
+		        </FrameLayout>
+		
+		        <RelativeLayout
+		            android:id="@+id/right_layout"
+		            android:layout_width="96dp"
+		            android:layout_height="wrap_content"
+		            android:paddingBottom="8dp"
+		            android:paddingLeft="18dp"
+		            android:paddingTop="8dp" >
+		
+		            <ImageView
+		                android:id="@+id/clock"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginRight="10dp"
+		                android:src="@drawable/clock_icon_red" />
+		
+		            <TextView
+		                android:id="@+id/time"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginTop="1dp"
+		                android:layout_toRightOf="@+id/clock"
+		                android:text="15:30"
+		                android:textColor="#787878"
+		                android:textSize="11sp" />
+		
+		            <ImageView
+		                android:id="@+id/marker"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_below="@+id/clock"
+		                android:layout_marginLeft="3dp"
+		                android:layout_marginRight="13dp"
+		                android:layout_marginTop="21dp"
+		                android:src="@drawable/marker_icon" />
+		
+		            <TextView
+		                android:id="@+id/distance"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_below="@+id/time"
+		                android:layout_marginTop="23dp"
+		                android:layout_toRightOf="@+id/marker"
+		                android:text="4,8 km"
+		                android:textColor="#787878"
+		                android:textSize="11sp" />
+		
+		        </RelativeLayout>                
+                 
+             </LinearLayout>
+
+             <FrameLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="fill_parent"
+                 android:layout_gravity="right"
+                 android:background="@drawable/frame_right" />
+
+         </LinearLayout>
+
+         <FrameLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/frame_bottom" />
+
+     </LinearLayout>
+

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/post_item_preview_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_bg_small" >
+
+    <LinearLayout
+        android:id="@+id/post_preview_bottom_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_bar_repeat"
+        android:layout_alignParentBottom="true" >
+
+		<RelativeLayout
+			android:id="@+id/rate_btn_holder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="1" >
+		
+			<ImageButton
+				android:id="@+id/rate_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:background="@drawable/star_icon" />
+		</RelativeLayout>
+	  
+        <RelativeLayout
+	        android:id="@+id/add_comment_btn_holder"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_weight="1" >
+        
+			<ImageButton
+		          android:id="@+id/add_comment_btn"
+		          android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"
+		          android:layout_centerInParent="true"
+		          android:background="@drawable/comment_icon" />
+    	</RelativeLayout>
+
+		<RelativeLayout
+			android:id="@+id/share_btn_holder"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_weight="1" >
+			
+			<ImageButton
+				android:id="@+id/share_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:background="@drawable/android_share_icon" />
+		</RelativeLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/post_preview_scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="12dp"
+        android:layout_above="@+id/post_preview_bottom_bar" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/post_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                
+                <ImageView
+	                 android:id="@+id/post_on_map"
+	                 android:layout_width="fill_parent"
+	                 android:layout_height="fill_parent"
+	                 android:background="@drawable/map2" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_bg_small"
+                android:orientation="vertical" >
+
+                <FrameLayout
+                    android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/frame_top" >
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                    
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="left"
+                        android:background="@drawable/frame_left" >
+
+				    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:background="#ffffff"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+
+                            <TextView
+                                android:id="@+id/post_item_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="8dp"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:text="Karnım acıktı, biri yemek yapıp getirsin hayrına, olma mı ya gızlar :(" />
+
+                            <FrameLayout
+					            android:layout_width="1dp"
+					            android:layout_height="fill_parent"
+					            android:background="#ebebeb" />
+					
+					        <RelativeLayout
+					            android:layout_width="96dp"
+					            android:layout_height="wrap_content"
+					            android:paddingBottom="8dp"
+					            android:paddingLeft="18dp"
+					            android:paddingTop="8dp" >
+					
+					            <ImageView
+					                android:id="@+id/post_item_clock"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_marginRight="10dp"
+					                android:src="@drawable/clock_icon_red" />
+					
+					            <TextView
+					                android:id="@+id/post_item_time"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_marginTop="1dp"
+					                android:layout_toRightOf="@+id/post_item_clock"
+					                android:text="15:30"
+					                android:textColor="#787878"
+					                android:textSize="11sp" />
+					
+					            <ImageView
+					                android:id="@+id/post_item_marker"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_below="@+id/post_item_clock"
+					                android:layout_marginLeft="3dp"
+					                android:layout_marginRight="13dp"
+					                android:layout_marginTop="21dp"
+					                android:src="@drawable/marker_icon" />
+					
+					            <TextView
+					                android:id="@+id/post_item_distance"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_below="@+id/post_item_time"
+					                android:layout_marginTop="23dp"
+					                android:layout_toRightOf="@+id/post_item_marker"
+					                android:text="4,8 km"
+					                android:textColor="#787878"
+					                android:textSize="11sp" />
+					
+					        </RelativeLayout> 
+                        </LinearLayout>
+                        
+                        <FrameLayout
+				            android:layout_width="fill_parent"
+				            android:layout_height="1dp"
+				            android:background="#ebebeb" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+					        
+                            <TextView
+                                android:id="@+id/post_item_owner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:paddingTop="8dp"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="#000000"
+                                android:textSize="10sp"
+                                android:text="Sercan Aksoy" />
+
+                            <FrameLayout
+					            android:layout_width="1dp"
+					            android:layout_height="fill_parent"
+					            android:background="#ebebeb" />
+                            
+                            <RelativeLayout
+					            android:layout_width="96dp"
+					            android:layout_height="wrap_content"
+					            android:paddingBottom="8dp"
+					            android:paddingLeft="18dp"
+					            android:paddingTop="8dp" >
+					            
+                                <ImageView
+					                android:id="@+id/post_item_star"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_marginRight="10dp"
+					                android:src="@drawable/star_icon_active" />
+					
+					            <TextView
+					                android:id="@+id/post_item_rating"
+					                android:layout_width="wrap_content"
+					                android:layout_height="wrap_content"
+					                android:layout_marginTop="1dp"
+					                android:layout_toRightOf="@+id/post_item_star"
+					                android:text="423"
+					                android:textColor="#787878"
+					                android:textSize="11sp" />
+					        </RelativeLayout> 
+                        </LinearLayout>
+
+                        <FrameLayout
+				            android:layout_width="fill_parent"
+				            android:layout_height="1dp"
+				            android:background="#ebebeb" />
+
+                        <TextView
+                            android:id="@+id/post_item_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#787878"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="10sp"
+                            android:text="Yemek" />
+                        
+                        <FrameLayout
+				            android:layout_width="fill_parent"
+				            android:layout_height="1dp"
+				            android:background="#ebebeb" />
+
+                        <TextView
+                            android:id="@+id/post_item_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="8dp"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingTop="8dp"
+                            android:textColor="#000000"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="13sp"
+                            android:text="Karnım acıktı, biri yemek yapıp getirsin hayrına, olma mı ya gızlar :( Karnım acıktı, biri yemek yapıp getirsin hayrına, olma mı ya gızlar :( " />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="right"
+                        android:background="@drawable/frame_right" >
+
+				    </FrameLayout>
+
+                </LinearLayout>
+				
+                <FrameLayout
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/frame_bottom" >
+			    </FrameLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/comments_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="25dp"
+                android:textSize="10sp"
+                android:textColor="#808080"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="COMMENTS" />
+
+            <!-- <ListView
+                android:id="@+id/comment_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </ListView> -->
+
+            <LinearLayout
+                android:id="@+id/comment_list_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

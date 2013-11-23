@@ -48,6 +48,7 @@ public class AddPostActivity extends BaseActivity {
 	NoDefaultSpinner categoryPicker;
 	ImageButton save_btn,cancel_btn;
 	boolean isMapLayHeightSet = false;
+	boolean isActivityStarted = false;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -81,6 +82,8 @@ public class AddPostActivity extends BaseActivity {
         
         title.setOnFocusChangeListener(focusChanged);
         description.setOnFocusChangeListener(focusChanged);
+//        title.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
+//        description.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
         
         
         duration.setInputType(InputType.TYPE_NULL);
@@ -92,12 +95,10 @@ public class AddPostActivity extends BaseActivity {
             public boolean onPreDraw() {
             	if(!isMapLayHeightSet){
 	            	int h = scrollv.getMeasuredHeight();
-	            	mapLay.getLayoutParams().height = h/2;
+	            	mapLay.getLayoutParams().height = (2*h)/5;
 	            	isMapLayHeightSet = true;
 	            	scrollv.scrollTo(0, 0);
             	}
-//            	int h = scrollv.getMeasuredHeight();
-//            	mapLay.getLayoutParams().height = h/2;
                 return true;
             }
         });
@@ -141,7 +142,12 @@ public class AddPostActivity extends BaseActivity {
 					return;
 				}			
 				String category = (String)categoryPicker.getSelectedItem();
-				Model.add_post("",category, time, sure, header, desc);
+				if(!Model.add_post("",category, time, sure, header, desc)){
+					Toast.makeText(appContext, "Error!", Toast.LENGTH_LONG).show();
+				}else{
+					Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
+					onBackPressed();
+				}
 			}else if(v.equals(saat)){
 				openTimeDialog();
 			}else if(v.equals(duration)){
@@ -157,27 +163,31 @@ public class AddPostActivity extends BaseActivity {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			// TODO Auto-generated method stub
-			if(hasFocus){
-				if(v.equals(duration)){
-					openDurationDialog();
-				}
-				else if(v.equals(saat)){
-					openTimeDialog();
-				}
-				else if(v.equals(title) && title.getText().toString().equals("Title")){
-					title.setText("");
-				}
-				else if(v.equals(description) && description.getText().toString().equals("Description")){
-					description.setText("");
+			if(isActivityStarted){
+				if(hasFocus){
+					if(v.equals(duration)){
+						openDurationDialog();
+					}
+					else if(v.equals(saat)){
+						openTimeDialog();
+					}
+					else if(v.equals(title) && title.getText().toString().equals("Title")){
+						title.setText("");
+					}
+					else if(v.equals(description) && description.getText().toString().equals("Description")){
+						description.setText("");
+					}
+				}else{
+					if(v.equals(title) && title.getText().toString().equals("")){
+						title.setText("Title");
+					}
+					else if(v.equals(description) && description.getText().toString().equals("")){
+						description.setText("Description");
+					}
 				}
 			}else{
-				if(v.equals(title) && title.getText().toString().equals("")){
-					title.setText("Title");
-				}
-				else if(v.equals(description) && description.getText().toString().equals("")){
-					description.setText("Description");
-				}
-			}			
+				isActivityStarted =true;
+			}
 		}
 	};
 	

@@ -2,7 +2,6 @@ package com.shoutapp;
 
 import java.util.ArrayList;
 
-import com.shoutapp.Model.PostPreview;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 import android.app.Activity;
@@ -32,15 +31,13 @@ public class MainActivity extends BaseActivity{
 	Activity currentactivity;
 	ViewPager pager;
 	RefreshableListView postListView;
-	Model model;
-	ArrayList<PostPreview> items;
+//	ArrayList<PostPreviewItemObject> items;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
-		model = new Model();
-		items = model.getPostPreviews();
+//		items = Model.getPostPreviews();
 		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
@@ -93,7 +90,7 @@ public class MainActivity extends BaseActivity{
 	};
 
 
-	public class PostPreviewAdapter extends ArrayAdapter<PostPreview> {
+	public class PostPreviewAdapter extends ArrayAdapter<PostPreviewItemObject> {
         
 		public PostPreviewAdapter(Context context, int textViewResourceId,ArrayList list) {
 			super(context, textViewResourceId,list);
@@ -101,7 +98,7 @@ public class MainActivity extends BaseActivity{
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item, null);
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.post_title);
 			title.setText(getItem(position).title);
@@ -114,25 +111,38 @@ public class MainActivity extends BaseActivity{
 			
 			TextView distance = (TextView) convertView.findViewById(R.id.distance);
 			distance.setText(getItem(position).distance);
+			
+			convertView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent i = new Intent();
+			        i.setClassName("com.shoutapp", "com.shoutapp.PostItemViewActivity");
+			        startActivity(i);
+				}
+			});
+			
 			return convertView;
 		}
 
 	}
 
 	// serverdan gelenler bu kodun içinde listeye eklenecek, ona göre modifiye et
-	private class NewDataTask extends AsyncTask<Void, Void, PostPreview> {
+	private class NewDataTask extends AsyncTask<Void, Void, PostPreviewItemObject> {
 
         @Override
-        protected PostPreview doInBackground(Void... params) {
+        protected PostPreviewItemObject doInBackground(Void... params) {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {}
-            return model.new PostPreview("new item", "yemek", "05:30", "9 km");
+            return new PostPreviewItemObject("new item", "yemek", "05:30", "9 km");
         }
 
         @Override
-        protected void onPostExecute(PostPreview result) {
-        	items.add(0, result);
+        protected void onPostExecute(PostPreviewItemObject result) {
+        	Model.addPostPreview(0,result);
+//        	Model.items.add(0, result);
             // This should be called after refreshing finished
         	postListView.completeRefreshing();
 
@@ -167,7 +177,7 @@ public class MainActivity extends BaseActivity{
                 		v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
                 		
                 		postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
-                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, items));
+                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
                 		postListView.setOnRefreshListener(new OnRefreshListener() {
 							
 							@Override

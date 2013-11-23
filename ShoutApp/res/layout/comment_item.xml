@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/app_bg_small"
+    android:orientation="vertical"
+    android:paddingBottom="2dp"
+    android:paddingTop="2dp" >
+
+    <FrameLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/frame_top" />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" >
+             
+             <FrameLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="fill_parent"
+                 android:layout_gravity="left"
+                 android:background="@drawable/frame_left" />
+
+             <LinearLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:layout_weight="1"
+                 android:background="#ffffff"
+                 android:orientation="vertical" >
+
+                 <TextView
+                     android:id="@+id/comment_text"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingBottom="15dp"
+                     android:paddingLeft="15dp"
+                     android:paddingRight="15dp"
+                     android:paddingTop="10dp"
+                     android:textAppearance="?android:attr/textAppearanceSmall"
+	                android:textColor="#000000"
+	                android:textSize="13sp"
+                     android:text="TextView" />
+
+                 <FrameLayout
+		            android:id="@+id/divider"
+		            android:layout_width="fill_parent"
+		            android:layout_height="1dp"
+		            android:background="#ebebeb" >
+		
+		        </FrameLayout>
+
+                 <TextView
+                     android:id="@+id/comment_owner"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:paddingBottom="5dp"
+                     android:paddingLeft="15dp"
+                     android:paddingRight="15dp"
+                     android:paddingTop="15dp"
+                     android:textAppearance="?android:attr/textAppearanceSmall"
+	                android:textColor="#000000"
+	                android:textSize="10sp"
+                     android:text="TextView" />
+
+             </LinearLayout>
+
+             <FrameLayout
+                 android:layout_width="wrap_content"
+                 android:layout_height="fill_parent"
+                 android:layout_gravity="right"
+                 android:background="@drawable/frame_right" />
+
+         </LinearLayout>
+
+         <FrameLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/frame_bottom" />
+
+</LinearLayout>

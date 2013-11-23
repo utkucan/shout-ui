@@ -38,7 +38,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="AddPostActivity" android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name="AddPostActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
+        <activity android:name="PostItemViewActivity"></activity>
     </application>
 
 </manifest>
