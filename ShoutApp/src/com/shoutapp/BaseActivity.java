@@ -2,6 +2,7 @@ package com.shoutapp;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +31,9 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				Intent i = new Intent();
+		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
+		        startActivity(i);
 			}
 		});
 	}
