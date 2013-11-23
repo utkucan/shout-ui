@@ -27,41 +27,41 @@
                  android:layout_height="match_parent"
                  android:layout_weight="1"
                  android:background="#ffffff"
-                 android:orientation="vertical" >
+                 android:orientation="horizontal" >
 
-                 <TextView
-                     android:id="@+id/comment_text"
+                 <ImageView
+                     android:id="@+id/badge_image"
+                     android:layout_width="98dp"
+                     android:layout_height="98dp"
+                     android:layout_marginLeft="15dp"
+                     android:src="@drawable/events_cat_bicycle" />
+
+                 <RelativeLayout
                      android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:paddingBottom="15dp"
-                     android:paddingLeft="15dp"
-                     android:paddingRight="15dp"
-                     android:paddingTop="10dp"
-                     android:textAppearance="?android:attr/textAppearanceSmall"
-					android:textColor="#000000"
-					android:textSize="13sp"
-                     android:text="TextView" />
+                     android:layout_height="match_parent"
+                     android:layout_weight="1"
+                     android:padding="15dp" >
 
-                 <FrameLayout
-		            android:id="@+id/divider"
-		            android:layout_width="fill_parent"
-		            android:layout_height="1dp"
-		            android:background="#ebebeb" >
-		
-		        </FrameLayout>
+                     <TextView
+                         android:id="@+id/badge_description"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:textAppearance="?android:attr/textAppearanceSmall"
+					    android:textColor="#000000"
+					    android:textSize="13sp"
+                         android:text="rozetin tanımı" />
 
-                 <TextView
-                     android:id="@+id/comment_owner"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:paddingBottom="5dp"
-                     android:paddingLeft="15dp"
-                     android:paddingRight="15dp"
-                     android:paddingTop="15dp"
-                     android:textAppearance="?android:attr/textAppearanceSmall"
-	                android:textColor="#000000"
-	                android:textSize="10sp"
-                     android:text="TextView" />
+                     <TextView
+                         android:id="@+id/badege_receive_time"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentBottom="true"
+                         android:textAppearance="?android:attr/textAppearanceSmall"
+					    android:textColor="#787878"
+					    android:textSize="11sp"
+                         android:text="23.11.2013" />
+
+                 </RelativeLayout>
 
              </LinearLayout>
 

@@ -69,8 +69,24 @@ public class MainActivity extends BaseActivity{
 		        startActivity(i);
 			}
 		});
+        
+        RelativeLayout profile_view_btn_holder = (RelativeLayout)findViewById(R.id.profile_btn_holder);
+        profile_view_btn_holder.setOnClickListener(profileClickListener);
+        ImageButton profile_view_btn = (ImageButton)findViewById(R.id.profile_btn);
+        profile_view_btn.setOnClickListener(profileClickListener);
 
 	}
+	
+	OnClickListener profileClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent i = new Intent();
+	        i.setClassName("com.shoutapp", "com.shoutapp.ProfileActivity");
+	        startActivity(i);
+		}
+	};
 	
 	OnClickListener changeViewClickListener = new OnClickListener() {
 		
