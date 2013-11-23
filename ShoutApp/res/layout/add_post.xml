@@ -102,21 +102,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:padding="20dp" >
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp" >
 
                 <com.shoutapp.NoDefaultSpinner
                     android:id="@+id/categoryList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_margin="20dp"
                     android:entries="@array/Categories"
                     android:prompt="@string/Category" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp" >
+                    android:layout_margin="20dp" >
 
                     <RelativeLayout
                         android:id="@+id/timeLayout"
@@ -162,8 +165,7 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:ems="10"
+                    android:layout_margin="20dp"
                     android:inputType="textMultiLine"
                     android:text="Title" />
 
@@ -171,13 +173,12 @@
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:ems="10"
+                    android:layout_margin="20dp"
                     android:gravity="center_vertical|top"
                     android:inputType="textMultiLine"
-                    android:maxHeight="150dp"
                     android:scrollHorizontally="true"
                     android:text="Description" >
+
                 </EditText>
 
             </LinearLayout>

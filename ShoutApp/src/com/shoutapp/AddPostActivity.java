@@ -3,6 +3,7 @@ package com.shoutapp;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.facebook.FacebookRequestError.Category;
 import com.facebook.Session.NewPermissionsRequest;
 
 import android.app.Dialog;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -39,11 +41,12 @@ import java.lang.reflect.Field;
 
 public class AddPostActivity extends BaseActivity {
 
-	EditText saat;
-	EditText duration;
+	EditText saat, duration,title, description;
 	Context appContext;
 	ScrollView scrollv;
-	RelativeLayout mapLay;
+	RelativeLayout mapLay, save_btn_lay, cancel_btn_lay;
+	NoDefaultSpinner categoryPicker;
+	ImageButton save_btn,cancel_btn;
 	boolean isMapLayHeightSet = false;
 	
 	public void onCreate(Bundle savedInstanceState){
@@ -60,55 +63,30 @@ public class AddPostActivity extends BaseActivity {
 		addPostLayout.setLayoutParams(lp);
         mainLayout.addView(add_post);
         
-        
         saat = (EditText)findViewById(R.id.time);
-        saat.setInputType(InputType.TYPE_NULL);
-        saat.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				// TODO Auto-generated method stub
-				
-				if(v.equals(saat) && hasFocus){
-					openTimeDialog();
-				}
-			}
-		});
-        saat.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				openTimeDialog();
-			}
-		});
-        
-//        NoDefaultSpinner category = (NoDefaultSpinner)findViewById(R.id.categoryList);
-//        category.requestFocus();
-        
         duration = (EditText)findViewById(R.id.duration);
-        duration.setInputType(InputType.TYPE_NULL);
-        
-        duration.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				// TODO Auto-generated method stub
-				
-				if(v.equals(duration) && hasFocus){
-					openDurationDialog();
-				}
-			}
-		});
-        duration.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				openDurationDialog();
-			}
-		});
-        
         mapLay = (RelativeLayout)findViewById(R.id.mapLay);
         scrollv = (ScrollView)findViewById(R.id.addPostScrollView);
+        save_btn_lay = (RelativeLayout)findViewById(R.id.save_btn_holder);
+        save_btn = (ImageButton)findViewById(R.id.save_btn);
+        categoryPicker = (NoDefaultSpinner)findViewById(R.id.categoryList);
+        title = (EditText)findViewById(R.id.header);
+        description = (EditText)findViewById(R.id.description);
+        cancel_btn_lay = (RelativeLayout)findViewById(R.id.cancel_btn_holder);
+        cancel_btn = (ImageButton)findViewById(R.id.cancel_btn);
+        
+        saat.setInputType(InputType.TYPE_NULL);
+        saat.setOnFocusChangeListener(focusChanged);
+        saat.setOnClickListener(onClicked);
+        
+        title.setOnFocusChangeListener(focusChanged);
+        description.setOnFocusChangeListener(focusChanged);
+        
+        
+        duration.setInputType(InputType.TYPE_NULL);
+        duration.setOnFocusChangeListener(focusChanged);
+        duration.setOnClickListener(onClicked);
+        
         ViewTreeObserver vto = scrollv.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
@@ -116,14 +94,92 @@ public class AddPostActivity extends BaseActivity {
 	            	int h = scrollv.getMeasuredHeight();
 	            	mapLay.getLayoutParams().height = h/2;
 	            	isMapLayHeightSet = true;
+	            	scrollv.scrollTo(0, 0);
             	}
 //            	int h = scrollv.getMeasuredHeight();
 //            	mapLay.getLayoutParams().height = h/2;
                 return true;
             }
         });
-
+        
+        save_btn_lay.setOnClickListener(onClicked);
+        save_btn.setOnClickListener(onClicked);
+        cancel_btn.setOnClickListener(onClicked);
+        cancel_btn_lay.setOnClickListener(onClicked);
 	}
+	
+	private OnClickListener onClicked = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if(v.equals(save_btn_lay) || v.equals(save_btn)){
+				if(categoryPicker.getSelectedItemPosition() == -1){
+					Toast.makeText(appContext, "Please select a category for your post.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				String time = saat.getText().toString();
+				if(!time.contains(":")){
+					Toast.makeText(appContext, "Please specify the start time.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				String sure = duration.getText().toString();
+				if(!sure.contains(":")){
+					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				String header = title.getText().toString();
+				if(header.equals("Title") || header.equals("")){
+					Toast.makeText(appContext, "Please specify the Title of post.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
+				String desc = description.getText().toString();
+				if(desc.equals("Description") || desc.equals("")){
+					Toast.makeText(appContext, "Please specify the Description of post.", Toast.LENGTH_LONG).show();
+					return;
+				}			
+				String category = (String)categoryPicker.getSelectedItem();
+				Model.add_post("",category, time, sure, header, desc);
+			}else if(v.equals(saat)){
+				openTimeDialog();
+			}else if(v.equals(duration)){
+				openDurationDialog();
+			}else if(v.equals(cancel_btn_lay) || v.equals(cancel_btn)){
+				onBackPressed();
+			}
+		}
+	};
+	
+	private OnFocusChangeListener focusChanged = new OnFocusChangeListener() {
+		
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			// TODO Auto-generated method stub
+			if(hasFocus){
+				if(v.equals(duration)){
+					openDurationDialog();
+				}
+				else if(v.equals(saat)){
+					openTimeDialog();
+				}
+				else if(v.equals(title) && title.getText().toString().equals("Title")){
+					title.setText("");
+				}
+				else if(v.equals(description) && description.getText().toString().equals("Description")){
+					description.setText("");
+				}
+			}else{
+				if(v.equals(title) && title.getText().toString().equals("")){
+					title.setText("Title");
+				}
+				else if(v.equals(description) && description.getText().toString().equals("")){
+					description.setText("Description");
+				}
+			}			
+		}
+	};
 	
 	private void openDurationDialog(){
 		String sure = duration.getText().toString();
@@ -134,60 +190,6 @@ public class AddPostActivity extends BaseActivity {
 			hour = Integer.parseInt(comp[0]);
 			min = Integer.parseInt(comp[1]);
 		}
-		
-//		final TimePickerDialog d = new TimePickerDialog(appContext, new OnTimeSetListener() {
-//			
-//			@Override
-//			public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
-//				// TODO Auto-generated method stub
-//				StringBuilder sb = new StringBuilder();
-//				if(selectedHour<10)
-//					sb.append("0");
-//				sb.append(selectedHour);
-//				sb.append(':');
-//				if(selectedMinute<10)
-//					sb.append("0");
-//				sb.append(selectedMinute);
-//				duration.setText(sb);
-//				
-//				StringBuilder text = new StringBuilder();
-//				text.append("The duration is ");
-//				int dur = selectedHour*60 + selectedMinute;
-//				if(dur==1){
-//					text.append(dur + " minute");
-//				}else{
-//					text.append(dur + " minutes");
-//				}
-//				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_LONG);
-//				toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-//				
-//				((TextView)((LinearLayout)toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
-//				toast.show();
-//			}
-//		}, hour, min,true);
-//		try {
-//			TimePicker mTimePicker = (TimePicker)(d.getClass().getSuperclass().getDeclaredField("mTimePicker").get(d));
-//			mTimePicker.setOnTimeChangedListener(new OnTimeChangedListener() {
-//				
-//				@Override
-//				public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-//					// TODO Auto-generated method stub
-//					int dur = hourOfDay*60 + minute;
-//					if(dur>240){
-//						d.updateTime(4, 0);
-//					}
-//				}
-//			});
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (NoSuchFieldException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
 		TimePickerDialog d = new RangeTimePickerDialog(appContext, new OnTimeSetListener() {
 			
@@ -219,7 +221,6 @@ public class AddPostActivity extends BaseActivity {
 				toast.show();
 			}
 		},hour, min,true);
-//		d.updateTime(2, 50);
 		d.show();
 	}
 	

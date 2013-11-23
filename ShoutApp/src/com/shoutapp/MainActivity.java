@@ -2,6 +2,7 @@ package com.shoutapp;
 
 import java.util.ArrayList;
 
+import com.shoutapp.Model.PostPreview;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 import android.app.Activity;
@@ -31,11 +32,15 @@ public class MainActivity extends BaseActivity{
 	Activity currentactivity;
 	ViewPager pager;
 	RefreshableListView postListView;
+	Model model;
+	ArrayList<PostPreview> items;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
+		model = new Model();
+		items = model.getPostPreviews();
 		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
@@ -86,49 +91,11 @@ public class MainActivity extends BaseActivity{
 			}
 		}
 	};
-	ArrayList<SampleItem> items;
-	public ArrayList<SampleItem> getPosts(){
-		
-		items = new ArrayList<MainActivity.SampleItem>();
-//		items.add(new SampleItem("", "","",""));
-		items.add(new SampleItem("Karným Aç", "Yemek","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		items.add(new SampleItem("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
-		items.add(new SampleItem("Karným Aç2", "Yemek","15:30","4 km"));
-		
-		return items;
-	}
-	
-	public class SampleItem {
-		public String title;
-		public String category;
-		public String time;
-		public String distance;
-		public SampleItem(String title, String category,String time,String distance) {
-			this.title = title; 
-			this.category = category;
-			this.time = time; 
-			this.distance = distance;
-		}
-	}
 
-	public class SampleAdapter extends ArrayAdapter<SampleItem> {
+
+	public class PostPreviewAdapter extends ArrayAdapter<PostPreview> {
         
-		public SampleAdapter(Context context, int textViewResourceId,ArrayList list) {
+		public PostPreviewAdapter(Context context, int textViewResourceId,ArrayList list) {
 			super(context, textViewResourceId,list);
 		}
 
@@ -153,19 +120,18 @@ public class MainActivity extends BaseActivity{
 	}
 
 	// serverdan gelenler bu kodun içinde listeye eklenecek, ona göre modifiye et
-	private class NewDataTask extends AsyncTask<Void, Void, SampleItem> {
+	private class NewDataTask extends AsyncTask<Void, Void, PostPreview> {
 
         @Override
-        protected SampleItem doInBackground(Void... params) {
+        protected PostPreview doInBackground(Void... params) {
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {}
-            
-            return new SampleItem("new item", "yemek", "05:30", "9 km");
+            return model.new PostPreview("new item", "yemek", "05:30", "9 km");
         }
 
         @Override
-        protected void onPostExecute(SampleItem result) {
+        protected void onPostExecute(PostPreview result) {
         	items.add(0, result);
             // This should be called after refreshing finished
         	postListView.completeRefreshing();
@@ -201,7 +167,7 @@ public class MainActivity extends BaseActivity{
                 		v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
                 		
                 		postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
-                		postListView.setAdapter(new SampleAdapter(cxt, R.id.post_list_view, getPosts()));
+                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, items));
                 		postListView.setOnRefreshListener(new OnRefreshListener() {
 							
 							@Override
