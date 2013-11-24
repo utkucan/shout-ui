@@ -13,16 +13,24 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -30,6 +38,13 @@ public class ProfileActivity extends BaseActivity{
 
 	private Context cxt;
 	ViewPager pager;
+	ScrollView scrollv;
+	boolean isTabLayHeightSet = false;
+	RelativeLayout profileLayout;
+	boolean tabPageChanged = false;
+	int scrollX = 0;
+	int scrollY = 0;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -37,26 +52,69 @@ public class ProfileActivity extends BaseActivity{
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
 		View profileView = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile, null);
-		RelativeLayout profileLayout = (RelativeLayout)profileView.findViewById(R.id.profile_layout);
+		profileLayout = (RelativeLayout)profileView.findViewById(R.id.profile_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-											      RelativeLayout.LayoutParams.WRAP_CONTENT,
-											      RelativeLayout.LayoutParams.WRAP_CONTENT);
+											      RelativeLayout.LayoutParams.MATCH_PARENT,
+											      RelativeLayout.LayoutParams.MATCH_PARENT);
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
         profileLayout.setLayoutParams(lp);
         mainLayout.addView(profileLayout);
+        
+        scrollv = (ScrollView)findViewById(R.id.scrollView1);
+        
         
         pager = (ViewPager)profileLayout.findViewById(R.id.profile_pager);
         
         PagerTabStrip strip = PagerTabStrip.class.cast(findViewById(R.id.profile_tabs));
         strip.setDrawFullUnderline(false);
         strip.setTabIndicatorColorResource(R.color.profile_tab_hihglight_color);
-//        strip.setNonPrimaryAlpha(0.5f);
-//        strip.setTextSpacing(25);
-//        strip.setTextColor(0x00666666);
-//        strip.setTextColor(0x00ff0000);
-//        android:background="#eeeeee"
         strip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
         pager.setAdapter(new SwipeTabAdapter());
+        pager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				int a = 5;
+				scrollX = scrollv.getScrollX();
+				scrollY = scrollv.getScrollY();
+				tabPageChanged = true;
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				int a = 5;
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				int a = 5;
+				
+				// TODO Auto-generated method stub
+			}
+		});
+
+        ViewTreeObserver vto = scrollv.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            public boolean onPreDraw() {
+            	if(!isTabLayHeightSet){
+	            	int h = scrollv.getMeasuredHeight();
+	            	pager.getLayoutParams().height = h-13;
+	            	isTabLayHeightSet = true;
+	            	scrollv.scrollTo(0, 0);
+            	}
+            	if(tabPageChanged){
+            		int X = scrollv.getScrollX();
+    				int Y = scrollv.getScrollY();
+    				if(scrollX != X || scrollY != Y)
+    					scrollv.scrollTo(scrollX, scrollY);
+    				else
+    					tabPageChanged = false;
+            	}
+                return true;
+            }
+        });
 
 	}
 	
@@ -98,18 +156,7 @@ public class ProfileActivity extends BaseActivity{
 
 	}
 	
-	public class Badge{
-		public int imageId;
-		public String date;
-		public String desc;
-		public Badge(int imageId,String date,String desc){
-			this.imageId = imageId;
-			this.date = date;
-			this.desc = desc;
-		}
-	}
-	
-	public class BadgeAdapter extends ArrayAdapter<Badge>{
+	public class BadgeAdapter extends ArrayAdapter<BadgeObject>{
 		public BadgeAdapter(Context context, int textViewResourceId,ArrayList list) {
 			super(context, textViewResourceId,list);
 		}
@@ -130,6 +177,15 @@ public class ProfileActivity extends BaseActivity{
 
 			return convertView;
 		}
+	}
+	
+	private void requestDisallowParentInterceptTouchEvent(View __v, Boolean __disallowIntercept) {
+	    while (__v.getParent() != null && __v.getParent() instanceof View) {
+	        if (__v.getParent() instanceof ScrollView) {
+	            __v.getParent().requestDisallowInterceptTouchEvent(__disallowIntercept);
+	        }
+	        __v = (View) __v.getParent();
+	    }
 	}
 	
 	 public class SwipeTabAdapter extends PagerAdapter{
@@ -154,34 +210,28 @@ public class ProfileActivity extends BaseActivity{
              */
                 @Override
                 public Object instantiateItem(ViewGroup collection, int position) {
-                	View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);;
+                	View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);
+                	ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
                 	if(position == 0){
-                		ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
                 		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
                 	}else if(position == 1){
-                		ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
-                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
+//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
+                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
                 	}else if(position == 2){
-                		ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
-                		ArrayList<Badge> badges = new ArrayList<ProfileActivity.Badge>();
-                		badges.add(new Badge(R.drawable.events_cat_bicycle, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_camp, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_food, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_game, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_movie, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_night, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_uknowwhatimean, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_cat_wood, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_1, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_10, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_25, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_50, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_100, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_250, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_500, "23.11.2013", "hobarey"));
-                		badges.add(new Badge(R.drawable.events_count_king, "23.11.2013", "hobarey"));
-                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, badges));
+                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
                 	}
+
+                	postListView.setOnTouchListener(new OnTouchListener() {
+						
+						@Override
+						public boolean onTouch(View v, MotionEvent event) {
+							
+							if(event.getAction() == MotionEvent.ACTION_MOVE){
+								scrollv.requestDisallowInterceptTouchEvent(true);
+							}
+							return false;
+						}
+					});
                     collection.addView(v,position);
                     return v;
                 }
@@ -231,7 +281,7 @@ public class ProfileActivity extends BaseActivity{
 	             */
 	                @Override
 	                public void finishUpdate(ViewGroup arg0) {
-	                	
+	                	tabPageChanged = true;
 	                }
 	                
 

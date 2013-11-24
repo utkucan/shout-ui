@@ -82,10 +82,7 @@ public class AddPostActivity extends BaseActivity {
         
         title.setOnFocusChangeListener(focusChanged);
         description.setOnFocusChangeListener(focusChanged);
-//        title.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_NEXT);
-//        description.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
-        
-        
+
         duration.setInputType(InputType.TYPE_NULL);
         duration.setOnFocusChangeListener(focusChanged);
         duration.setOnClickListener(onClicked);
@@ -163,7 +160,7 @@ public class AddPostActivity extends BaseActivity {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			// TODO Auto-generated method stub
-			if(isActivityStarted){
+//			if(isActivityStarted){
 				if(hasFocus){
 					if(v.equals(duration)){
 						openDurationDialog();
@@ -185,9 +182,9 @@ public class AddPostActivity extends BaseActivity {
 						description.setText("Description");
 					}
 				}
-			}else{
-				isActivityStarted =true;
-			}
+//			}else{
+//				isActivityStarted =true;
+//			}
 		}
 	};
 	

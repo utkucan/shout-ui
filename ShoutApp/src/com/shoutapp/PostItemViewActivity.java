@@ -59,35 +59,33 @@ public class PostItemViewActivity extends BaseActivity{
             }
         });
         
-        ArrayList<CommentItemObjet> comment_list = new ArrayList<PostItemViewActivity.CommentItemObjet>();
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("asdasdas Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        
+        ArrayList<CommentItemObjet> comment_list = Model.getComments();
+
         for(int i = 0; i< comment_list.size(); i++){
-        	View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);
-			TextView comment = (TextView) comment_item.findViewById(R.id.comment_text);
-			comment.setText(comment_list.get(i).comment);
-			
-			TextView owner = (TextView) comment_item.findViewById(R.id.comment_owner);
-			owner.setText(comment_list.get(i).owner);
-			comment_list_lay.addView(comment_item);
+        	addCommentPreview(comment_list.get(i));
         }
         
 //        timerHandler.postDelayed(timerRunnable, 3000);
 	}
 	
-	public class CommentItemObjet{
-		public String comment;
-		public String owner;
-		public CommentItemObjet(String comment, String owner) {
-			this.comment = comment; 
-			this.owner = owner;
-		}
+	private void addCommentPreview(CommentItemObjet object){
+		View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);
+		TextView comment = (TextView) comment_item.findViewById(R.id.comment_text);
+		comment.setText(object.comment);
+		
+		TextView owner = (TextView) comment_item.findViewById(R.id.comment_owner);
+		owner.setText(object.owner);
+		comment_list_lay.addView(comment_item);
 	}
+	
+//	public class CommentItemObjet{
+//		public String comment;
+//		public String owner;
+//		public CommentItemObjet(String comment, String owner) {
+//			this.comment = comment; 
+//			this.owner = owner;
+//		}
+//	}
 	
 	
 	
