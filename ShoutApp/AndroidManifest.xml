@@ -41,6 +41,7 @@
         <activity android:name="AddPostActivity" android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
         <activity android:name="PostItemViewActivity"></activity>
         <activity android:name="ProfileActivity"></activity>
+        <activity android:name="SeekbarActivity"></activity>
     </application>
 
 </manifest>
