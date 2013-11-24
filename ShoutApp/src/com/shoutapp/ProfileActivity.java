@@ -19,6 +19,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -28,6 +29,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -42,8 +44,12 @@ public class ProfileActivity extends BaseActivity{
 	boolean isTabLayHeightSet = false;
 	RelativeLayout profileLayout;
 	boolean tabPageChanged = false;
+	ImageButton add_post_btn;
 	int scrollX = 0;
 	int scrollY = 0;
+//	private final int[] scrollstate = { 0,0,0};
+//	private final int[] topVisibleItems = { 0,0,0};
+//	private final ListView[] lvs = {null,null,null};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -60,8 +66,33 @@ public class ProfileActivity extends BaseActivity{
         profileLayout.setLayoutParams(lp);
         mainLayout.addView(profileLayout);
         
+        add_post_btn = (ImageButton)findViewById(R.id.profile_add_post_btn);
+        add_post_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+		        Intent i = new Intent();
+		        i.setClassName("com.shoutapp", "com.shoutapp.AddPostActivity");
+		        startActivity(i);
+			}
+		});
+        
         scrollv = (ScrollView)findViewById(R.id.scrollView1);
         
+//        scrollv.setOnTouchListener(new OnTouchListener() {
+//			
+//			@Override
+//			public boolean onTouch(View arg0, MotionEvent arg1) {
+//				// TODO Auto-generated method stub
+//				int index = pager.getCurrentItem();
+//				ListView lv = lvs[index];
+//				if( !( (lv.getLastVisiblePosition() >= lv.getCount() && scrollstate[index]<0) || (lv.getFirstVisiblePosition() <= 0 && scrollstate[index]>0) ) ){
+//					scrollv.requestDisallowInterceptTouchEvent(true);
+//				}
+//				return false;
+//			}
+//		});
         
         pager = (ViewPager)profileLayout.findViewById(R.id.profile_pager);
         
@@ -75,7 +106,6 @@ public class ProfileActivity extends BaseActivity{
 			@Override
 			public void onPageSelected(int arg0) {
 				// TODO Auto-generated method stub
-				int a = 5;
 				scrollX = scrollv.getScrollX();
 				scrollY = scrollv.getScrollY();
 				tabPageChanged = true;
@@ -84,13 +114,10 @@ public class ProfileActivity extends BaseActivity{
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				// TODO Auto-generated method stub
-				int a = 5;
 			}
 			
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
-				int a = 5;
-				
 				// TODO Auto-generated method stub
 			}
 		});
@@ -120,72 +147,87 @@ public class ProfileActivity extends BaseActivity{
 	
 	public class PostPreviewAdapter extends ArrayAdapter<PostPreviewItemObject> {
         
-		public PostPreviewAdapter(Context context, int textViewResourceId,ArrayList list) {
+		public PostPreviewAdapter(Context context, int textViewResourceId,ArrayList<PostPreviewItemObject> list) {
 			super(context, textViewResourceId,list);
+			list.add(new PostPreviewItemObject("", "", "", ""));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
+			if(getItem(position).title == ""){
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
+				convertView.setVisibility(View.INVISIBLE);
 			}
-			TextView title = (TextView) convertView.findViewById(R.id.post_title);
-			title.setText(getItem(position).title);
-			
-			TextView category = (TextView) convertView.findViewById(R.id.category);
-			category.setText(getItem(position).category);
-			
-			TextView time = (TextView) convertView.findViewById(R.id.time);
-			time.setText(getItem(position).time);
-			
-			TextView distance = (TextView) convertView.findViewById(R.id.distance);
-			distance.setText(getItem(position).distance);
-			
-			convertView.setOnClickListener(new OnClickListener() {
+			else{
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
+				TextView title = (TextView) convertView.findViewById(R.id.post_title);
+				title.setText(getItem(position).title);
 				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent i = new Intent();
-			        i.setClassName("com.shoutapp", "com.shoutapp.PostItemViewActivity");
-			        startActivity(i);
+				TextView category = (TextView) convertView.findViewById(R.id.category);
+				category.setText(getItem(position).category);
+				
+				TextView time = (TextView) convertView.findViewById(R.id.time);
+				time.setText(getItem(position).time);
+				
+				TextView distance = (TextView) convertView.findViewById(R.id.distance);
+				distance.setText(getItem(position).distance);
+				
+				convertView.setOnTouchListener(new OnTouchListener() {
+					
+					@Override
+					public boolean onTouch(View arg0, MotionEvent arg1) {
+						// TODO Auto-generated method stub
+						if(arg1.getAction() == MotionEvent.ACTION_MOVE){
+							scrollv.requestDisallowInterceptTouchEvent(true);
+						}
+						return false;
+					}
+				});
+				
+				convertView.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i = new Intent();
+				        i.setClassName("com.shoutapp", "com.shoutapp.PostItemViewActivity");
+				        startActivity(i);
+					}
+				});
 				}
-			});
-			
 			return convertView;
 		}
 
 	}
 	
 	public class BadgeAdapter extends ArrayAdapter<BadgeObject>{
-		public BadgeAdapter(Context context, int textViewResourceId,ArrayList list) {
+		
+//		private ViewGroup lv;
+//		private boolean isSet = false;
+		
+		public BadgeAdapter(Context context, int textViewResourceId,ArrayList<BadgeObject> list) {
 			super(context, textViewResourceId,list);
+			list.add(new BadgeObject(-1, "", ""));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			if (convertView == null) {
+			
+			if(getItem(position).imageId < 0){	
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
+//				convertView.findViewById(R.id.badge_image).getLayoutParams().height = add_post_btn.getMeasuredHeight()-5;
+				convertView.setVisibility(View.INVISIBLE);
+			}else{
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.badge_list_item, null);
+				ImageView image = (ImageView) convertView.findViewById(R.id.badge_image);
+				image.setImageResource(getItem(position).imageId);//(R.drawable.events_cat_bicycle);
+				
+				TextView description = (TextView) convertView.findViewById(R.id.badge_description);
+				description.setText(getItem(position).desc);
+				
+				TextView time = (TextView) convertView.findViewById(R.id.badege_receive_time);
+				time.setText(getItem(position).date);
 			}
-			ImageView image = (ImageView) convertView.findViewById(R.id.badge_image);
-			int id = getItem(position).imageId;
-			image.setImageResource(getItem(position).imageId);//(R.drawable.events_cat_bicycle);
-			
-			TextView description = (TextView) convertView.findViewById(R.id.badge_description);
-			description.setText(getItem(position).desc);
-			
-			TextView time = (TextView) convertView.findViewById(R.id.badege_receive_time);
-			time.setText(getItem(position).date);
-
 			return convertView;
 		}
-	}
-	
-	private void requestDisallowParentInterceptTouchEvent(View __v, Boolean __disallowIntercept) {
-	    while (__v.getParent() != null && __v.getParent() instanceof View) {
-	        if (__v.getParent() instanceof ScrollView) {
-	            __v.getParent().requestDisallowInterceptTouchEvent(__disallowIntercept);
-	        }
-	        __v = (View) __v.getParent();
-	    }
 	}
 	
 	 public class SwipeTabAdapter extends PagerAdapter{
@@ -213,20 +255,23 @@ public class ProfileActivity extends BaseActivity{
                 	View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);
                 	ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
                 	if(position == 0){
-                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
+                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
                 	}else if(position == 1){
-//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
-                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
+                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
+//                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
                 	}else if(position == 2){
                 		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
+//                		postListView.getLayoutParams().height += 75;
                 	}
+                
 
                 	postListView.setOnTouchListener(new OnTouchListener() {
 						
 						@Override
 						public boolean onTouch(View v, MotionEvent event) {
-							
 							if(event.getAction() == MotionEvent.ACTION_MOVE){
+//								if(scrollv.getScrollY() < scrollv.getMaxScrollAmount())
+//									scrollv.smoothScrollTo(0, scrollv.getMaxScrollAmount());
 								scrollv.requestDisallowInterceptTouchEvent(true);
 							}
 							return false;

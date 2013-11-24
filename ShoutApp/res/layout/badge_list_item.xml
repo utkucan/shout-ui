@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/badge_list_item_layout"
     android:background="@drawable/app_bg_small"
     android:orientation="vertical"
     android:paddingBottom="2dp"
