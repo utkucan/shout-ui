@@ -166,8 +166,8 @@ public class MainActivity extends BaseActivity{
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-											      RelativeLayout.LayoutParams.WRAP_CONTENT,
-											      RelativeLayout.LayoutParams.WRAP_CONTENT);
+											      RelativeLayout.LayoutParams.FILL_PARENT,
+											      RelativeLayout.LayoutParams.FILL_PARENT);
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
         swipeLayout.setLayoutParams(lp);
         mainLayout.addView(swipe);

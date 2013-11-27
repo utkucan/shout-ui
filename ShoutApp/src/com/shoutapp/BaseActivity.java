@@ -5,10 +5,12 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class BaseActivity extends SlidingMenuBaseActivity{
@@ -33,9 +35,20 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent();
-		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
-		        startActivity(i);
+//				Intent i = new Intent();
+//		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
+//		        startActivity(i);
+				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+		        View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+													      RelativeLayout.LayoutParams.FILL_PARENT,
+													      RelativeLayout.LayoutParams.FILL_PARENT);
+//		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		        seekLayout.setLayoutParams(lp);
+		        mainLayout.addView(seek);
+		        
+		        
 			}
 		});
 		

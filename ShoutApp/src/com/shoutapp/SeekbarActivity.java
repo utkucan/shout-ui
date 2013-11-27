@@ -12,20 +12,22 @@ import android.widget.Toast;
 
 public class SeekbarActivity extends Activity {
 
-	private SeekBar volumeControl = null;
-
+	private SeekBar volumeControl,timeControl = null;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seekbar);
 
-		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
+		volumeControl = (SeekBar) findViewById(R.id.distance_bar);
 
 		volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged = 0;
 
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				progressChanged = progress;
+
+				progressChanged = seekBar.getProgress();
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -33,8 +35,43 @@ public class SeekbarActivity extends Activity {
 			}
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				Toast.makeText(SeekbarActivity.this,"seek bar progress:"+progressChanged, 
+				if(progressChanged == 0 )
+					Toast.makeText(SeekbarActivity.this, "Near Shouts will be shown!", 
 						Toast.LENGTH_SHORT).show();
+				else if( progressChanged == 1)
+					Toast.makeText(SeekbarActivity.this, "Shouts within "+ progressChanged +"km will be shown!", 
+						Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(SeekbarActivity.this, "Shouts within "+ progressChanged +"kms will be shown!", 
+							Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		
+		timeControl = (SeekBar) findViewById(R.id.clock_bar);
+
+		timeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			int progressChanged = 0;
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+				
+				progressChanged = seekBar.getProgress();
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				if(progressChanged == 0 )
+					Toast.makeText(SeekbarActivity.this, "Currently active Shouts will appear", 
+						Toast.LENGTH_SHORT).show();
+				else if( progressChanged == 1)
+					Toast.makeText(SeekbarActivity.this, "Shouts within "+ progressChanged +"hour will be shown!", 
+						Toast.LENGTH_SHORT).show();
+				else
+					Toast.makeText(SeekbarActivity.this, "Shouts within "+ progressChanged +"hours will be shown!", 
+							Toast.LENGTH_SHORT).show();
 			}
 		});
 
