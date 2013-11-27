@@ -29,12 +29,12 @@ public class Model {
 	
 	public static ArrayList<CommentItemObjet> getComments(){
 		ArrayList<CommentItemObjet> comment_list = new ArrayList<CommentItemObjet>();
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("asdasdas Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
-        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen"));
+        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
+        comment_list.add(new CommentItemObjet("asdasdas Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
+        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
+        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
+        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
+        comment_list.add(new CommentItemObjet("Az sabredersen,  menemen ve dünden kalma biraz makarna getirebilirim, evde ekmek var mı? :))","Kate Austen","15:03"));
         return comment_list;
 	}
 	

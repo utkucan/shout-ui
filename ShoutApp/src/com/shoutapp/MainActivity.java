@@ -133,9 +133,17 @@ public class MainActivity extends BaseActivity{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent i = new Intent();
-			        i.setClassName("com.shoutapp", "com.shoutapp.PostItemViewActivity");
-			        startActivity(i);
+					String title = (String) ((TextView) v.findViewById(R.id.post_title)).getText();
+					String category = (String) ((TextView) v.findViewById(R.id.category)).getText();
+					String time = (String) ((TextView) v.findViewById(R.id.time)).getText();
+					String distance = (String) ((TextView) v.findViewById(R.id.distance)).getText();
+					
+					Intent intent = new Intent(getBaseContext(), PostItemViewActivity.class);
+					intent.putExtra("title", title);
+					intent.putExtra("category", category);
+					intent.putExtra("time", time);
+					intent.putExtra("distance", distance);
+					startActivity(intent);
 				}
 			});
 			

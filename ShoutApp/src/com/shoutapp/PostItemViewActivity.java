@@ -59,6 +59,20 @@ public class PostItemViewActivity extends BaseActivity{
             }
         });
         
+        Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+		    String title = extras.getString("title");
+			String category = extras.getString("category");
+			String time = extras.getString("time");
+			String distance = extras.getString("distance");
+			
+			((TextView)findViewById(R.id.post_item_title)).setText(title);
+			((TextView)findViewById(R.id.post_item_category)).setText(category);
+			((TextView)findViewById(R.id.post_item_time)).setText(time);
+			((TextView)findViewById(R.id.post_item_distance)).setText(distance);
+			
+		}
+        
         ArrayList<CommentItemObjet> comment_list = Model.getComments();
 
         for(int i = 0; i< comment_list.size(); i++){
@@ -70,11 +84,16 @@ public class PostItemViewActivity extends BaseActivity{
 	
 	private void addCommentPreview(CommentItemObjet object){
 		View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);
+		
 		TextView comment = (TextView) comment_item.findViewById(R.id.comment_text);
 		comment.setText(object.comment);
 		
 		TextView owner = (TextView) comment_item.findViewById(R.id.comment_owner);
 		owner.setText(object.owner);
+		
+		TextView time = (TextView) comment_item.findViewById(R.id.comment_time);
+		time.setText(object.time);
+		
 		comment_list_lay.addView(comment_item);
 	}
 	

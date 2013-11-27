@@ -2,11 +2,13 @@ package com.shoutapp;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class BaseActivity extends SlidingMenuBaseActivity{
@@ -34,6 +36,20 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 				Intent i = new Intent();
 		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
 		        startActivity(i);
+			}
+		});
+		
+		ImageView logo = (ImageView)findViewById(R.id.titleLogo);
+		logo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(!v.getContext().getClass().equals(MainActivity.class)){
+					Intent intent = new Intent(getBaseContext(), MainActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+					startActivity(intent);
+				}
 			}
 		});
 	}
