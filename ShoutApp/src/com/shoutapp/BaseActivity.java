@@ -4,6 +4,13 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class BaseActivity extends SlidingMenuBaseActivity{
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
 		setSlidingActionBarEnabled(true);
 		setContentView(R.layout.main_frame);
 		
@@ -38,8 +43,20 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 //				Intent i = new Intent();
 //		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
 //		        startActivity(i);
+				
+//				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+//		        View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+//		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
+//				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//													      RelativeLayout.LayoutParams.FILL_PARENT,
+//													      RelativeLayout.LayoutParams.FILL_PARENT);
+////		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+//		        seekLayout.setLayoutParams(lp);
+//		        mainLayout.addView(seek);
+		        
 				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
-		        View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+				View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+				SeekbarActivity sa = new SeekbarActivity(seek);
 		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
 				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 													      RelativeLayout.LayoutParams.FILL_PARENT,
@@ -47,7 +64,6 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 //		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
 		        seekLayout.setLayoutParams(lp);
 		        mainLayout.addView(seek);
-		        
 		        
 			}
 		});
@@ -66,6 +82,7 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 			}
 		});
 	}
+	
 	
 	OnClickListener slidingMenuClickListener = new OnClickListener() {
 		
