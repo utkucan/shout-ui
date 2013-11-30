@@ -155,6 +155,7 @@ public class MainActivity extends BaseActivity{
         } else {
             Log.i("GCMDemo", "No valid Google Play Services APK found.");
         }*/
+
 		
 		super.onCreate(savedInstanceState);
 		cxt = this;

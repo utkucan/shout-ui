@@ -1,19 +1,36 @@
 package com.shoutapp;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
+import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.Person.Image;
 import com.shoutapp.MainActivity.PostPreviewAdapter;
 import com.shoutapp.MainActivity.SwipePagerAdapter;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -47,6 +64,8 @@ public class ProfileActivity extends BaseActivity{
 	ImageButton add_post_btn;
 	int scrollX = 0;
 	int scrollY = 0;
+//	ImageView profilePic;
+//	public PlusClient mPlusClient;
 //	private final int[] scrollstate = { 0,0,0};
 //	private final int[] topVisibleItems = { 0,0,0};
 //	private final ListView[] lvs = {null,null,null};
@@ -55,6 +74,7 @@ public class ProfileActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		cxt = this;
+//		mPlusClient = super.mPlusClient;
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
 		View profileView = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile, null);
@@ -142,8 +162,46 @@ public class ProfileActivity extends BaseActivity{
                 return true;
             }
         });
-
+        
+//        setOnGoogleConnectionStateChangeEvent(new OnGoogleConnectionStateChangeEventListener() {
+//			
+//			@Override
+//			public void onDisconnect() {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//			@Override
+//			public void onConnect() {
+//				// TODO Auto-generated method stub
+//				Person user = mPlusClient.getCurrentPerson();
+//				profilePic = (ImageView)findViewById(R.id.profile_pic);
+//		        Image photo = user.getImage();
+//		        profilePic.setImageBitmap(getImageBitmap(photo.getUrl()));
+////		        profilePic.setImageBitmap(getImageBitmap(mPlusClient.getCurrentPerson().getImage().getUrl()));
+//			}
+//		});
+//        
+        ((TextView)findViewById(R.id.userName)).setText(Model.userName);
+        ((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(getImageBitmap(Model.profile_pic_url));
 	}
+	
+	private Bitmap getImageBitmap(String url) {
+        Bitmap bm = null;
+        try {
+            URL aURL = new URL(url);
+            URLConnection conn = aURL.openConnection();
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+       } catch (IOException e) {
+           Log.e("get profile pic", "Error getting bitmap", e);
+       }
+       return bm;
+    }
 	
 	public class PostPreviewAdapter extends ArrayAdapter<PostPreviewItemObject> {
         
@@ -230,6 +288,43 @@ public class ProfileActivity extends BaseActivity{
 		}
 	}
 	
+	public class NatificationAdapter extends ArrayAdapter<NotificationItemObject>{
+		
+//		private ViewGroup lv;
+//		private boolean isSet = false;
+		
+		public NatificationAdapter(Context context, int textViewResourceId,ArrayList<NotificationItemObject> list) {
+			super(context, textViewResourceId,list);
+			list.add(new NotificationItemObject("", "", ""));
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			
+			if(getItem(position).notificationText == ""){	
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
+				convertView.setVisibility(View.INVISIBLE);
+			}else{
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.comment_item, null);
+				TextView comment = (TextView) convertView.findViewById(R.id.comment_text);
+				comment.setText("");
+				String ownerName = getItem(position).owner;
+				if(ownerName != ""){
+					comment.setText(Html.fromHtml("<font color='#f37f77'><b>" + ownerName + "</b></font>"));
+					comment.append(" ");
+				}
+				
+				comment.append(getItem(position).notificationText);
+				
+				TextView owner = (TextView) convertView.findViewById(R.id.comment_owner);
+				owner.setVisibility(View.GONE);
+				TextView time = (TextView) convertView.findViewById(R.id.comment_time);
+				time.setText(getItem(position).time);
+
+			}
+			return convertView;
+		}
+	}
+	
 	 public class SwipeTabAdapter extends PagerAdapter{
          
 		 private final String[] titles = { "Notification", "Posts", "Badges" };
@@ -255,7 +350,8 @@ public class ProfileActivity extends BaseActivity{
                 	View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);
                 	ListView postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
                 	if(position == 0){
-                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
+                		postListView.setAdapter(new NatificationAdapter(cxt, R.id.post_list_view, (ArrayList<NotificationItemObject>) Model.getNotifications().clone()));
+//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
                 	}else if(position == 1){
                 		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
 //                		postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));

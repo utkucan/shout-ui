@@ -2,8 +2,18 @@ package com.shoutapp;
 
 import java.util.ArrayList;
 
-public class Model {
+import android.os.Bundle;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.plus.PlusClient;
+
+public class Model {
+	
+	public static String userName;
+	public static String profile_pic_url;
+	
 	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
 	
 	public static ArrayList<BadgeObject> getBadge(){
@@ -25,6 +35,14 @@ public class Model {
 		badges.add(new BadgeObject(R.drawable.events_count_500, "23.11.2013", "hobarey"));
 		badges.add(new BadgeObject(R.drawable.events_count_king, "23.11.2013", "hobarey"));
 		return badges;
+	}
+	
+	public static ArrayList<NotificationItemObject> getNotifications(){
+		ArrayList<NotificationItemObject> comment_list = new ArrayList<NotificationItemObject>();
+        comment_list.add(new NotificationItemObject("Receive a new Badge","","15:03"));
+        comment_list.add(new NotificationItemObject("Post a new comment on your Shout ...","Kate Austen","15:03"));
+        comment_list.add(new NotificationItemObject("Someone rate your Shout ...","","15:03"));
+        return comment_list;
 	}
 	
 	public static ArrayList<CommentItemObjet> getComments(){
