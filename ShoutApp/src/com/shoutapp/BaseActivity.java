@@ -17,18 +17,32 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+=======
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+>>>>>>> 8079a7aaa50ad3d82151d362ebf189cf1d47c8e0
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class BaseActivity extends SlidingMenuBaseActivity{
+<<<<<<< HEAD
 //	public PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private ProgressDialog mConnectionProgressDialog;
@@ -40,6 +54,11 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 		super.onCreate(savedInstanceState);
 		base_activity = this;
 //		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities("http://schemas.google.com/AddActivity","http://schemas.google.com/ListenActivity").build();
+=======
+	@Override
+	public void onCreate(Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+>>>>>>> 8079a7aaa50ad3d82151d362ebf189cf1d47c8e0
 		setSlidingActionBarEnabled(true);
 		setContentView(R.layout.main_frame);
 		
@@ -56,9 +75,31 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent();
-		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
-		        startActivity(i);
+//				Intent i = new Intent();
+//		        i.setClassName("com.shoutapp", "com.shoutapp.SeekbarActivity");
+//		        startActivity(i);
+				
+//				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+//		        View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+//		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
+//				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+//													      RelativeLayout.LayoutParams.FILL_PARENT,
+//													      RelativeLayout.LayoutParams.FILL_PARENT);
+////		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+//		        seekLayout.setLayoutParams(lp);
+//		        mainLayout.addView(seek);
+		        
+				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+				View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+				SeekbarActivity sa = new SeekbarActivity(seek);
+		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+													      RelativeLayout.LayoutParams.FILL_PARENT,
+													      RelativeLayout.LayoutParams.FILL_PARENT);
+//		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		        seekLayout.setLayoutParams(lp);
+		        mainLayout.addView(seek);
+		        
 			}
 		});
 		
@@ -76,6 +117,7 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 			}
 		});
 	}
+	
 	
 	OnClickListener slidingMenuClickListener = new OnClickListener() {
 		

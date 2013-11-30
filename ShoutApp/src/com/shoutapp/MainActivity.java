@@ -1,7 +1,10 @@
 package com.shoutapp;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Activity;
@@ -167,8 +170,8 @@ public class MainActivity extends BaseActivity{
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-											      RelativeLayout.LayoutParams.WRAP_CONTENT,
-											      RelativeLayout.LayoutParams.WRAP_CONTENT);
+											      RelativeLayout.LayoutParams.FILL_PARENT,
+											      RelativeLayout.LayoutParams.FILL_PARENT);
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
         swipeLayout.setLayoutParams(lp);
         mainLayout.addView(swipe);
@@ -339,7 +342,7 @@ public class MainActivity extends BaseActivity{
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {}
-            return new PostPreviewItemObject("new item", "yemek", "05:30", "9 km");
+            return new PostPreviewItemObject("new item "+ new Random().nextInt(100), "yemek", new SimpleDateFormat("hh:mm").format( new Date()), new Random().nextInt(100)+" km");
         }
 
         @Override
