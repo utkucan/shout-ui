@@ -1,6 +1,7 @@
 package com.shoutapp;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Model {
 
@@ -46,8 +47,25 @@ public class Model {
 	private static void refreshPostPreviews(){
 		if(postPreviewItems == null)
 			postPreviewItems = new ArrayList<PostPreviewItemObject>();
+		int i = 1;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","05:00","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Art","23:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Party","23:00","5 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","22:00","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Game","21:10","4 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","21:00","7 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Art","20:00","13 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","19:00","12 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Game","18:09","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","18:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","17:30","1 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","17:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","16:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","15:00","9 km")); i++;
+		
+		
+		/*
 		postPreviewItems.add(new PostPreviewItemObject("Karným Aç", "Yemek","15:00","14 km"));
-		postPreviewItems.add(new PostPreviewItemObject("Karným Aç", "Yemek","15:00","14 km"));
 		postPreviewItems.add(new PostPreviewItemObject("Karným Aç2", "Yemek","15:30","4 km"));
 		postPreviewItems.add(new PostPreviewItemObject("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
 		postPreviewItems.add(new PostPreviewItemObject("Karným Aç2", "Yemek","15:30","4 km"));
@@ -65,6 +83,7 @@ public class Model {
 		postPreviewItems.add(new PostPreviewItemObject("Karným Aç2", "Yemek","15:30","4 km"));
 		postPreviewItems.add(new PostPreviewItemObject("Yarým saat içinde çýlgýn bir parti baþlýyor... Köpük makinesi lazým!!!", "Parti","15:00","14 km"));
 		postPreviewItems.add(new PostPreviewItemObject("Karným Aç2", "Yemek","15:30","4 km"));
+		*/
 	}
 	
 	public static ArrayList<PostPreviewItemObject> getPostPreviews(){

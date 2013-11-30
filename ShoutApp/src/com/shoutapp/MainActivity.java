@@ -1,7 +1,10 @@
 package com.shoutapp;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Activity;
@@ -338,7 +341,7 @@ public class MainActivity extends BaseActivity{
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {}
-            return new PostPreviewItemObject("new item", "yemek", "05:30", "9 km");
+            return new PostPreviewItemObject("new item "+ new Random().nextInt(100), "yemek", new SimpleDateFormat("hh:mm").format( new Date()), new Random().nextInt(100)+" km");
         }
 
         @Override
