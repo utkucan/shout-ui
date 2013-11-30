@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -54,10 +55,12 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 ////		        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
 //		        seekLayout.setLayoutParams(lp);
 //		        mainLayout.addView(seek);
+				
+				
 		        
 				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 				View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
-				SeekbarActivity sa = new SeekbarActivity(seek);
+				SeekbarActivity sa = new SeekbarActivity( seek);
 		        RelativeLayout seekLayout = (RelativeLayout)seek.findViewById(R.id.seek_layout);
 				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 													      RelativeLayout.LayoutParams.FILL_PARENT,
@@ -66,6 +69,18 @@ public class BaseActivity extends SlidingMenuBaseActivity{
 		        seekLayout.setLayoutParams(lp);
 		        mainLayout.addView(seek);
 		        
+		        Button filterDoneBtn = (Button) findViewById(R.id.filter_save_btn);
+				filterDoneBtn.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+						View seek = (View) findViewById(R.id.seek_layout);
+						mainLayout.removeView(seek);
+						
+					}
+				});
 			}
 		});
 		
