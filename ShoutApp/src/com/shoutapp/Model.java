@@ -40,9 +40,9 @@ public class Model {
 	
 	public static ArrayList<NotificationItemObject> getNotifications(){
 		ArrayList<NotificationItemObject> comment_list = new ArrayList<NotificationItemObject>();
-        comment_list.add(new NotificationItemObject("Receive a new Badge","","15:03"));
-        comment_list.add(new NotificationItemObject("Post a new comment on your Shout ...","Kate Austen","15:03"));
-        comment_list.add(new NotificationItemObject("Someone rate your Shout ...","","15:03"));
+//        comment_list.add(new NotificationItemObject("Receive a new Badge","","15:03"));
+//        comment_list.add(new NotificationItemObject("Post a new comment on your Shout ...","Kate Austen","15:03"));
+//        comment_list.add(new NotificationItemObject("Someone rate your Shout ...","","15:03"));
         return comment_list;
 	}
 	

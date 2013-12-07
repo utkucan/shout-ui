@@ -308,7 +308,7 @@ public class ProfileActivity extends BaseActivity{
 		
 		public NatificationAdapter(Context context, int textViewResourceId,ArrayList<NotificationItemObject> list) {
 			super(context, textViewResourceId,list);
-			list.add(new NotificationItemObject("", "", ""));
+			list.add(new NotificationItemObject("", "", "",0));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
