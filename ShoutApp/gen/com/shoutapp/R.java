@@ -566,16 +566,15 @@ containing a value of this type.
         public static final int user_icon=0x7f020079;
     }
     public static final class id {
-        public static final int CheckBox1=0x7f050018;
-        public static final int CheckBox4=0x7f05001b;
-        public static final int CheckBox6=0x7f05001c;
         public static final int action_settings=0x7f05009a;
+        public static final int activityCheckBox=0x7f05001b;
         public static final int addPostScrollView=0x7f050029;
         public static final int add_comment_btn=0x7f050060;
         public static final int add_comment_btn_holder=0x7f05005f;
         public static final int add_post_btn=0x7f050095;
         public static final int add_post_layout=0x7f05001f;
         public static final int add_post_view_bottom_bar=0x7f050020;
+        public static final int artCheckBox=0x7f05001c;
         public static final int asdas=0x7f050010;
         public static final int badege_receive_time=0x7f050038;
         public static final int badge_description=0x7f050037;
@@ -590,9 +589,6 @@ containing a value of this type.
         public static final int change_location=0x7f05002c;
         public static final int change_view_btn=0x7f050097;
         public static final int change_view_btn_holder=0x7f050096;
-        public static final int checkBox2=0x7f050019;
-        public static final int checkBox3=0x7f05001a;
-        public static final int checkBox5=0x7f05001d;
         public static final int clock=0x7f050076;
         public static final int clock_bar=0x7f050017;
         public static final int com_facebook_login_activity_progress_bar=0x7f05003b;
@@ -634,6 +630,7 @@ containing a value of this type.
         public static final int filterButtonHolder=0x7f050058;
         public static final int filter_save_btn=0x7f05001e;
         public static final int fullscreen=0x7f05000a;
+        public static final int gameCheckBox=0x7f05001a;
         public static final int gp_login=0x7f05000d;
         public static final int gp_login_btn=0x7f050052;
         public static final int header=0x7f050033;
@@ -652,7 +649,9 @@ containing a value of this type.
         public static final int name=0x7f050082;
         public static final int none=0x7f050003;
         public static final int normal=0x7f050001;
+        public static final int otherCheckBox=0x7f05001d;
         public static final int page_swiper=0x7f050093;
+        public static final int partyCheckBox=0x7f050019;
         public static final int picker_subtitle=0x7f050048;
         public static final int post_item_category=0x7f05006e;
         public static final int post_item_clock=0x7f050067;
@@ -710,6 +709,7 @@ containing a value of this type.
         public static final int slidingMenuButtonHolder=0x7f050056;
         public static final int slidingmenumain=0x7f050091;
         public static final int small=0x7f050000;
+        public static final int sportCheckBox=0x7f050018;
         public static final int swipe_layout=0x7f050092;
         public static final int terrain=0x7f050005;
         public static final int textView1=0x7f05007b;
