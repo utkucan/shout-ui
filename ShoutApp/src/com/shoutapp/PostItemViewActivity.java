@@ -14,6 +14,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -27,6 +28,9 @@ public class PostItemViewActivity extends BaseActivity{
 	ScrollView scrollv;
 	RelativeLayout mapLay;
 	boolean isMapLayHeightSet = false;
+	boolean isUserOwn = true;
+	ImageButton rateEditBtn = null;
+	RelativeLayout rateEditLayout = null; 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -79,8 +83,73 @@ public class PostItemViewActivity extends BaseActivity{
         	addCommentPreview(comment_list.get(i));
         }
         
-//        timerHandler.postDelayed(timerRunnable, 3000);
+        // duyurunun kime ait olduðu bilgisi alýnacak
+        // eðer duyurunun sahibi bensem, rate butonu yerine edit butonu çýkýcak
+        
+        rateEditBtn = (ImageButton)findViewById(R.id.rate_btn);
+        rateEditLayout = (RelativeLayout)findViewById(R.id.rate_btn_holder);
+        
+        if(isUserOwn){
+        	rateEditBtn.setBackgroundResource(R.drawable.ico_edit);
+        	rateEditBtn.setOnClickListener(editClickListener);
+        	rateEditLayout.setOnClickListener(editClickListener);
+        }else{
+        	rateEditBtn.setOnClickListener(rateClickListener);
+        	rateEditLayout.setOnClickListener(rateClickListener);
+        }
+        
 	}
+	
+	private OnClickListener editClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+			String title = (String) ((TextView)findViewById(R.id.post_item_title)).getText();
+			String category = (String) ((TextView)findViewById(R.id.post_item_category)).getText();
+			String time = (String) ((TextView)findViewById(R.id.post_item_time)).getText();
+			String description = (String) ((TextView)findViewById(R.id.post_item_description)).getText();
+			
+			Intent intent = new Intent(getBaseContext(), AddPostActivity.class);
+			intent.putExtra("title", title);
+			intent.putExtra("category", category);
+			intent.putExtra("time", time);
+			intent.putExtra("description", description);
+			startActivity(intent);
+			
+//			Intent i = new Intent();
+//	        i.setClassName("com.shoutapp", "com.shoutapp.AddPostActivity");
+//	        startActivity(i);
+		}
+	};
+	
+	private OnClickListener rateClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	private OnClickListener commentClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
+	private OnClickListener shareClickListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 	
 	private void addCommentPreview(CommentItemObjet object){
 		View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);

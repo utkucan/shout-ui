@@ -66,20 +66,20 @@ public class Model {
 		if(postPreviewItems == null)
 			postPreviewItems = new ArrayList<PostPreviewItemObject>();
 		int i = 1;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","05:00","14 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Art","23:00","9 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Party","23:00","5 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","22:00","14 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Game","21:10","4 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","21:00","7 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Art","20:00","13 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","19:00","12 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Game","18:09","14 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","18:00","9 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sport","17:30","1 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","17:00","9 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","16:00","9 km")); i++;
-		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Other","15:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","05:00","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Parti","23:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Oyun","23:00","5 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Etkinlik","22:00","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Duyuru","21:10","4 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Sanat","21:00","7 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","20:00","13 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","19:00","12 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","18:09","14 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","18:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","17:30","1 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","17:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","16:00","9 km")); i++;
+		postPreviewItems.add(new PostPreviewItemObject("Announcement "+i, "Spor","15:00","9 km")); i++;
 		
 		
 		/*

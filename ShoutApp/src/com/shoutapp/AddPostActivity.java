@@ -1,5 +1,7 @@
 package com.shoutapp;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,6 +38,7 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 
@@ -44,11 +47,12 @@ public class AddPostActivity extends BaseActivity {
 	EditText saat, duration,title, description;
 	Context appContext;
 	ScrollView scrollv;
-	RelativeLayout mapLay, save_btn_lay, cancel_btn_lay;
+	RelativeLayout mapLay, save_btn_lay, cancel_btn_lay,delete_btn_lay;
 	NoDefaultSpinner categoryPicker;
-	ImageButton save_btn,cancel_btn;
+	ImageButton save_btn,cancel_btn,delete_btn;
 	boolean isMapLayHeightSet = false;
 	boolean isActivityStarted = false;
+	boolean isEdit = false;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -75,6 +79,8 @@ public class AddPostActivity extends BaseActivity {
         description = (EditText)findViewById(R.id.description);
         cancel_btn_lay = (RelativeLayout)findViewById(R.id.cancel_btn_holder);
         cancel_btn = (ImageButton)findViewById(R.id.cancel_btn);
+        delete_btn_lay = (RelativeLayout)findViewById(R.id.delete_btn_holder);
+        delete_btn = (ImageButton)findViewById(R.id.delete_btn);
         
         saat.setInputType(InputType.TYPE_NULL);
         saat.setOnFocusChangeListener(focusChanged);
@@ -104,6 +110,31 @@ public class AddPostActivity extends BaseActivity {
         save_btn.setOnClickListener(onClicked);
         cancel_btn.setOnClickListener(onClicked);
         cancel_btn_lay.setOnClickListener(onClicked);
+        
+        Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+		    String t = extras.getString("title");
+			String category = extras.getString("category");
+			String time = extras.getString("time");
+			String d = extras.getString("description");
+			
+			title.setText(t);
+			saat.setText(time);
+			description.setText(d);	
+			ArrayList<String> categorys = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)));
+			int index = categorys.indexOf(category);
+			if(index>=0){
+				categoryPicker.setSelection(index);
+			}
+			isEdit = true;
+		}
+        
+        if(!isEdit){
+        	delete_btn_lay.setVisibility(View.GONE);
+        }else{
+        	delete_btn_lay.setOnClickListener(onClicked);
+        	delete_btn.setOnClickListener(onClicked);
+        }
 	}
 	
 	private OnClickListener onClicked = new OnClickListener() {
@@ -150,6 +181,9 @@ public class AddPostActivity extends BaseActivity {
 			}else if(v.equals(duration)){
 				openDurationDialog();
 			}else if(v.equals(cancel_btn_lay) || v.equals(cancel_btn)){
+				onBackPressed();
+			}else if(v.equals(delete_btn_lay) || v.equals(delete_btn)){
+				// delete post!
 				onBackPressed();
 			}
 		}

@@ -5,7 +5,7 @@
     <color name="rounded_container_bg">#ffffffff</color>
     <color name="rounded_container_border">#787878</color>
     <color name="light_gray_header_color">#F1655B</color>
-    <color name="profile_tab_hihglight_color">#80787878</color>
+    <color name="profile_tab_hihglight_color">#80f1655b</color>
     <color name="ShoutOrange">#F1655B</color>
 
 </resources>
