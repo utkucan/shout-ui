@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 import com.facebook.Request;
 import com.facebook.Response;
@@ -137,12 +138,39 @@ public class LoginActivity extends FragmentActivity{
 		public void onConnected(Bundle connectionHint) {
 			Person user = mPlusClient.getCurrentPerson();
 			if(user != null){
+				String id = user.getId();
+				Register r = new Register(0, id, new RespCallback() {
+					
+					@Override
+					public void callback_events(ArrayList<Event> Events) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void callback_ack() {
+						// TODO Auto-generated method stub
+						Log.d("callback_ack:",User.hash);
+						Intent intent = new Intent(getBaseContext(), MainActivity.class);
+//						intent.putExtra("loginType", "g");
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+						startActivity(intent);
+					}
+				});
+				r.execute();
+				
 				Model.userName = user.getDisplayName();
 				Model.profile_pic_url =user.getImage().getUrl();
-				Intent intent = new Intent(getBaseContext(), MainActivity.class);
-//				intent.putExtra("loginType", "g");
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-				startActivity(intent);
+				
+				Log.d("onconnected:",user.getId());
+//				String loc = user.getCurrentLocation();
+////				Log.d("location:",);
+//				Model.userName = user.getDisplayName();
+//				Model.profile_pic_url =user.getImage().getUrl();
+//				Intent intent = new Intent(getBaseContext(), MainActivity.class);
+////				intent.putExtra("loginType", "g");
+//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+//				startActivity(intent);
 				
 			}else{
 				mPlusClient.disconnect();
