@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.facebook.FacebookRequestError.Category;
-import com.facebook.Session.NewPermissionsRequest;
+
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
