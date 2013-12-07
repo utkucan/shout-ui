@@ -36,7 +36,6 @@ public class PostItemViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
-
 		View layout = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_item_preview, null);
 		RelativeLayout post_item_view_layout = (RelativeLayout)layout.findViewById(R.id.post_item_preview_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
@@ -45,11 +44,9 @@ public class PostItemViewActivity extends BaseActivity{
         lp.addRule(RelativeLayout.BELOW,R.id.topBar);
         post_item_view_layout.setLayoutParams(lp);
         mainLayout.addView(post_item_view_layout);
-        
         comment_list_lay = (LinearLayout)findViewById(R.id.comment_list_layout);
         scrollv = (ScrollView)findViewById(R.id.post_preview_scrollView);       
         mapLay = (RelativeLayout)findViewById(R.id.post_map);
-        
         ViewTreeObserver vto = scrollv.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
@@ -64,24 +61,43 @@ public class PostItemViewActivity extends BaseActivity{
         });
         
         Bundle extras = getIntent().getExtras();
-		if (extras != null) {
+		//if (extras != null) {
 		    String title = extras.getString("title");
 			String category = extras.getString("category");
 			String time = extras.getString("time");
 			String distance = extras.getString("distance");
+			int eventId = extras.getInt("eventId");
 			
 			((TextView)findViewById(R.id.post_item_title)).setText(title);
 			((TextView)findViewById(R.id.post_item_category)).setText(category);
 			((TextView)findViewById(R.id.post_item_time)).setText(time);
 			((TextView)findViewById(R.id.post_item_distance)).setText(distance);
 			
-		}
+		//}
         
-        ArrayList<CommentItemObjet> comment_list = Model.getComments();
-
-        for(int i = 0; i< comment_list.size(); i++){
-        	addCommentPreview(comment_list.get(i));
-        }
+		GetEventDetails ged = new GetEventDetails(User.hash,eventId,new RespCallback() {
+			
+			@Override
+			public void callback_events(ArrayList<Event> Events) {
+				// TODO Auto-generated method stub
+				for (Comment c : Events.get(0).comments) {
+					addCommentPreview(new CommentItemObjet(
+							  c.content+"",
+							  c.userName+"",
+							  c.userId+""));
+				}
+			}
+			
+			@Override
+			public void callback_ack() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		ged.execute();
+//        for(int i = 0; i< comment_list.size(); i++){
+//        	addCommentPreview(comment_list.get(i));
+//        }
         
         // duyurunun kime ait olduðu bilgisi alýnacak
         // eðer duyurunun sahibi bensem, rate butonu yerine edit butonu çýkýcak

@@ -24,6 +24,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -51,8 +54,11 @@ public class MainActivity extends BaseActivity{
 	Activity currentactivity;
 	ViewPager pager;
 	RefreshableListView postListView;
+
+	public static GPSTracker gpsObject;
+	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
+
 	private GoogleMap map;
-	
 	//	ArrayList<PostPreviewItemObject> items;
 	
 	
@@ -170,13 +176,16 @@ public class MainActivity extends BaseActivity{
             }
         } else {
             Log.i("GCMDemo", "No valid Google Play Services APK found.");
-        }*/
-
+        }
+        */
+		postPreviewItems = new ArrayList<PostPreviewItemObject>();
+		gpsObject = new GPSTracker(MainActivity.this);
 		
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
 //		items = Model.getPostPreviews();
+		
 		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
@@ -268,24 +277,30 @@ public class MainActivity extends BaseActivity{
 			TextView distance = (TextView) convertView.findViewById(R.id.distance);
 			distance.setText(getItem(position).distance);
 			
-			convertView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					String title = (String) ((TextView) v.findViewById(R.id.post_title)).getText();
-					String category = (String) ((TextView) v.findViewById(R.id.category)).getText();
-					String time = (String) ((TextView) v.findViewById(R.id.time)).getText();
-					String distance = (String) ((TextView) v.findViewById(R.id.distance)).getText();
-					
-					Intent intent = new Intent(getBaseContext(), PostItemViewActivity.class);
-					intent.putExtra("title", title);
-					intent.putExtra("category", category);
-					intent.putExtra("time", time);
-					intent.putExtra("distance", distance);
-					startActivity(intent);
-				}
-			});
+//			TextView eventid = (TextView) convertView.findViewById(R.id.eventId);
+//			eventid.setText(getItem(position).eventId);
+			
+//			convertView.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					
+//					String title = (String) ((TextView) v.findViewById(R.id.post_title)).getText();
+//					String category = (String) ((TextView) v.findViewById(R.id.category)).getText();
+//					String time = (String) ((TextView) v.findViewById(R.id.time)).getText();
+//					String distance = (String) ((TextView) v.findViewById(R.id.distance)).getText();
+//					int eventId = Integer.parseInt((String) ((TextView) v.findViewById(R.id.eventId)).getText());
+//					
+//					Intent intent = new Intent(getBaseContext(), PostItemViewActivity.class);
+//					intent.putExtra("title", title);
+//					intent.putExtra("category", category);
+//					intent.putExtra("time", time);
+//					intent.putExtra("distance", distance);
+//					intent.putExtra("eventId", eventId);
+//					startActivity(intent);
+//				}
+//			});
 			
 			return convertView;
 		}
@@ -353,15 +368,37 @@ public class MainActivity extends BaseActivity{
 
         @Override
         protected PostPreviewItemObject doInBackground(Void... params) {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {}
-            return new PostPreviewItemObject("new item "+ new Random().nextInt(100), "yemek", new SimpleDateFormat("hh:mm").format( new Date()), new Random().nextInt(100)+" km");
+        	SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
+    			
+    			@Override
+    			public void callback_events(ArrayList<Event> Events) {
+    				// TODO Auto-generated method stub
+    				postPreviewItems.clear();
+    				for (Event e : Events) {
+    					postPreviewItems.add(new PostPreviewItemObject(e.description + " " + e.title, e.category+"",
+    							new SimpleDateFormat("MM/dd/yyyy hh:mm").format(e.creationDate),distance(e.latitute,e.longtitute,gpsObject.latitude,gpsObject.longitude)+" km",e.id));
+    				}
+//    				postListView.completeRefreshing();
+//    				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+//    				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+    			}
+    			
+    			@Override
+    			public void callback_ack() {
+    				// TODO Auto-generated method stub
+    			}
+    		});
+        	r.execute();
+//            try {
+//                Thread.sleep(3000);
+//            } catch (InterruptedException e) {}
+            return null;//new PostPreviewItemObject("new item "+ new Random().nextInt(100), "yemek", new SimpleDateFormat("hh:mm").format( new Date()), new Random().nextInt(100)+" km",new Random().nextInt(100));
         }
 
         @Override
         protected void onPostExecute(PostPreviewItemObject result) {
-        	Model.addPostPreview(0,result);
+//        	Model.addPostPreview(0,result);
+//        	postPreviewItems.add(0, result);
 //        	Model.items.add(0, result);
             // This should be called after refreshing finished
         	postListView.completeRefreshing();
@@ -395,9 +432,34 @@ public class MainActivity extends BaseActivity{
 //                	ListView lv = null;
                 	if(position == 0){
                 		v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
-                		
                 		postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
-                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
+                		
+                		SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
+                			
+                			@Override
+                			public void callback_events(ArrayList<Event> Events) {
+                				// TODO Auto-generated method stub
+                				postPreviewItems.clear();
+                				for (Event e : Events) {
+                					postPreviewItems.add(new PostPreviewItemObject(e.description + " " + e.title, e.category+"",
+                							new SimpleDateFormat("MM/dd/yyyy hh:mm").format(e.creationDate),distance(e.latitute,e.longtitute,gpsObject.latitude,gpsObject.longitude)+" km",e.id));
+                					map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title));
+                				}
+//                				postListView.completeRefreshing();
+                				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+//                				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+                			}
+                			
+                			@Override
+                			public void callback_ack() {
+                				// TODO Auto-generated method stub
+                			}
+                		});
+                		r.execute();
+                		
+                		
+                		
+//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, Model.getPostPreviews()));
                 		postListView.setOnRefreshListener(new OnRefreshListener() {
 							
 							@Override
@@ -406,6 +468,24 @@ public class MainActivity extends BaseActivity{
 								new NewDataTask().execute();
 							}
 						});
+                		
+                		postListView.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> arg0,
+									View arg1, int position, long arg3) {
+								// TODO Auto-generated method stub
+								PostPreviewItemObject obj = (PostPreviewItemObject)arg0.getItemAtPosition(position+1);
+								Intent intent = new Intent(getBaseContext(), PostItemViewActivity.class);
+            					intent.putExtra("title", obj.title);
+            					intent.putExtra("category", obj.category);
+            					intent.putExtra("time", obj.time);
+            					intent.putExtra("distance", obj.distance);
+            					intent.putExtra("eventId", obj.eventId);
+            					startActivity(intent);
+							}
+						});
+
                 		collection.addView(v,position);
                 	}else{
 
@@ -415,13 +495,12 @@ public class MainActivity extends BaseActivity{
 //                		v= LayoutInflater.from(getBaseContext()).inflate(R.layout.post_map, null,false);
 
                 		
-                		final LatLng HAMBURG = new LatLng(53.558, 9.927);
-                		final LatLng KIEL = new LatLng(53.551, 9.993);
+                		final LatLng loc = new LatLng(gpsObject.latitude, gpsObject.longitude);
                 		map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
-                		Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG).title("Hamburg"));
-                		Marker kiel = map.addMarker(new MarkerOptions().position(KIEL).title("Kiel").snippet("Kiel is cool").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+                		map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
+                		//Marker kiel = map.addMarker(new MarkerOptions().position(KIEL).title("Kiel").snippet("Kiel is cool").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
 
-                		map.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
+                		map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
                 		map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
   
                 	}
@@ -490,5 +569,63 @@ public class MainActivity extends BaseActivity{
                 public void startUpdate(ViewGroup arg0) {}
         
     }
-
+    public static int distance(double lat1, double lon1, double lat2, double lon2) {
+	      double theta = lon1 - lon2;
+	      double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+	      dist = Math.acos(dist);
+	      dist = rad2deg(dist);
+	      dist = dist * 60 * 1.1515;
+	      //if (unit == "K") {
+	        dist = dist * 1.609344;
+	      //} else if (unit == "N") {
+	       // dist = dist * 0.8684;
+	       // }
+	      return (int)(dist);
+	    }
+	    private static double deg2rad(double deg) {
+	      return (deg * Math.PI / 180.0);
+	    }
+	    private static double rad2deg(double rad) {
+	      return (rad * 180.0 / Math.PI);
+	    }
+	    
+//	   public SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude, new RespCallback() {
+//			
+//			@Override
+//			public void callback_events(ArrayList<Event> Events) {
+//				// TODO Auto-generated method stub
+//				postPreviewItems.clear();
+//				for (Event e : Events) {
+//					postPreviewItems.add(new PostPreviewItemObject(e.description + " " + e.title, e.category+"",
+//							new SimpleDateFormat("MM/dd/yyyy hh:mm").format(e.creationDate),distance(e.latitute,e.longtitute,gpsObject.latitude,gpsObject.longitude)+" km",e.id));
+//				}
+//				
+////				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+//			}
+//			
+//			@Override
+//			public void callback_ack() {
+//				// TODO Auto-generated method stub
+//			}
+//		});
+	   
+//	   RespCallback callback = new RespCallback() {
+//			
+//			@Override
+//			public void callback_events(ArrayList<Event> Events) {
+//				// TODO Auto-generated method stub
+//				postPreviewItems.clear();
+//				for (Event e : Events) {
+//					postPreviewItems.add(new PostPreviewItemObject(e.description + " " + e.title, e.category+"",
+//							new SimpleDateFormat("MM/dd/yyyy hh:mm").format(e.creationDate),distance(e.latitute,e.longtitute,gpsObject.latitude,gpsObject.longitude)+" km",e.id));
+//				}
+////				postListView.completeRefreshing();
+////				postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, postPreviewItems));
+//			}
+//			
+//			@Override
+//			public void callback_ack() {
+//				// TODO Auto-generated method stub
+//			}
+//		};
 }

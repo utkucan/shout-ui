@@ -83,7 +83,8 @@ public class LoginActivity extends FragmentActivity{
 		@Override
 		public void onClick(View v) {
 			if(v.getId() == R.id.gp_login_btn /*&& !mPlusClient.isConnected() && mConnectionResult != null*/){
-				if(!mPlusClient.isConnected()){
+				
+				 if(!mPlusClient.isConnected()){
 					 if(mConnectionResult != null){
 						 try{
 								mConnectionResult.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
