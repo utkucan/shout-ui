@@ -16,6 +16,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -26,12 +27,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 
@@ -41,6 +51,8 @@ public class MainActivity extends BaseActivity{
 	Activity currentactivity;
 	ViewPager pager;
 	RefreshableListView postListView;
+	private GoogleMap map;
+	
 	//	ArrayList<PostPreviewItemObject> items;
 	
 	
@@ -148,7 +160,7 @@ public class MainActivity extends BaseActivity{
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
-		
+
 		/*if (checkPlayServices()) {
 		    gcm = GoogleCloudMessaging.getInstance(this);
 		    regid = getRegistrationId(context);
@@ -394,10 +406,26 @@ public class MainActivity extends BaseActivity{
 								new NewDataTask().execute();
 							}
 						});
+                		collection.addView(v,position);
                 	}else{
-                		v= LayoutInflater.from(getBaseContext()).inflate(R.layout.post_map, null);
+
+                		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                		v = inflater.inflate(R.layout.post_map, null,false);
+                		collection.addView(v,position);
+//                		v= LayoutInflater.from(getBaseContext()).inflate(R.layout.post_map, null,false);
+
+                		
+                		final LatLng HAMBURG = new LatLng(53.558, 9.927);
+                		final LatLng KIEL = new LatLng(53.551, 9.993);
+                		map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
+                		Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG).title("Hamburg"));
+                		Marker kiel = map.addMarker(new MarkerOptions().position(KIEL).title("Kiel").snippet("Kiel is cool").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher)));
+
+                		map.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
+                		map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+  
                 	}
-                    collection.addView(v,position);
+                    
                     return v;
                 }
 
