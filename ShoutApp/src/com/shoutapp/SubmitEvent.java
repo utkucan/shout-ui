@@ -26,11 +26,11 @@ public class SubmitEvent extends AsyncTask<Void, Void, Void> {
 	private double lat, lon;
 	String res ="";
 	RespCallback resCall;
-	int category, creator_id;
-	String title, description;
+	int category;
+	String title, description, creator_id;
 	Date creationdate, expiredate;
 
-	public SubmitEvent(String user, String title, String description, double lat, double lon, int category, int creator_id, Date creationDate, Date expiredDate, RespCallback resCall) {
+	public SubmitEvent(String user, String title, String description, double lat, double lon, int category, String creator_id, Date creationDate, Date expiredDate, RespCallback resCall) {
 		
 		this.lat = lat;
 		this.lon = lon;

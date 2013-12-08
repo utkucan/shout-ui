@@ -125,11 +125,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent" >
 
-	             <ImageView
+	             <!-- <ImageView
 	                 android:id="@+id/add_post_map"
 	                 android:layout_width="fill_parent"
 	                 android:layout_height="fill_parent"
-	                 android:background="@drawable/map2" />
+	                 android:background="@drawable/map2" /> -->
+	             <fragment
+					android:id="@+id/add_post_map"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:name = "com.google.android.gms.maps.MapFragment" />
 
 	             <Button
 	                 android:id="@+id/change_location"
@@ -146,7 +151,8 @@
 	                 android:paddingTop="13dp"
 	                 android:text="Konumu Değiştir"
 	                 android:textColor="#ffffff"
-	                 android:textSize="9sp" />
+	                 android:textSize="9sp"
+	                 android:visibility="gone" />
 
 	        </RelativeLayout>
 

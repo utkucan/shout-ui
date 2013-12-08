@@ -19,7 +19,7 @@ public class Model {
 	public static String userName;
 	public static String profile_pic_url;
 	
-	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
+//	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
 	private static ArrayList<CommentItemObjet> comment_list = null; 
 	
 	public static ArrayList<BadgeObject> getBadge(){
@@ -51,11 +51,11 @@ public class Model {
         return comment_list;
 	}
 	
-	
-	public static boolean add_post(String location,String category,String time,String duration, String title, String description){
-		
-		return true;
-	}
+//	
+//	public static boolean add_post(String location,String category,String time,String duration, String title, String description){
+//		
+//		return true;
+//	}
 //	
 //	private static void refreshPostPreviews(){
 //		if(postPreviewItems == null)

@@ -1,5 +1,6 @@
 package com.shoutapp;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.format.DateFormat;
@@ -40,6 +42,14 @@ import android.widget.Toast;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 
 public class AddPostActivity extends BaseActivity {
 
@@ -52,71 +62,78 @@ public class AddPostActivity extends BaseActivity {
 	boolean isMapLayHeightSet = false;
 	boolean isActivityStarted = false;
 	boolean isEdit = false;
+	private GoogleMap map;
+	private int difInMin,durInMin;
+//	private Date creationdate,exdate;
+	private Marker mrkr;
 	
+
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 		appContext = this;
-		
-		View add_post = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_post, null);
+
+		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View add_post = inflater.inflate(R.layout.add_post, null);
+		//		View add_post = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_post, null);
 		RelativeLayout addPostLayout = (RelativeLayout)add_post.findViewById(R.id.add_post_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-			      RelativeLayout.LayoutParams.WRAP_CONTENT,
-			      RelativeLayout.LayoutParams.WRAP_CONTENT);
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW,R.id.topBar);
 		addPostLayout.setLayoutParams(lp);
-        mainLayout.addView(add_post);
-        
-        saat = (EditText)findViewById(R.id.time);
-        duration = (EditText)findViewById(R.id.duration);
-        mapLay = (RelativeLayout)findViewById(R.id.mapLay);
-        scrollv = (ScrollView)findViewById(R.id.addPostScrollView);
-        save_btn_lay = (RelativeLayout)findViewById(R.id.save_btn_holder);
-        save_btn = (ImageButton)findViewById(R.id.save_btn);
-        categoryPicker = (NoDefaultSpinner)findViewById(R.id.categoryList);
-        title = (EditText)findViewById(R.id.header);
-        description = (EditText)findViewById(R.id.description);
-        cancel_btn_lay = (RelativeLayout)findViewById(R.id.cancel_btn_holder);
-        cancel_btn = (ImageButton)findViewById(R.id.cancel_btn);
-        delete_btn_lay = (RelativeLayout)findViewById(R.id.delete_btn_holder);
-        delete_btn = (ImageButton)findViewById(R.id.delete_btn);
-        
-        saat.setInputType(InputType.TYPE_NULL);
-        saat.setOnFocusChangeListener(focusChanged);
-        saat.setOnClickListener(onClicked);
-        
-        title.setOnFocusChangeListener(focusChanged);
-        description.setOnFocusChangeListener(focusChanged);
+		mainLayout.addView(add_post);
 
-        duration.setInputType(InputType.TYPE_NULL);
-        duration.setOnFocusChangeListener(focusChanged);
-        duration.setOnClickListener(onClicked);
-        
-        ViewTreeObserver vto = scrollv.getViewTreeObserver();
-        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            public boolean onPreDraw() {
-            	if(!isMapLayHeightSet){
-	            	int h = scrollv.getMeasuredHeight();
-	            	mapLay.getLayoutParams().height = (2*h)/5;
-	            	isMapLayHeightSet = true;
-	            	scrollv.scrollTo(0, 0);
-            	}
-                return true;
-            }
-        });
-        
-        save_btn_lay.setOnClickListener(onClicked);
-        save_btn.setOnClickListener(onClicked);
-        cancel_btn.setOnClickListener(onClicked);
-        cancel_btn_lay.setOnClickListener(onClicked);
-        
-        Bundle extras = getIntent().getExtras();
+		saat = (EditText)findViewById(R.id.time);
+		duration = (EditText)findViewById(R.id.duration);
+		mapLay = (RelativeLayout)findViewById(R.id.mapLay);
+		scrollv = (ScrollView)findViewById(R.id.addPostScrollView);
+		save_btn_lay = (RelativeLayout)findViewById(R.id.save_btn_holder);
+		save_btn = (ImageButton)findViewById(R.id.save_btn);
+		categoryPicker = (NoDefaultSpinner)findViewById(R.id.categoryList);
+		title = (EditText)findViewById(R.id.header);
+		description = (EditText)findViewById(R.id.description);
+		cancel_btn_lay = (RelativeLayout)findViewById(R.id.cancel_btn_holder);
+		cancel_btn = (ImageButton)findViewById(R.id.cancel_btn);
+		delete_btn_lay = (RelativeLayout)findViewById(R.id.delete_btn_holder);
+		delete_btn = (ImageButton)findViewById(R.id.delete_btn);
+
+		saat.setInputType(InputType.TYPE_NULL);
+		saat.setOnFocusChangeListener(focusChanged);
+		saat.setOnClickListener(onClicked);
+
+		title.setOnFocusChangeListener(focusChanged);
+		description.setOnFocusChangeListener(focusChanged);
+
+		duration.setInputType(InputType.TYPE_NULL);
+		duration.setOnFocusChangeListener(focusChanged);
+		duration.setOnClickListener(onClicked);
+
+		ViewTreeObserver vto = scrollv.getViewTreeObserver();
+		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+			public boolean onPreDraw() {
+				if(!isMapLayHeightSet){
+					int h = scrollv.getMeasuredHeight();
+					mapLay.getLayoutParams().height = (2*h)/5;
+					isMapLayHeightSet = true;
+					scrollv.scrollTo(0, 0);
+				}
+				return true;
+			}
+		});
+
+		save_btn_lay.setOnClickListener(onClicked);
+		save_btn.setOnClickListener(onClicked);
+		cancel_btn.setOnClickListener(onClicked);
+		cancel_btn_lay.setOnClickListener(onClicked);
+
+		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-		    String t = extras.getString("title");
+			String t = extras.getString("title");
 			String category = extras.getString("category");
 			String time = extras.getString("time");
 			String d = extras.getString("description");
-			
+
 			title.setText(t);
 			saat.setText(time);
 			description.setText(d);	
@@ -127,17 +144,23 @@ public class AddPostActivity extends BaseActivity {
 			}
 			isEdit = true;
 		}
-        
-        if(!isEdit){
-        	delete_btn_lay.setVisibility(View.GONE);
-        }else{
-        	delete_btn_lay.setOnClickListener(onClicked);
-        	delete_btn.setOnClickListener(onClicked);
-        }
+
+		if(!isEdit){
+			delete_btn_lay.setVisibility(View.GONE);
+		}else{
+			delete_btn_lay.setOnClickListener(onClicked);
+			delete_btn.setOnClickListener(onClicked);
+		}
+		MainActivity.gpsObject = new GPSTracker(AddPostActivity.this);
+		final LatLng loc = new LatLng(MainActivity.gpsObject.latitude, MainActivity.gpsObject.longitude);
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.add_post_map)).getMap();
+		mrkr = map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+		map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 	}
-	
+
 	private OnClickListener onClicked = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -156,25 +179,55 @@ public class AddPostActivity extends BaseActivity {
 					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				
+
 				String header = title.getText().toString();
 				if(header.equals("Title") || header.equals("")){
 					Toast.makeText(appContext, "Please specify the Title of post.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				
+
 				String desc = description.getText().toString();
 				if(desc.equals("Description") || desc.equals("")){
 					Toast.makeText(appContext, "Please specify the Description of post.", Toast.LENGTH_LONG).show();
 					return;
 				}			
 				String category = (String)categoryPicker.getSelectedItem();
-				if(!Model.add_post("",category, time, sure, header, desc)){
-					Toast.makeText(appContext, "Error!", Toast.LENGTH_LONG).show();
-				}else{
-					Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
-					onBackPressed();
-				}
+				
+				SubmitEvent se = new SubmitEvent(
+						User.username, 
+						header, desc, 
+						mrkr.getPosition().latitude, 
+						mrkr.getPosition().longitude, 
+						categoryPicker.getSelectedItemPosition(), 
+						User.hash, 
+						new Date(System.currentTimeMillis()+(difInMin*60*1000)), 
+						new Date(System.currentTimeMillis()+(difInMin*60*1000)+(durInMin*60*1000)), new RespCallback() {
+							
+							@Override
+							public void callback_events(ArrayList<Event> Events) {
+								// TODO Auto-generated method stub
+							}
+							
+							@Override
+							public void callback_ack() {
+								// TODO Auto-generated method stub
+								Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
+								onBackPressed();
+							}
+						});
+				
+				se.execute();
+				
+				
+				
+				
+				
+//				if(!Model.add_post("",category, time, sure, header, desc)){
+//					Toast.makeText(appContext, "Error!", Toast.LENGTH_LONG).show();
+//				}else{
+//					Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
+//					onBackPressed();
+//				}
 			}else if(v.equals(saat)){
 				openTimeDialog();
 			}else if(v.equals(duration)){
@@ -187,40 +240,40 @@ public class AddPostActivity extends BaseActivity {
 			}
 		}
 	};
-	
+
 	private OnFocusChangeListener focusChanged = new OnFocusChangeListener() {
-		
+
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			// TODO Auto-generated method stub
-//			if(isActivityStarted){
-				if(hasFocus){
-					if(v.equals(duration)){
-						openDurationDialog();
-					}
-					else if(v.equals(saat)){
-						openTimeDialog();
-					}
-					else if(v.equals(title) && title.getText().toString().equals("Title")){
-						title.setText("");
-					}
-					else if(v.equals(description) && description.getText().toString().equals("Description")){
-						description.setText("");
-					}
-				}else{
-					if(v.equals(title) && title.getText().toString().equals("")){
-						title.setText("Title");
-					}
-					else if(v.equals(description) && description.getText().toString().equals("")){
-						description.setText("Description");
-					}
+			//			if(isActivityStarted){
+			if(hasFocus){
+				if(v.equals(duration)){
+					openDurationDialog();
 				}
-//			}else{
-//				isActivityStarted =true;
-//			}
+				else if(v.equals(saat)){
+					openTimeDialog();
+				}
+				else if(v.equals(title) && title.getText().toString().equals("Title")){
+					title.setText("");
+				}
+				else if(v.equals(description) && description.getText().toString().equals("Description")){
+					description.setText("");
+				}
+			}else{
+				if(v.equals(title) && title.getText().toString().equals("")){
+					title.setText("Title");
+				}
+				else if(v.equals(description) && description.getText().toString().equals("")){
+					description.setText("Description");
+				}
+			}
+			//			}else{
+			//				isActivityStarted =true;
+			//			}
 		}
 	};
-	
+
 	private void openDurationDialog(){
 		String sure = duration.getText().toString();
 		int hour = 0;
@@ -230,9 +283,9 @@ public class AddPostActivity extends BaseActivity {
 			hour = Integer.parseInt(comp[0]);
 			min = Integer.parseInt(comp[1]);
 		}
-		
+
 		TimePickerDialog d = new RangeTimePickerDialog(appContext, new OnTimeSetListener() {
-			
+
 			@Override
 			public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
 				// TODO Auto-generated method stub
@@ -245,7 +298,7 @@ public class AddPostActivity extends BaseActivity {
 					sb.append("0");
 				sb.append(selectedMinute);
 				duration.setText(sb);
-				
+
 				StringBuilder text = new StringBuilder();
 				text.append("The duration is ");
 				int dur = selectedHour*60 + selectedMinute;
@@ -254,16 +307,17 @@ public class AddPostActivity extends BaseActivity {
 				}else{
 					text.append(dur + " minutes");
 				}
+				durInMin = dur;
 				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-				
+
 				((TextView)((LinearLayout)toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
 				toast.show();
 			}
 		},hour, min,true);
 		d.show();
 	}
-	
+
 	private void openTimeDialog(){
 		String time = saat.getText().toString();
 		int hour = 0;
@@ -278,10 +332,11 @@ public class AddPostActivity extends BaseActivity {
 			min = c.get(Calendar.MINUTE);
 		}
 		Dialog d = (Dialog)(new TimePickerDialog(appContext, new OnTimeSetListener() {
-			
+
 			@Override
 			public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
 				// TODO Auto-generated method stub
+				
 				StringBuilder sb = new StringBuilder();
 				if(selectedHour<10)
 					sb.append("0");
@@ -291,12 +346,13 @@ public class AddPostActivity extends BaseActivity {
 					sb.append("0");
 				sb.append(selectedMinute);
 				saat.setText(sb);
-				
+
 				Calendar c = Calendar.getInstance(); 
 				int diff = (selectedHour*60+selectedMinute) - (c.get(Calendar.HOUR_OF_DAY)*60 + c.get(Calendar.MINUTE)) ;
 				if(diff<=0){
 					diff += (24*60)-1;
 				}
+				difInMin = diff;
 				int hour = diff / 60;
 				int min = diff % 60;
 				StringBuilder text = new StringBuilder();
@@ -313,9 +369,10 @@ public class AddPostActivity extends BaseActivity {
 					else
 						text.append(min + " minutes");
 				}
+//				creationdate = new Date(System.currentTimeMillis()+(diff*60*1000));
 				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-				
+
 				((TextView)((LinearLayout)toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
 				toast.show();
 			}
@@ -335,11 +392,11 @@ public class AddPostActivity extends BaseActivity {
 			currentHour = hourOfDay;
 			currentMinute = minute;
 		}
-		
-//		public RangeTimePickerDialog(Context context,
-//				OnTimeSetListener callBack) {
-//			super(context, callBack, 0, 0, true);
-//		}
+
+		//		public RangeTimePickerDialog(Context context,
+		//				OnTimeSetListener callBack) {
+		//			super(context, callBack, 0, 0, true);
+		//		}
 
 		@Override
 		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {

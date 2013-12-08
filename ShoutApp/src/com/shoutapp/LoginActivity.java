@@ -29,105 +29,81 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LoginActivity extends FragmentActivity{
-	
+
 	private static final String TAG = "Login";
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private ProgressDialog mConnectionProgressDialog;
 	private Activity login_activity;
 	private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities("http://schemas.google.com/AddActivity","http://schemas.google.com/ListenActivity").build();
+		mPlusClient = 
+				new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener)
+		.setVisibleActivities("http://schemas.google.com/AddActivity","http://schemas.google.com/ListenActivity")
+		.build();
 		login_activity = this;
 		if(mPlusClient.isConnected()){
 			Intent intent = new Intent(getBaseContext(), MainActivity.class);
-//			intent.putExtra("loginType", "g");
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
 			startActivity(intent);
 		}
-		
 		setContentView(R.layout.login);
-		
 		SignInButton gp_login = (SignInButton)findViewById(R.id.gp_login_btn);
-        for (int i = 0; i < gp_login.getChildCount(); i++) {
-            View v = gp_login.getChildAt(i);
-
-            if (v instanceof TextView) {
-                TextView tv = (TextView) v;
-                tv.setText("Log in with Google");
-            }
-        }
-        
-        
-        ((SignInButton)findViewById(R.id.gp_login_btn)).setOnClickListener(gp_onClick);
-        
-        mConnectionProgressDialog = new ProgressDialog(this);
-        mConnectionProgressDialog.setMessage("Signing in...");
+		for (int i = 0; i < gp_login.getChildCount(); i++) {
+			View v = gp_login.getChildAt(i);
+			if (v instanceof TextView) {
+				TextView tv = (TextView) v;
+				tv.setText("Log in with Google");
+			}
+		}
+		((SignInButton)findViewById(R.id.gp_login_btn)).setOnClickListener(gp_onClick);
+		mConnectionProgressDialog = new ProgressDialog(this);
+		mConnectionProgressDialog.setMessage("Signing in...");
 	}
-	
+
 	protected void onStart(){
 		super.onStart();
-//		mPlusClient.connect();
 	}
-	
+
 	protected void onStop(){
 		super.onStop();
-//		mPlusClient.disconnect();
 	}
-	
+
 	private View.OnClickListener gp_onClick = new View.OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			if(v.getId() == R.id.gp_login_btn /*&& !mPlusClient.isConnected() && mConnectionResult != null*/){
-				
-				 if(!mPlusClient.isConnected()){
-					 if(mConnectionResult != null){
-						 try{
-								mConnectionResult.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
-							}catch(SendIntentException e){
-								mConnectionResult = null;
-								mPlusClient.connect();
-							}
-						 mConnectionProgressDialog.dismiss();
-					 }else{
-						 mPlusClient.connect();
-					 }
+			if(v.getId() == R.id.gp_login_btn){
+
+				if(!mPlusClient.isConnected()){
+					if(mConnectionResult != null){
+						try{
+							mConnectionResult.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
+						}catch(SendIntentException e){
+							mConnectionResult = null;
+							mPlusClient.connect();
+						}
+						mConnectionProgressDialog.dismiss();
+					}else{
+						mPlusClient.connect();
+					}
 				}else{
 					mPlusClient.disconnect();
 				}
-				
 			}
 		}
 	};
-	
-	
+
+
 	private ConnectionCallbacks gp_connectionCallback = new ConnectionCallbacks() {
-		
+
 		@Override
 		public void onDisconnected() {
 
 		}
-		
-//		private Bitmap getImageBitmap(String url) {
-//	        Bitmap bm = null;
-//	        try {
-//	            URL aURL = new URL(url);
-//	            URLConnection conn = aURL.openConnection();
-//	            conn.connect();
-//	            InputStream is = conn.getInputStream();
-//	            BufferedInputStream bis = new BufferedInputStream(is);
-//	            bm = BitmapFactory.decodeStream(bis);
-//	            bis.close();
-//	            is.close();
-//	       } catch (IOException e) {
-//	           Log.e(TAG, "Error getting bitmap", e);
-//	       }
-//	       return bm;
-//	    }
 		
 		@Override
 		public void onConnected(Bundle connectionHint) {
@@ -135,58 +111,43 @@ public class LoginActivity extends FragmentActivity{
 			if(user != null){
 				String id = user.getId();
 				Register r = new Register(0, id, new RespCallback() {
-					
+
 					@Override
-					public void callback_events(ArrayList<Event> Events) {
-						// TODO Auto-generated method stub
-						
-					}
-					
+					public void callback_events(ArrayList<Event> Events) {}
+
 					@Override
 					public void callback_ack() {
 						// TODO Auto-generated method stub
 						Log.d("callback_ack:",User.hash);
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
-//						intent.putExtra("loginType", "g");
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
 					}
 				});
 				r.execute();
-				
+
 				Model.userName = user.getDisplayName();
 				Model.profile_pic_url =user.getImage().getUrl();
-				
-				Log.d("onconnected:",user.getId());
-//				String loc = user.getCurrentLocation();
-////				Log.d("location:",);
-//				Model.userName = user.getDisplayName();
-//				Model.profile_pic_url =user.getImage().getUrl();
-//				Intent intent = new Intent(getBaseContext(), MainActivity.class);
-////				intent.putExtra("loginType", "g");
-//				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-//				startActivity(intent);
-				
 			}else{
 				mPlusClient.disconnect();
 			}
 		}
 	};
 	private OnConnectionFailedListener gp_OnConnectionFailedListener = new OnConnectionFailedListener() {
-		
+
 		@Override
 		public void onConnectionFailed(ConnectionResult result) {
 			if (mConnectionProgressDialog.isShowing()) {
-	               if (result.hasResolution()) {
-	                       try {
-	                               result.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
-	                       } catch (SendIntentException e) {
-	                    	  mPlusClient.connect();
-	                       }
-	               }
-	       }
+				if (result.hasResolution()) {
+					try {
+						result.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
+					} catch (SendIntentException e) {
+						mPlusClient.connect();
+					}
+				}
+			}
 			mConnectionResult = result;
 		}
 	};
-	
+
 }
