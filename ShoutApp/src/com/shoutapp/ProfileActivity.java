@@ -45,13 +45,14 @@ public class ProfileActivity extends BaseActivity{
 	ImageButton add_post_btn;
 	int scrollX = 0;
 	int scrollY = 0;
-	ListView postListView;
+	String UserId;
+	ListView postListView,notificationListView,badgeListView; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		cxt = this;
-		//		mPlusClient = super.mPlusClient;
+		
 		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
 
 		View profileView = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile, null);
@@ -62,6 +63,21 @@ public class ProfileActivity extends BaseActivity{
 		lp.addRule(RelativeLayout.BELOW,R.id.topBar);
 		profileLayout.setLayoutParams(lp);
 		mainLayout.addView(profileLayout);
+		
+		Bundle extras = getIntent().getExtras();
+		UserId=extras.getString("profileId");
+		(new GetProfile(new ProfileCallback() {
+			
+			@Override
+			public void callback_profilInfo(Profile profil) {
+				// TODO Auto-generated method stub
+				((TextView)findViewById(R.id.userName)).setText(profil.name);
+				getProfilePhoto.execute(profil.picURL);
+				((TextView)findViewById(R.id.location_name)).setText(profil.location);
+				((TextView)findViewById(R.id.profile_rating)).setText(profil.popularity+"");
+			}
+		}, UserId)).execute();
+		
 
 		add_post_btn = (ImageButton)findViewById(R.id.profile_add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
@@ -74,7 +90,7 @@ public class ProfileActivity extends BaseActivity{
 				startActivity(i);
 			}
 		});
-
+	
 		scrollv = (ScrollView)findViewById(R.id.scrollView1);
 		pager = (ViewPager)profileLayout.findViewById(R.id.profile_pager);
 
@@ -120,37 +136,40 @@ public class ProfileActivity extends BaseActivity{
 				return true;
 			}
 		});  
-		((TextView)findViewById(R.id.userName)).setText(Model.userName);
-		(new AsyncTask<Void, Void, Void>() {
-			
-			@Override
-			protected Void doInBackground(Void... params) {
-				if(Model.profile_pic_url != ""){
-					Bitmap bm = null;
-					try {
-						URL aURL = new URL(Model.profile_pic_url);
-						URLConnection conn = aURL.openConnection();
-						conn.connect();
-						InputStream is = conn.getInputStream();
-						BufferedInputStream bis = new BufferedInputStream(is);
-						bm = BitmapFactory.decodeStream(bis);
-						bis.close();
-						is.close();
-						((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bm);
-					} catch (Exception e) {
-						Log.e("get profile pic", "Error getting bitmap", e);
-					}
-				}
-				return null;
-			}
-		}).execute();
+		
+		
 	}
+	
+	private AsyncTask<String, Void, Void> getProfilePhoto = new AsyncTask<String, Void, Void>() {
+		
+		@Override
+		protected Void doInBackground(String... params) {
+			if(params.length>0){
+				String photoUrl = params[0];
+				Bitmap bm = null;
+				try {
+					URL aURL = new URL(photoUrl);
+					URLConnection conn = aURL.openConnection();
+					conn.connect();
+					InputStream is = conn.getInputStream();
+					BufferedInputStream bis = new BufferedInputStream(is);
+					bm = BitmapFactory.decodeStream(bis);
+					bis.close();
+					is.close();
+					((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bm);
+				} catch (Exception e) {
+					Log.e("get profile pic", "Error getting bitmap", e);
+				}
+			}
+			return null;
+		}
+	};
 
 	public class MyEventPreviewAdapter extends EventPreviewAdapter {
 
 		public MyEventPreviewAdapter(ListView listView,Context context, int textViewResourceId,ArrayList<Event> list) {
 			super(listView,context, textViewResourceId,list);
-			list.add(new Event("", 0, 0, 0, null, null,0, 0));
+			list.add(new Event("", 0, 0, 0, null, null,0, ""));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -230,22 +249,32 @@ public class ProfileActivity extends BaseActivity{
 
 	public class SwipeTabAdapter extends PagerAdapter{
 
-		private final String[] titles = { "Notification", "Posts", "Badges" };
-
+		private String[] titles;// = { "Notification", "Posts", "Badges" };
+		public SwipeTabAdapter(){
+			if(User.hash.equals(UserId))
+				titles = new String[] { "Notification", "Posts", "Badges" };
+			else
+				titles = new String[] { "Posts", "Badges" };
+		}
+		
 		@Override
 		public int getCount() {
-			return 3;
+			return titles.length;
 		}
 
 		@Override
 		public Object instantiateItem(ViewGroup collection, int position) {
 			View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);
-			postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
-			if(position == 0){
-				postListView.setAdapter(new NatificationAdapter(cxt, R.id.post_list_view, (ArrayList<NotificationItemObject>) Model.getNotifications().clone()));
+			ListView lv = null;
+			if(titles[position] == "Notification"){ //notifications
+				notificationListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
+				notificationListView.setAdapter(new NatificationAdapter(cxt, R.id.post_list_view, (ArrayList<NotificationItemObject>) Model.getNotifications().clone()));
+				lv = notificationListView;
 				//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
-			}else if(position == 1){
-				GetMyEvents gmy = new GetMyEvents(User.hash, new RespCallback() {
+			}else if(titles[position] == "Posts"){ // events
+				postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
+				lv = postListView;
+				GetMyEvents gmy = new GetMyEvents(UserId, new RespCallback() {
 
 					@Override
 					public void callback_events(ArrayList<Event> Events) {
@@ -256,10 +285,12 @@ public class ProfileActivity extends BaseActivity{
 					public void callback_ack() {}
 				});
 				gmy.execute();
-			}else if(position == 2){
-				postListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
+			}else if(titles[position] == "Badges"){ // badges
+				badgeListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
+				badgeListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
+				lv = badgeListView;
 			}
-			postListView.setOnTouchListener(new OnTouchListener() {
+			lv.setOnTouchListener(new OnTouchListener() {
 
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {

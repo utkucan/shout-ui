@@ -35,15 +35,17 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 				// TODO Auto-generated method stub
 				Event obj = (Event)arg0.getItemAtPosition(position+1);
 				Intent intent = new Intent(cxt, PostItemViewActivity.class);
-				intent.putExtra("title", obj.title);
-				intent.putExtra("category", categorys.get(obj.category));
-				intent.putExtra("time", obj.time);
-				intent.putExtra("distance", obj.distance(cxt)+" km");
 				intent.putExtra("eventId", obj.id);
-				intent.putExtra("lat", obj.latitute);
-				intent.putExtra("lon", obj.longtitute);
-				intent.putExtra("description", obj.description);
 				intent.putExtra("owner", obj.creator_id);
+				
+//				intent.putExtra("title", obj.title);
+//				intent.putExtra("category", categorys.get(obj.category));
+//				intent.putExtra("time", obj.time);
+//				intent.putExtra("distance", obj.distance(cxt)+" km");
+//				intent.putExtra("lat", obj.latitute);
+//				intent.putExtra("lon", obj.longtitute);
+//				intent.putExtra("description", obj.description);
+				
 				cxt.startActivity(intent);
 			}
 		});

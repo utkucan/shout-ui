@@ -67,10 +67,10 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 					nearByEventCount = Integer.parseInt(line);
 					Log.d("event count", ""+nearByEventCount);
 				}else{
-					int eventId=0, eventCreator_id=0, eventCategory=0;
+					int eventId=0, eventCategory=0;
 					double eventLongtitute=0, eventLatitute=0, eventRadius=0;
 					Date eventCreationDate = null, eventExpiredDate=null;
-					String eventTitle="";
+					String eventTitle="",eventCreator_id="";
 					Log.d("line", line);
 					StringTokenizer st = new StringTokenizer(line, ";");
 					int coloumnCounter = 0; 
@@ -91,7 +91,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 							eventCategory = Integer.parseInt(coloumnEntry);
 							Log.d("cat", ""+ eventCategory);
 						}else if(coloumnCounter == 4){
-							eventCreator_id = Integer.parseInt(coloumnEntry);
+							eventCreator_id = coloumnEntry;// Integer.parseInt(coloumnEntry);
 						}else if(coloumnCounter == 5){
 							eventTitle = coloumnEntry; 
 						}else if(coloumnCounter ==6){

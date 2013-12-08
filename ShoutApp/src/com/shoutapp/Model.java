@@ -20,7 +20,7 @@ public class Model {
 	public static String profile_pic_url;
 	
 //	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
-	private static ArrayList<CommentItemObjet> comment_list = null; 
+//	private static ArrayList<CommentItemObjet> comment_list = null; 
 	
 	public static ArrayList<BadgeObject> getBadge(){
 		ArrayList<BadgeObject> badges = new ArrayList<BadgeObject>();

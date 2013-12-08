@@ -268,9 +268,6 @@ public class AddPostActivity extends BaseActivity {
 					description.setText("Description");
 				}
 			}
-			//			}else{
-			//				isActivityStarted =true;
-			//			}
 		}
 	};
 
@@ -392,11 +389,6 @@ public class AddPostActivity extends BaseActivity {
 			currentHour = hourOfDay;
 			currentMinute = minute;
 		}
-
-		//		public RangeTimePickerDialog(Context context,
-		//				OnTimeSetListener callBack) {
-		//			super(context, callBack, 0, 0, true);
-		//		}
 
 		@Override
 		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {

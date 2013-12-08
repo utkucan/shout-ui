@@ -58,7 +58,8 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 			String line = "";
 			String newLine = System.getProperty("line.separator");
 			int lineCount = 1;
-			int eventCreator_id=0, eventCategory=0;
+			int eventCategory=0;
+			String eventCreator_id = "";
 			double eventLongtitute=0, eventLatitute=0, eventRadius=0;
 			Date eventCreationDate = null, eventExpiredDate=null;
 			String eventTitle="", desc = "";
@@ -73,7 +74,7 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 				}else if(lineCount ==3){
 					eventCategory = Integer.parseInt(line);
 				}else if(lineCount ==4){
-					eventCreator_id = Integer.parseInt(line);
+					eventCreator_id = line;// Integer.parseInt(line);
 				}else if(lineCount ==5){
 					eventTitle = line;
 				}else if(lineCount ==6){
@@ -90,14 +91,14 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 				}else if(lineCount == 9){
 					numberOfComments = Integer.parseInt(line);
 					for(int i = 0; i<numberOfComments; i++){
-						int userId = 0;
+						String userId = "";
 						String userName = ""; String content = "";
 						for(int j = 0; j<3; j++){
 							line = inBuffer.readLine();
 							if(j == 0){
 								userName = line;
 							}else if(j == 1){
-								userId = Integer.parseInt(line);
+								userId = line;//Integer.parseInt(line);
 							}else {
 								content = line;
 							}

@@ -24,10 +24,10 @@ public class GetProfile extends AsyncTask<Void, Void, Void> {
 
 	String res ="";
 	ProfileCallback resCall;
-	int userId;
+	String userId;
 	Profile p = null;
 
-	public GetProfile(ProfileCallback resCall, int userId ) {
+	public GetProfile(ProfileCallback resCall, String userId ) {
 		this.resCall = resCall;
 		this.userId = userId;
 	}

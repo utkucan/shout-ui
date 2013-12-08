@@ -10,15 +10,15 @@ import android.text.method.DateTimeKeyListener;
 
 public class Event {
 
-	int id, creator_id, category;
+	int id, category;
 	double longtitute, latitute, radius;
 	Date creationDate, expiredDate;
-	String title,description;
+	String title,description,creator_id;
 	ArrayList<Comment> comments;
 	String time;
 
 	public Event(String title, double longtitute, double latitute, double radius, Date creationDate, Date expiredDate,
-			int cat, int creator){
+			int cat, String creator){
 		this.title = title;
 		this.longtitute = longtitute;
 		this.latitute = latitute;
