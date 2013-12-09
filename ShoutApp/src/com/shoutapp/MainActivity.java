@@ -39,12 +39,14 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.MarkerOptionsCreator;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 
@@ -303,7 +305,8 @@ public class MainActivity extends BaseActivity{
 
 				@Override
 				public void callback_events(ArrayList<Event> Events) {
-					postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events));
+					postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
+					map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
 				}
 
 				@Override
@@ -341,10 +344,11 @@ public class MainActivity extends BaseActivity{
 					@Override
 					public void callback_events(ArrayList<Event> Events) {
 						// TODO Auto-generated method stub
-						for (Event e : Events) {
-							map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title));
-						}
-						postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events));
+//						for (Event e : Events) {
+//							map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title + ";"+e.category));
+//						}
+						postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
+						map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
 					}
 
 					@Override

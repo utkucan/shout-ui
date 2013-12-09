@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import com.google.android.gms.maps.model.Marker;
+
 import android.content.Context;
 import android.text.method.DateTimeKeyListener;
 
@@ -85,6 +87,10 @@ public class Event {
 	}
 	private double rad2deg(double rad) {
 		return (rad * 180.0 / Math.PI);
+	}
+	
+	public Marker getMarker(){
+		return null;
 	}
 
 }
