@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,45 +30,109 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 	ArrayList<String> categorys;
 	ListView rlv;
 	private GoogleMap map;
+	ArrayAdapter<Event> adapter;
 
 
 	public EventPreviewAdapter(ListView listView,Context context, int textViewResourceId,ArrayList<Event> list,GoogleMap map) {
 		super(context, textViewResourceId,list);
 		this.cxt = context;
+		adapter = this;
 		categorys = new ArrayList<String>(Arrays.asList(context.getResources().getStringArray(R.array.Categories)));
 		rlv = listView;
 		this.map = map;
 		if(map != null){
 			map.clear();
+			map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+				
+				@Override
+				public void onInfoWindowClick(Marker marker) {
+					// TODO Auto-generated method stub
+					String content = marker.getTitle();
+					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));
+					String[] items = content.split(";");
+					if(items.length>1){
+						int position = Integer.parseInt(items[1]);
+						Event obj = adapter.getItem(position);
+						Intent intent = new Intent(cxt, PostItemViewActivity.class);
+						intent.putExtra("eventId", obj.id);
+						intent.putExtra("owner", obj.creator_id);
+						cxt.startActivity(intent);
+					}
+				}
+			});
 			map.setInfoWindowAdapter(new InfoWindowAdapter() {
 
 				@Override
 				public View getInfoWindow(Marker marker) {
 					// TODO Auto-generated method stub
+					String content = marker.getTitle();
+					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));
+					String[] items = content.split(";");
+					if(items.length>1){
+
+						int position = Integer.parseInt(items[1]);
+						View convertView = adapter.getView(position, null, null);
+
+//						convertView.setOnClickListener(new OnClickListener() {
+//
+//							@Override
+//							public void onClick(View v) {
+//								// TODO Auto-generated method stub
+//								Event obj = adapter.getItem(rlv.getPositionForView(v)-1);
+//								Intent intent = new Intent(cxt, PostItemViewActivity.class);
+//								intent.putExtra("eventId", obj.id);
+//								intent.putExtra("owner", obj.creator_id);
+//								cxt.startActivity(intent);
+//							}
+//						});
+						return convertView;
+					}
 					return null;
 				}
 
 				@Override
 				public View getInfoContents(Marker marker) {
 					// TODO Auto-generated method stub
-					String content = marker.getTitle();
-					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));
-					String[] items = content.split(";");
-					if(items.length>1){
-						View convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
-						TextView title = (TextView) convertView.findViewById(R.id.post_title);
-						title.setText(items[0]);
 
-						TextView category = (TextView) convertView.findViewById(R.id.category);
-						category.setText(items[1]);
-
-						TextView time = (TextView) convertView.findViewById(R.id.time);
-						time.setText(items[2]);
-
-						TextView distance = (TextView) convertView.findViewById(R.id.distance);
-						distance.setText(items[3]);
-						return convertView;
-					}
+					//					String content = marker.getTitle();
+					//					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));
+					//					String[] items = content.split(";");
+					//					if(items.length>1){
+					//
+					//						int position = Integer.parseInt(marker.getTitle());
+					//						View convertView = adapter.getView(position, null, null);
+					//						
+					//						convertView.setOnClickListener(new OnClickListener() {
+					//
+					//							@Override
+					//							public void onClick(View v) {
+					//								// TODO Auto-generated method stub
+					//								Event obj = adapter.getItem(rlv.getPositionForView(v)-1);
+					//								Intent intent = new Intent(cxt, PostItemViewActivity.class);
+					//								intent.putExtra("eventId", obj.id);
+					//								intent.putExtra("owner", obj.creator_id);
+					//								cxt.startActivity(intent);
+					//							}
+					//						});
+					//
+					//						
+					//						
+					//						
+					//						
+					////						View convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
+					////						TextView title = (TextView) convertView.findViewById(R.id.post_title);
+					////						title.setText(items[0]);
+					////
+					////						TextView category = (TextView) convertView.findViewById(R.id.category);
+					////						category.setText(items[1]);
+					////
+					////						TextView time = (TextView) convertView.findViewById(R.id.time);
+					////						time.setText(items[2]);
+					////
+					////						TextView distance = (TextView) convertView.findViewById(R.id.distance);
+					////						distance.setText(items[3]);
+					//						return convertView;
+					//					}
 					return null;
 				}
 			});
@@ -117,8 +182,22 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			String distance = e.distance(cxt) + " km";
 			distanceView.setText(distance);
 			if(map != null){
-				map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title + ";"+category+";"+e.time+";"+distance));
+				map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title("id;"+position));//e.title + ";"+category+";"+e.time+";"+distance));
 			}
+
+			//			convertView.setOnClickListener(new OnClickListener() {
+			//				
+			//				@Override
+			//				public void onClick(View v) {
+			//					// TODO Auto-generated method stub
+			//					Event obj = adapter.getItem(rlv.getPositionForView(v)-1);
+			//					Intent intent = new Intent(cxt, PostItemViewActivity.class);
+			//					intent.putExtra("eventId", obj.id);
+			//					intent.putExtra("owner", obj.creator_id);
+			//					cxt.startActivity(intent);
+			//				}
+			//			});
+
 		}
 		return convertView;
 
