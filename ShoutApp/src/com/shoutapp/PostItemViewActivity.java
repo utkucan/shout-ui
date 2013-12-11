@@ -38,9 +38,9 @@ public class PostItemViewActivity extends BaseActivity{
 	//	ListView comments;
 	LinearLayout comment_list_lay;
 	ScrollView scrollv;
-	RelativeLayout mapLay,rateEditLayout = null;
+	RelativeLayout mapLay,rateEditLayout = null,shareBtnLayout = null;
 	boolean isMapLayHeightSet = false;
-	ImageButton rateEditBtn = null;
+	ImageButton rateEditBtn = null, shareBtn = null;
 	private GoogleMap map;
 	LatLng loc;
 	int eventId;
@@ -166,6 +166,11 @@ public class PostItemViewActivity extends BaseActivity{
 			}
 		});
 		
+		
+		shareBtn = (ImageButton)findViewById(R.id.share_btn);
+		shareBtnLayout = (RelativeLayout)findViewById(R.id.share_btn_holder);
+		shareBtn.setOnClickListener(shareClickListener);
+		shareBtnLayout.setOnClickListener(shareClickListener);
 	}
 
 	private OnClickListener deleteClickListener = new OnClickListener() {
@@ -202,7 +207,11 @@ public class PostItemViewActivity extends BaseActivity{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			sendIntent.putExtra(Intent.EXTRA_TEXT, "Someone share a shout with you bayb!");
+			sendIntent.setType("text/plain");
+			startActivity(Intent.createChooser(sendIntent, "Share Shout To"));
 		}
 	};
 

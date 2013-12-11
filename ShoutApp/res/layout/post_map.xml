@@ -11,4 +11,12 @@
           android:layout_height="match_parent"
           android:name = "com.google.android.gms.maps.MapFragment" />
 
+     <ImageButton
+          android:id="@+id/swipe_btn_map"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_centerVertical="true"
+          android:layout_marginLeft="-34dp"
+          android:background="@drawable/add_event_button" />
 </RelativeLayout>

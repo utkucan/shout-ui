@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-public class BaseActivity extends SlidingMenuBaseActivity{
+public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 	//	public PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private ProgressDialog mConnectionProgressDialog;
