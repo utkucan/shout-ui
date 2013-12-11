@@ -403,33 +403,33 @@ public class MainActivity extends BaseActivity{
 				map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 				map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-				ImageButton swipe_btn = (ImageButton)v.findViewById(R.id.swipe_btn_map);
-				swipe_btn.setOnTouchListener(new OnTouchListener() {
-					
-					@Override
-					public boolean onTouch(View v, MotionEvent event) {
-
-						if(event.getAction() == MotionEvent.ACTION_UP){
-							((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-//							return false;
-						}else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
-							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
-							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-							sm.clearAnimation();
-							sm.clearFocus();
+//				ImageButton swipe_btn = (ImageButton)v.findViewById(R.id.swipe_btn_map);
+//				swipe_btn.setOnTouchListener(new OnTouchListener() {
+//					
+//					@Override
+//					public boolean onTouch(View v, MotionEvent event) {
+//
+//						if(event.getAction() == MotionEvent.ACTION_UP){
+//							((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+////							return false;
+//						}else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
 //							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
 //							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 //							sm.clearAnimation();
 //							sm.clearFocus();
-//							MotionEventCompat me = new MotionEventCompat();
-//							event.setAction(MotionEvent.ACTION_UP);
-//							pager.dispatchTouchEvent(event);
-						}
-						
-						return false;
-					}
-				});
-				swipe_btn.bringToFront();
+////							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
+////							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+////							sm.clearAnimation();
+////							sm.clearFocus();
+////							MotionEventCompat me = new MotionEventCompat();
+////							event.setAction(MotionEvent.ACTION_UP);
+////							pager.dispatchTouchEvent(event);
+//						}
+//						
+//						return false;
+//					}
+//				});
+//				swipe_btn.bringToFront();
 //				swipe_btn_map
 			}
 			return v;
