@@ -26,12 +26,15 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PostItemViewActivity extends BaseActivity{
 
@@ -166,6 +169,26 @@ public class PostItemViewActivity extends BaseActivity{
 			}
 		});
 		
+		ImageButton addCommentBtn = (ImageButton)findViewById(R.id.add_comment_btn);
+		addCommentBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(v.getContext(), "tamaaaaam1", Toast.LENGTH_SHORT).show();
+				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+				RelativeLayout seekLayout = (RelativeLayout)comm.findViewById(R.id.commentAddLayout);
+
+				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+						RelativeLayout.LayoutParams.FILL_PARENT,
+						RelativeLayout.LayoutParams.FILL_PARENT);
+				seekLayout.setLayoutParams(lp);
+				mainLayout.addView(comm);						
+				Toast.makeText(v.getContext(), "tamaaaaam", Toast.LENGTH_SHORT).show();
+			}
+		});
+				
 	}
 
 	private OnClickListener deleteClickListener = new OnClickListener() {
@@ -189,11 +212,9 @@ public class PostItemViewActivity extends BaseActivity{
 	};
 
 	private OnClickListener commentClickListener = new OnClickListener() {
-
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-
+			
 		}
 	};
 

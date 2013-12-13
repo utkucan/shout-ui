@@ -149,7 +149,7 @@ public class SeekbarActivity extends Activity{
 		        .setSmallIcon(R.drawable.icon)
 		        .setContentTitle("Yeni etkinlik!")
 		        .setContentText("100 metre uzaðýnýzda tam size göre bir etkinlik var!");
-		// Creates an explicit intent for an Activity in your app
+/*		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(ctx, BaseActivity.class);
 
 		// The stack builder object will contain an artificial back stack for the
@@ -166,7 +166,9 @@ public class SeekbarActivity extends Activity{
 		            0,
 		            PendingIntent.FLAG_UPDATE_CURRENT
 		        );
-		mBuilder.setContentIntent(resultPendingIntent);
+		        mBuilder.setContentIntent(resultPendingIntent);
+		        */
+		
 		NotificationManager mNotificationManager =
 		    (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
