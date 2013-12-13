@@ -9,10 +9,10 @@ package com.shoutapp;
 
 public final class Manifest {
     public static final class permission {
-        public static final String C2D_MESSAGE="com.shoutapp.permission.C2D_MESSAGE";
+        public static final String C2D_MESSAGE="com.shoutapp.gcm.permission.C2D_MESSAGE";
         public static final String GET_ACCOUNTS="android.permission.GET_ACCOUNTS";
         public static final String INTERNET="android.permission.INTERNET";
-        public static final String MAPS_RECEIVE="com.example.permission.MAPS_RECEIVE";
+        public static final String MAPS_RECEIVE="com.shoutapp.permission.MAPS_RECEIVE";
         public static final String RECEIVE="com.google.android.c2dm.permission.RECEIVE";
         public static final String WAKE_LOCK="android.permission.WAKE_LOCK";
     }

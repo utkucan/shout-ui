@@ -17,12 +17,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
@@ -47,6 +54,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.MarkerOptionsCreator;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
 
 
@@ -72,7 +81,7 @@ public class MainActivity extends BaseActivity{
 	public void onCreate(Bundle savedInstanceState){
 		
 		gpsObject = new GPSTracker(MainActivity.this);
-
+//		setSlidingActionBarEnabled(false);
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
@@ -113,6 +122,42 @@ public class MainActivity extends BaseActivity{
 		ImageButton profile_view_btn = (ImageButton)findViewById(R.id.profile_btn);
 		profile_view_btn.setOnClickListener(profileClickListener);
 
+		pager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+			}
+		});
+		
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	        // do something on back.
+	    	if(pager.getCurrentItem()==1){
+	    		pager.setCurrentItem(0, true);
+				ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
+				btn.setBackgroundResource(R.drawable.map_icon);
+	    	}
+	        return true;
+	    }
+
+	    return super.onKeyDown(keyCode, event);
 	}
 
 	OnClickListener profileClickListener = new OnClickListener() {
@@ -220,9 +265,37 @@ public class MainActivity extends BaseActivity{
 
 				final LatLng loc = new LatLng(gpsObject.latitude, gpsObject.longitude);
 				map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
-				map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
+//				map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 				map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+//				ImageButton swipe_btn = (ImageButton)v.findViewById(R.id.swipe_btn_map);
+//				swipe_btn.setOnTouchListener(new OnTouchListener() {
+//					
+//					@Override
+//					public boolean onTouch(View v, MotionEvent event) {
+//
+//						if(event.getAction() == MotionEvent.ACTION_UP){
+//							((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+////							return false;
+//						}else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
+//							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
+//							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+//							sm.clearAnimation();
+//							sm.clearFocus();
+////							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
+////							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+////							sm.clearAnimation();
+////							sm.clearFocus();
+////							MotionEventCompat me = new MotionEventCompat();
+////							event.setAction(MotionEvent.ACTION_UP);
+////							pager.dispatchTouchEvent(event);
+//						}
+//						
+//						return false;
+//					}
+//				});
+//				swipe_btn.bringToFront();
+//				swipe_btn_map
 			}
 			return v;
 		}
