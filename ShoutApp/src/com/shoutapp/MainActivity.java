@@ -166,7 +166,7 @@ public class MainActivity extends BaseActivity{
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(cxt, ProfileActivity.class);
-			intent.putExtra("profileId", User.hash);			
+			intent.putExtra("profileId", User.user_id);			
 			cxt.startActivity(intent);
 		}
 	};

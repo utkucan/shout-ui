@@ -274,7 +274,9 @@ public class ProfileActivity extends BaseActivity{
 			}else if(titles[position] == "Posts"){ // events
 				postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				lv = postListView;
-				GetEvents gmy = new GetEvents(User.user_id, new RespCallback() {
+				Bundle extras = getIntent().getExtras();
+				UserId=extras.getString("profileId");
+				GetEvents gmy = new GetEvents(UserId, new RespCallback() {
 
 					@Override
 					public void callback_events(ArrayList<Event> Events) {
