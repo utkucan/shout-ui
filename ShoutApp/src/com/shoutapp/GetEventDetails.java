@@ -86,6 +86,7 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 				}else if(lineCount ==8){
 					desc = line;
 					e = new Event(eventTitle,eventLongtitute, eventLatitute, eventRadius,eventCreationDate, eventExpiredDate, eventCategory, eventCreator_id);
+					Log.d("EventID","event: "+ eId +" title: " +eventTitle);
 					e.setId(eId);
 					e.setDesc(desc);
 				}else if(lineCount == 9){

@@ -190,6 +190,7 @@ public class MainActivity extends BaseActivity{
 
 		
 	// serverdan gelenler bu kodun içinde listeye eklenecek, ona göre modifiye et
+	/*
 	private class NewDataTask extends AsyncTask<Void, Void, Event> {
 
 		@Override
@@ -217,7 +218,7 @@ public class MainActivity extends BaseActivity{
 			super.onPostExecute(result);
 		}
 	}
-
+	 */
 	public class SwipePagerAdapter extends PagerAdapter{
 
 		@Override
@@ -241,7 +242,8 @@ public class MainActivity extends BaseActivity{
 //							map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title + ";"+e.category));
 //						}
 						postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
-						map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
+						map.setMyLocationEnabled(true);
+					//map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
 					}
 
 					@Override
@@ -252,7 +254,23 @@ public class MainActivity extends BaseActivity{
 					@Override
 					public void onRefresh(RefreshableListView listView) {
 						// TODO Auto-generated method stub
-						new NewDataTask().execute();
+						//new NewDataTask().execute();
+						SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
+
+							@Override
+							public void callback_events(ArrayList<Event> Events) {
+								postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
+								map.setMyLocationEnabled(true);
+//								map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
+								postListView.completeRefreshing();
+							}
+
+							@Override
+							public void callback_ack() {
+								// TODO Auto-generated method stub
+							}
+						});
+						r.execute();
 					}
 				});
 				collection.addView(v,position);

@@ -64,7 +64,7 @@ public class AddComment extends AsyncTask<Void, Void, Void> {
 				stringBuffer.append(line + newLine);
 				Log.d("sadasda", line);
 			}
-			
+
 
 
 

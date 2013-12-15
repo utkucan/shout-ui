@@ -16,8 +16,10 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,6 +121,7 @@ public class PostItemViewActivity extends BaseActivity{
 					owner_view.setText(e.creator_id);
 					
 					for (Comment c : Events.get(0).comments) {
+						Log.d("RetrieveComment",c.content + " " + c.userId);
 						addCommentPreview(c);
 					}
 					
@@ -175,21 +178,48 @@ public class PostItemViewActivity extends BaseActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(v.getContext(), "tamaaaaam1", Toast.LENGTH_SHORT).show();
-				RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+				if(findViewById(R.id.add_comment_layout).isShown()){
+					return;				
+				}
+				LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+				ScrollView sv = (ScrollView) findViewById(R.id.post_preview_scrollView);
+				sv.fullScroll(View.FOCUS_DOWN);
+				ln.setVisibility(View.VISIBLE);
 				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
-				RelativeLayout seekLayout = (RelativeLayout)comm.findViewById(R.id.commentAddLayout);
+				ln.addView(comm);
+				
+				Button submitCommentBtn = 	 (Button) findViewById(R.id.submitCommentBtn);
+				submitCommentBtn.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
+						Log.d("SubmitComment","submittin comment for event: "+ eventId +" username: " + User.username);
+						new AddComment(new Comment("999",User.username, textBox.getText().toString()),eventId,new RespCallback() {
 
-				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-						RelativeLayout.LayoutParams.FILL_PARENT,
-						RelativeLayout.LayoutParams.FILL_PARENT);
-				seekLayout.setLayoutParams(lp);
-				mainLayout.addView(comm);						
-				Toast.makeText(v.getContext(), "tamaaaaam", Toast.LENGTH_SHORT).show();
+							@Override
+							public void callback_events(ArrayList<Event> Events) {
+								
+							}
+
+							@Override
+							public void callback_ack() {
+								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+								View remove = (View)ln.findViewById(R.layout.add_comment_xml);
+								//View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+								ln.removeAllViews();
+								ln.setVisibility(View.GONE);
+							}
+						}).execute();
+						
+						
+					}
+					
+				});
+
 			}
 		});
-				
-
+		
 		
 		shareBtn = (ImageButton)findViewById(R.id.share_btn);
 		shareBtnLayout = (RelativeLayout)findViewById(R.id.share_btn_holder);
