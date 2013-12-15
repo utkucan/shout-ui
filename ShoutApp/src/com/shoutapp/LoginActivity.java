@@ -218,8 +218,8 @@ public class LoginActivity extends FragmentActivity{
 		super.onStop();
 	}
 	protected void onResume() {
-		super.onResume();
-		
+		super.onResume(); 
+		 
 //		registerInBackground();
 	}
 	private View.OnClickListener gp_onClick = new View.OnClickListener() {
@@ -257,30 +257,13 @@ public class LoginActivity extends FragmentActivity{
 
 		@Override
 		public void onConnected(Bundle connectionHint) {
-			Person user = mPlusClient.getCurrentPerson();
-			if(user != null){
-				String id = user.getId();
-				Register r = new Register(0, id, new RespCallback() {
-
-					@Override
-					public void callback_events(ArrayList<Event> Events) {}
-
-					@Override
-					public void callback_ack() {
-						// TODO Auto-generated method stub
-						Log.d("callback_ack:",User.hash);
-						Intent intent = new Intent(getBaseContext(), MainActivity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-					}
-				});
-				r.execute();
-
-				Model.userName = user.getDisplayName();
-				Model.profile_pic_url =user.getImage().getUrl();
-			}else{
-				mPlusClient.disconnect();
-			}
+			Log.d("connected","connected");
+			checkPlayServices();
+			//if(getRegistrationId(LoginActivity.this).equals("")){
+				registerInBackground();
+			//}		
+			
+			
 		}
 	};
 	private OnConnectionFailedListener gp_OnConnectionFailedListener = new OnConnectionFailedListener() {
@@ -293,7 +276,7 @@ public class LoginActivity extends FragmentActivity{
 						result.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
 					} catch (SendIntentException e) {
 						mPlusClient.connect();
-					}
+					} 
 				}
 			}
 			mConnectionResult = result;
@@ -350,6 +333,31 @@ public class LoginActivity extends FragmentActivity{
 			// Your implementation here.
 
 			// register olan makinanýn kodu neymiþ onu bi görek
+			Person user = mPlusClient.getCurrentPerson();
+			if(user != null){
+				String id = user.getId();
+				Log.d("reg_id", "msg"+ regid);
+				Register r = new Register(0, id, regid, new RespCallback() {
+
+					@Override
+					public void callback_events(ArrayList<Event> Events) {}
+
+					@Override
+					public void callback_ack() {
+						// TODO Auto-generated method stub
+						Log.d("callback_ack:",User.hash);
+						Intent intent = new Intent(getBaseContext(), MainActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+					}
+				});
+				r.execute();
+
+				Model.userName = user.getDisplayName();
+				Model.profile_pic_url =user.getImage().getUrl();
+			}else{
+				mPlusClient.disconnect();
+			}
 
 
 		}

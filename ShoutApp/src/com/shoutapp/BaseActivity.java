@@ -126,10 +126,13 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 			sb.append("5;");
 		if(((CheckBox) findViewById(R.id.otherCheckBox)).isChecked())
 			sb.append("6;");
-		
+
 		String prefStr = sb.toString();
-		String last = prefStr.substring(0,prefStr.lastIndexOf(';'));
+		String last ="";
+		if(prefStr.length()!=0){
+			last = prefStr.substring(0,prefStr.lastIndexOf(';'));
 			Log.d("TRIM", sb.toString() +" -> "+ last);	
+		}
 		editor.commit();
 		(new SubmitReferences(last,
 				((SeekBar) findViewById(R.id.distance_bar)).getProgress(),
@@ -143,7 +146,7 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 
 			@Override
 			public void callback_ack() {
-				
+
 			}
 		})).execute();
 	}

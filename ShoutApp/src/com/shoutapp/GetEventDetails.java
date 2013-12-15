@@ -63,11 +63,12 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 			String eventCreator_id = "";
 			double eventLongtitute=0, eventLatitute=0, eventRadius=0;
 			Date eventCreationDate = null, eventExpiredDate=null;
+			String creatorName = "";
 			String eventTitle="", desc = "";
 			int numberOfComments = 0;
 			Event e = null;
 			while ((line = inBuffer.readLine()) != null) {
-				
+
 				if(lineCount == 1){
 					eventLatitute = Double.parseDouble(line);
 				}else if(lineCount ==2){
@@ -75,37 +76,44 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 				}else if(lineCount ==3){
 					eventCategory = Integer.parseInt(line);
 				}else if(lineCount ==4){
-					eventCreator_id = line;// Integer.parseInt(line);
+					creatorName = line;// Integer.parseInt(line);
 				}else if(lineCount ==5){
-					eventTitle = line;
+					eventCreator_id = line;// Integer.parseInt(line);
 				}else if(lineCount ==6){
+					eventTitle = line;
+				}else if(lineCount ==7){
 					//TODO: creationDate
 					eventCreationDate = new Date(Long.parseLong(line));
-				}else if(lineCount == 7){
+				}else if(lineCount == 8){
 					//TODO: expiredDate
 					eventExpiredDate = new Date(Long.parseLong(line)); 
-				}else if(lineCount ==8){
+				}else if(lineCount ==9){
 					desc = line;
 					e = new Event(eventTitle,eventLongtitute, eventLatitute, eventRadius,eventCreationDate, eventExpiredDate, eventCategory, eventCreator_id);
 					Log.d("EventID","event: "+ eId +" title: " +eventTitle);
 					e.setId(eId);
 					e.setDesc(desc);
-				}else if(lineCount == 9){
+				}else if(lineCount == 10){
 					numberOfComments = Integer.parseInt(line);
 					for(int i = 0; i<numberOfComments; i++){
 						String userId = "";
 						String userName = ""; String content = "";
-						for(int j = 0; j<3; j++){
+						Date commentDate = null;
+						for(int j = 0; j<4; j++){
 							line = inBuffer.readLine();
 							if(j == 0){
 								userName = line;
 							}else if(j == 1){
 								userId = line;//Integer.parseInt(line);
-							}else {
+							}else if(j == 2){
+								commentDate = new Date(Long.parseLong(line)); ;//Integer.parseInt(line);
+							}else{
 								content = line;
 							}
 						}
-						e.addComment(new Comment(userId,userName,content)); 
+						Comment c = new Comment(userId,userName,content);
+						c.creationTime = commentDate;
+						e.addComment(c); 
 					}
 				}   
 				lineCount++;

@@ -21,13 +21,13 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class GetMyEvents extends AsyncTask<Void, Void, Void> {
+public class GetEvents extends AsyncTask<Void, Void, Void> {
 	private String user;
 
 	String res ="";
 	RespCallback resCall;
 	ArrayList<Event> myEvents = new ArrayList<Event>();
-	public GetMyEvents(String user, RespCallback resCall) {
+	public GetEvents(String user, RespCallback resCall) {
 		this.user = user; 
 		this.resCall = resCall;
 	}
@@ -35,10 +35,10 @@ public class GetMyEvents extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		HttpClient httpClient = new DefaultHttpClient();	
-		HttpPost httpPost = new HttpPost("http://shoutaround.herokuapp.com/getMyEvents/");
+		HttpPost httpPost = new HttpPost("http://shoutaround.herokuapp.com/getEvents/");
 		// Building post parameters, key and value pair
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-		nameValuePair.add(new BasicNameValuePair("hash", "" + User.hash ));
+		nameValuePair.add(new BasicNameValuePair("user_id", "" + user ));
 		// Url Encoding the POST parameters
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));

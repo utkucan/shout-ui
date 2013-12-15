@@ -274,7 +274,7 @@ public class ProfileActivity extends BaseActivity{
 			}else if(titles[position] == "Posts"){ // events
 				postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				lv = postListView;
-				GetMyEvents gmy = new GetMyEvents(UserId, new RespCallback() {
+				GetEvents gmy = new GetEvents(User.user_id, new RespCallback() {
 
 					@Override
 					public void callback_events(ArrayList<Event> Events) {
@@ -283,8 +283,8 @@ public class ProfileActivity extends BaseActivity{
 
 					@Override
 					public void callback_ack() {}
-				});
-				gmy.execute();
+				}); 
+				gmy.execute(); 
 			}else if(titles[position] == "Badges"){ // badges
 				badgeListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				badgeListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));

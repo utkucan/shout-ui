@@ -21,14 +21,15 @@ import android.util.Log;
 
 public class Register extends AsyncTask<Void, Void, Void> {
 
-	String res ="",id;
+	String res ="",id, device_id;
 	RespCallback resCall;
 	int registrationType;
 
-	public Register(int rType, String id, RespCallback resCall){
+	public Register(int rType, String id, String device_id, RespCallback resCall){
 		this.registrationType = rType;
 		this.id = id;
 		this.resCall = resCall;
+		this.device_id = device_id;
 	}
 
 	@Override
@@ -36,16 +37,17 @@ public class Register extends AsyncTask<Void, Void, Void> {
 		HttpClient httpClient = new DefaultHttpClient();	
 		HttpPost httpPost = new HttpPost("http://shoutaround.herokuapp.com/register/");
 		// Building post parameters, key and value pair
-		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
+		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
 		nameValuePair.add(new BasicNameValuePair("registrationType", "" + registrationType ));
 		nameValuePair.add(new BasicNameValuePair("id", "" + id));
+		nameValuePair.add(new BasicNameValuePair("device_id", "" + device_id));
 		nameValuePair.add(new BasicNameValuePair("hash", "" + User.hash ));
 
 		// Url Encoding the POST parameters
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 		}
-		catch (UnsupportedEncodingException e) {
+		catch (UnsupportedEncodingException e) { 
 			// writing error to Log
 			e.printStackTrace();
 		}
@@ -61,7 +63,11 @@ public class Register extends AsyncTask<Void, Void, Void> {
 			while ((line = inBuffer.readLine()) != null) {
 				stringBuffer.append(line + newLine);
 				Log.d("sadasda", line);
-				User.hash = line;
+				if(lineCount==0)
+					User.hash = line;
+				else 
+					User.user_id = line;
+				lineCount ++;
 			}
 			
 

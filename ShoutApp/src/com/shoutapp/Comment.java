@@ -7,7 +7,7 @@ public class Comment {
 	String content;
 	String userName;
 	String userId;
-	private Date creationTime;
+	Date creationTime;
 	public Comment(String id, String userName, String content/*,Date time*/){
 		this.content = content;
 		this.userName =userName;
