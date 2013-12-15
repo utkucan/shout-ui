@@ -125,8 +125,10 @@ public class PostItemViewActivity extends BaseActivity{
 						addCommentPreview(c);
 					}
 					
-					map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
+					map.addMarker(new MarkerOptions().position(loc).title(e.title));
+					map.setMyLocationEnabled(true);
 					map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+					
 					map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 				}
 				else{
@@ -195,7 +197,7 @@ public class PostItemViewActivity extends BaseActivity{
 					public void onClick(View v) {
 						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
 						Log.d("SubmitComment","submittin comment for event: "+ eventId +" username: " + User.username);
-						new AddComment(new Comment("999",User.username, textBox.getText().toString()),eventId,new RespCallback() {
+						new AddComment(new Comment(User.hash,User.username, textBox.getText().toString()),eventId,new RespCallback() {
 
 							@Override
 							public void callback_events(ArrayList<Event> Events) {

@@ -41,6 +41,7 @@ public class GetEventDetails extends AsyncTask<Void, Void, Void> {
 		// Building post parameters, key and value pair
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
 		nameValuePair.add(new BasicNameValuePair("eventId", "" + eId ));
+		Log.d("LoadingEvent","event id : " + eId );
 		nameValuePair.add(new BasicNameValuePair("hash", "" + User.hash ));
 		// Url Encoding the POST parameters
 		try {

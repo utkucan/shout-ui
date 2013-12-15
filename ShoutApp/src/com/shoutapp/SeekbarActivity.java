@@ -41,7 +41,7 @@ public class SeekbarActivity extends Activity{
 	View parent2;
 	public SeekbarActivity(View parent){
 		this.parent2 = parent;
-		newNotification(parent.getContext());
+		//newNotification(parent.getContext());
 		
 		distanceControl = (SeekBar) parent.findViewById(R.id.distance_bar);
 		int distance = getDistance(parent.getContext());

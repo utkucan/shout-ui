@@ -1,5 +1,7 @@
 package com.shoutapp;
 
+import java.util.ArrayList;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -8,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -110,8 +113,39 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 		editor.putBoolean("activity", ((CheckBox) findViewById(R.id.activityCheckBox)).isChecked());
 		editor.putBoolean("art", ((CheckBox) findViewById(R.id.artCheckBox)).isChecked());
 		editor.putBoolean("other", ((CheckBox) findViewById(R.id.otherCheckBox)).isChecked());
-
+		StringBuilder sb = new StringBuilder();
+		if(((CheckBox) findViewById(R.id.sportCheckBox)).isChecked())
+			sb.append("1;");
+		if(((CheckBox) findViewById(R.id.partyCheckBox)).isChecked())
+			sb.append("2;");
+		if(((CheckBox) findViewById(R.id.gameCheckBox)).isChecked())
+			sb.append("3;");
+		if(((CheckBox) findViewById(R.id.activityCheckBox)).isChecked())
+			sb.append("4;");
+		if(((CheckBox) findViewById(R.id.artCheckBox)).isChecked())
+			sb.append("5;");
+		if(((CheckBox) findViewById(R.id.otherCheckBox)).isChecked())
+			sb.append("6;");
+		
+		String prefStr = sb.toString();
+		String last = prefStr.substring(0,prefStr.lastIndexOf(';'));
+			Log.d("TRIM", sb.toString() +" -> "+ last);	
 		editor.commit();
+		(new SubmitReferences(last,
+				((SeekBar) findViewById(R.id.distance_bar)).getProgress(),
+				((SeekBar) findViewById(R.id.clock_bar)).getProgress(),
+				new RespCallback() {
+
+			@Override
+			public void callback_events(ArrayList<Event> Events) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void callback_ack() {
+				
+			}
+		})).execute();
 	}
 
 	OnClickListener slidingMenuClickListener = new OnClickListener() {

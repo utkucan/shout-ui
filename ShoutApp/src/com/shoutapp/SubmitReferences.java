@@ -37,7 +37,7 @@ public class SubmitReferences extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		HttpClient httpClient = new DefaultHttpClient();	
-		HttpPost httpPost = new HttpPost("http://shoutaround.herokuapp.com/submitReferences/");
+		HttpPost httpPost = new HttpPost("http://shoutaround.herokuapp.com/submitPreferences/");
 		// Building post parameters, key and value pair
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
 		nameValuePair.add(new BasicNameValuePair("distance", "" + distance ));

@@ -70,7 +70,7 @@ public class GcmIntentService extends IntentService {
 	// a GCM message.
 	private static int notificationID = 0;
 	private void sendNotification(String msg) {
-
+		Log.w("BReceiver", "MOTUR YUKARDA MI KALDI");
 		NotificationCompat.Builder mBuilder =
 				new NotificationCompat.Builder(this)
 		.setSmallIcon(R.drawable.icon)
