@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 						int position = Integer.parseInt(items[1]);
 						Event obj = adapter.getItem(position);
 						Intent intent = new Intent(cxt, PostItemViewActivity.class);
+
 						intent.putExtra("eventId", obj.getId());
 						intent.putExtra("owner", obj.getCreatorid());
 						cxt.startActivity(intent);
@@ -85,7 +87,9 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			public void onItemClick(AdapterView<?> arg0,
 					View arg1, int position, long arg3) {
 				// TODO Auto-generated method stub
-				Event obj = (Event)arg0.getItemAtPosition(position+1);
+				Log.d("Position of event",""+ position);
+
+				Event obj = (Event)arg0.getItemAtPosition(position + 1);
 				Intent intent = new Intent(cxt, PostItemViewActivity.class);
 				intent.putExtra("eventId", obj.getId());
 				intent.putExtra("owner", obj.getCreatorid());

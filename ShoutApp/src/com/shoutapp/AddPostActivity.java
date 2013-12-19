@@ -218,8 +218,6 @@ public class AddPostActivity extends BaseActivity {
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
-			// TODO Auto-generated method stub
-			// if(isActivityStarted){
 			if (hasFocus) {
 				if (v.equals(duration)) {
 					openDurationDialog();

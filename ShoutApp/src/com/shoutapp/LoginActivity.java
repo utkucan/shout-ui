@@ -312,6 +312,7 @@ public class LoginActivity extends FragmentActivity {
 
 					}
 				});
+				
 				Model.userName = user.getDisplayName();
 				Model.profile_pic_url = user.getImage().getUrl();
 			} else {
