@@ -92,7 +92,6 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 
 				@Override
 				public View getInfoContents(Marker marker) {
-					// TODO Auto-generated method stub
 
 					//					String content = marker.getTitle();
 					//					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));

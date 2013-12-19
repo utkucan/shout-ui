@@ -39,12 +39,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PostItemViewActivity extends BaseActivity{
+public class PostItemViewActivity extends BaseActivity {
 
-	//	ListView comments;
+	// ListView comments;
 	LinearLayout comment_list_lay;
 	ScrollView scrollv;
-	RelativeLayout mapLay,rateEditLayout = null,shareBtnLayout = null;
+	RelativeLayout mapLay, rateEditLayout = null, shareBtnLayout = null;
 	boolean isMapLayHeightSet = false;
 	ImageButton rateEditBtn = null, shareBtn = null;
 	private GoogleMap map;
@@ -53,46 +53,50 @@ public class PostItemViewActivity extends BaseActivity{
 	String eventOwner;
 	Event e;
 	Context cxt;
-	TextView title_view,category_view,time_view, distance_view, description_view, owner_view;
-	
+	TextView title_view, category_view, time_view, distance_view,
+			description_view, owner_view;
+
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		cxt = this;
-		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 
-		LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.post_item_preview, null);
-		//		View layout = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_item_preview, null);
-		RelativeLayout post_item_view_layout = (RelativeLayout)layout.findViewById(R.id.post_item_preview_layout);
+		// View layout =
+		// LayoutInflater.from(getBaseContext()).inflate(R.layout.post_item_preview,
+		// null);
+		RelativeLayout post_item_view_layout = (RelativeLayout) layout
+				.findViewById(R.id.post_item_preview_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.BELOW,R.id.topBar);
+		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		post_item_view_layout.setLayoutParams(lp);
 		mainLayout.addView(post_item_view_layout);
-		comment_list_lay = (LinearLayout)findViewById(R.id.comment_list_layout);
-		scrollv = (ScrollView)findViewById(R.id.post_preview_scrollView);       
-		mapLay = (RelativeLayout)findViewById(R.id.post_map);
+		comment_list_lay = (LinearLayout) findViewById(R.id.comment_list_layout);
+		scrollv = (ScrollView) findViewById(R.id.post_preview_scrollView);
+		mapLay = (RelativeLayout) findViewById(R.id.post_map);
 		ViewTreeObserver vto = scrollv.getViewTreeObserver();
 		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 			public boolean onPreDraw() {
-				if(!isMapLayHeightSet){
+				if (!isMapLayHeightSet) {
 					int h = scrollv.getMeasuredHeight();
-					mapLay.getLayoutParams().height = (2*h)/5;
+					mapLay.getLayoutParams().height = (2 * h) / 5;
 					isMapLayHeightSet = true;
 					scrollv.scrollTo(0, 0);
 				}
 				return true;
 			}
 		});
-		title_view = ((TextView)findViewById(R.id.post_item_title));
-		category_view =(TextView)findViewById(R.id.post_item_category);
-		time_view=(TextView)findViewById(R.id.post_item_time);
-		distance_view = (TextView)findViewById(R.id.post_item_distance);
-		description_view = (TextView)findViewById(R.id.post_item_description);
-		owner_view = (TextView)findViewById(R.id.post_item_owner);
-		
+		title_view = ((TextView) findViewById(R.id.post_item_title));
+		category_view = (TextView) findViewById(R.id.post_item_category);
+		time_view = (TextView) findViewById(R.id.post_item_time);
+		distance_view = (TextView) findViewById(R.id.post_item_distance);
+		description_view = (TextView) findViewById(R.id.post_item_description);
+		owner_view = (TextView) findViewById(R.id.post_item_owner);
+
 		title_view.setText("");
 		category_view.setText("");
 		time_view.setText("");
@@ -103,146 +107,159 @@ public class PostItemViewActivity extends BaseActivity{
 		Bundle extras = getIntent().getExtras();
 		eventId = extras.getInt("eventId");
 		eventOwner = extras.getString("owner");
-		
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
+
+		map = ((MapFragment) getFragmentManager().findFragmentById(
+				R.id.post_on_map)).getMap();
 		(new GetEventDetails(eventOwner, eventId, new RespCallback() {
 
 			@Override
 			public void callback_events(ArrayList<Event> Events) {
 				// TODO Auto-generated method stub
-				if(Events.size()>0){
+				if (Events.size() > 0) {
 					e = Events.get(0);
-					
-					loc = new LatLng(e.latitute,e.longtitute);
+
+					loc = new LatLng(e.latitute, e.longtitute);
 					title_view.setText(e.title);
-					category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get(e.category));
+					category_view.setText((new ArrayList<String>(Arrays
+							.asList(getResources().getStringArray(
+									R.array.Categories)))).get(e.category));
 					time_view.setText(e.time);
-					distance_view.setText(e.distance(cxt)+" km");
+					distance_view.setText(e.distance(cxt) + " km");
 					description_view.setText(e.description);
 					owner_view.setText(e.creator_id);
-					
+
 					for (Comment c : Events.get(0).comments) {
-						Log.d("RetrieveComment",c.content + " " + c.userId);
+						Log.d("RetrieveComment", c.content + " " + c.userId);
 						addCommentPreview(c);
 					}
-					
-					map.addMarker(new MarkerOptions().position(loc).title(e.title));
+
+					map.addMarker(new MarkerOptions().position(loc).title(
+							e.title));
 					map.setMyLocationEnabled(true);
 					map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-					
-					map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-				}
-				else{
+
+					map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000,
+							null);
+				} else {
 					AlertDialog ad = (new Builder(cxt)).create();
 					ad.setMessage("The post was canceled");
 					ad.setCancelable(false);
-					ad.setButton(android.content.DialogInterface.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							onBackPressed();
-						}
-					});
+					ad.setButton(
+							android.content.DialogInterface.BUTTON_NEUTRAL,
+							"Ok", new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									onBackPressed();
+								}
+							});
 					ad.show();
 				}
 			}
 
 			@Override
-			public void callback_ack() {}
+			public void callback_ack() {
+			}
 		})).execute();
-		
-		
-		com.shoutapp.entity.Event.fetchEventDetails(2, new Callback<com.shoutapp.entity.Event>() {
 
-			@Override
-			public void onStart() {
-			}
+		com.shoutapp.entity.Event.fetchEventDetails(2,
+				new Callback<com.shoutapp.entity.Event>() {
 
-			@Override
-			public void onSuccess(com.shoutapp.entity.Event obj) {
-				Log.d("Event", obj.toString());
-			}
+					@Override
+					public void onStart() {
+					}
 
-			@Override
-			public void onFail() {				
-			}
-		});
+					@Override
+					public void onSuccess(com.shoutapp.entity.Event obj) {
+						Log.d("Event", obj.toString());
+					}
 
+					@Override
+					public void onFail() {
+					}
+				});
 
-		rateEditBtn = (ImageButton)findViewById(R.id.rate_btn);
-		rateEditLayout = (RelativeLayout)findViewById(R.id.rate_btn_holder);
+		rateEditBtn = (ImageButton) findViewById(R.id.rate_btn);
+		rateEditLayout = (RelativeLayout) findViewById(R.id.rate_btn_holder);
 
-		if(User.hash == eventOwner){
+		if (User.hash == eventOwner) {
 			rateEditBtn.setBackgroundResource(R.drawable.trash);
 			rateEditBtn.setOnClickListener(deleteClickListener);
 			rateEditLayout.setOnClickListener(deleteClickListener);
-		}else{
+		} else {
 			rateEditBtn.setOnClickListener(rateClickListener);
 			rateEditLayout.setOnClickListener(rateClickListener);
 		}
 
 		owner_view.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(cxt, ProfileActivity.class);
-				intent.putExtra("profileId", e.creator_id);			
+				intent.putExtra("profileId", e.creator_id);
 				cxt.startActivity(intent);
 			}
 		});
-		
-		ImageButton addCommentBtn = (ImageButton)findViewById(R.id.add_comment_btn);
+
+		ImageButton addCommentBtn = (ImageButton) findViewById(R.id.add_comment_btn);
 		addCommentBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(findViewById(R.id.add_comment_layout).isShown()){
-					return;				
+				if (findViewById(R.id.add_comment_layout).isShown()) {
+					return;
 				}
 				LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
 				ScrollView sv = (ScrollView) findViewById(R.id.post_preview_scrollView);
 				sv.fullScroll(View.FOCUS_DOWN);
 				ln.setVisibility(View.VISIBLE);
-				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+				View comm = LayoutInflater.from(getBaseContext()).inflate(
+						R.layout.add_comment_xml, null);
 				ln.addView(comm);
-				
-				Button submitCommentBtn = 	 (Button) findViewById(R.id.submitCommentBtn);
+
+				Button submitCommentBtn = (Button) findViewById(R.id.submitCommentBtn);
 				submitCommentBtn.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
-						Log.d("SubmitComment","submittin comment for event: "+ eventId +" username: " + User.username);
-						new AddComment(new Comment(User.hash,User.username, textBox.getText().toString()),eventId,new RespCallback() {
+						Log.d("SubmitComment", "submittin comment for event: "
+								+ eventId + " username: " + User.username);
+						new AddComment(new Comment(User.hash, User.username,
+								textBox.getText().toString()), eventId,
+								new RespCallback() {
 
-							@Override
-							public void callback_events(ArrayList<Event> Events) {
-								
-							}
+									@Override
+									public void callback_events(
+											ArrayList<Event> Events) {
 
-							@Override
-							public void callback_ack() {
-								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
-								View remove = (View)ln.findViewById(R.layout.add_comment_xml);
-								//View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
-								ln.removeAllViews();
-								ln.setVisibility(View.GONE);
-							}
-						}).execute();
-						
-						
+									}
+
+									@Override
+									public void callback_ack() {
+										LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+										View remove = (View) ln
+												.findViewById(R.layout.add_comment_xml);
+										// View comm =
+										// LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml,
+										// null);
+										ln.removeAllViews();
+										ln.setVisibility(View.GONE);
+									}
+								}).execute();
+
 					}
-					
+
 				});
 
 			}
 		});
-		
-		
-		shareBtn = (ImageButton)findViewById(R.id.share_btn);
-		shareBtnLayout = (RelativeLayout)findViewById(R.id.share_btn_holder);
+
+		shareBtn = (ImageButton) findViewById(R.id.share_btn);
+		shareBtnLayout = (RelativeLayout) findViewById(R.id.share_btn_holder);
 		shareBtn.setOnClickListener(shareClickListener);
 		shareBtnLayout.setOnClickListener(shareClickListener);
 	}
@@ -253,7 +270,7 @@ public class PostItemViewActivity extends BaseActivity{
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 
-			//			delete event
+			// delete event
 
 		}
 	};
@@ -270,7 +287,7 @@ public class PostItemViewActivity extends BaseActivity{
 	private OnClickListener commentClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			
+
 		}
 	};
 
@@ -281,33 +298,41 @@ public class PostItemViewActivity extends BaseActivity{
 			// TODO Auto-generated method stub
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent.putExtra(Intent.EXTRA_TEXT, "Someone share a shout with you bayb!");
+			sendIntent.putExtra(Intent.EXTRA_TEXT,
+					"Someone share a shout with you bayb!");
 			sendIntent.setType("text/plain");
 			startActivity(Intent.createChooser(sendIntent, "Share Shout To"));
 		}
 	};
 
-	private void addCommentPreview(/*CommentItemObjet*/ Comment object){
-		View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);
+	private void addCommentPreview(/* CommentItemObjet */Comment object) {
+		View comment_item = LayoutInflater.from(getBaseContext()).inflate(
+				R.layout.comment_item, null);
 
-		((TextView) comment_item.findViewById(R.id.comment_text)).setText(object.content);
-		TextView comment_owner = (TextView) comment_item.findViewById(R.id.comment_owner);
+		((TextView) comment_item.findViewById(R.id.comment_text))
+				.setText(object.content);
+		TextView comment_owner = (TextView) comment_item
+				.findViewById(R.id.comment_owner);
 		comment_owner.setText(object.userName);
-		((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(object.userId);
-		((TextView) comment_item.findViewById(R.id.comment_time)).setText(object.getTime());
+		((TextView) comment_item.findViewById(R.id.comment_owner_id))
+				.setText(object.userId);
+		((TextView) comment_item.findViewById(R.id.comment_time))
+				.setText(object.getTime());
 
 		comment_owner.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				View parent = (View)v.getParent();
-				String commnet_owner_id = ((TextView)parent.findViewById(R.id.comment_owner_id)).getText().toString();
+				View parent = (View) v.getParent();
+				String commnet_owner_id = ((TextView) parent
+						.findViewById(R.id.comment_owner_id)).getText()
+						.toString();
 				Intent intent = new Intent(cxt, ProfileActivity.class);
-				intent.putExtra("profileId", commnet_owner_id);			
+				intent.putExtra("profileId", commnet_owner_id);
 				cxt.startActivity(intent);
 			}
 		});
-		
+
 		comment_list_lay.addView(comment_item);
 	}
 }
