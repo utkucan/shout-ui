@@ -60,8 +60,7 @@ import com.shoutapp.RefreshableListView.OnRefreshListener;
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
-
-public class MainActivity extends BaseActivity{
+public class MainActivity extends BaseActivity {
 
 	private Context cxt;
 	Activity currentactivity;
@@ -69,10 +68,11 @@ public class MainActivity extends BaseActivity{
 	RefreshableListView postListView;
 
 	public static GPSTracker gpsObject;
-	//	private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
+	// private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
 
 	private GoogleMap map;
-	//	ArrayList<PostPreviewItemObject> items;
+
+	// ArrayList<PostPreviewItemObject> items;
 
 	@Override
 	protected void onResume() {
@@ -80,33 +80,31 @@ public class MainActivity extends BaseActivity{
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
-		
+	public void onCreate(Bundle savedInstanceState) {
+
 		gpsObject = new GPSTracker(MainActivity.this);
-//		setSlidingActionBarEnabled(false);
+		// setSlidingActionBarEnabled(false);
 		super.onCreate(savedInstanceState);
 		cxt = this;
 		currentactivity = this;
-		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
-		RelativeLayout swipeLayout = (RelativeLayout)swipe.findViewById(R.id.swipe_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.FILL_PARENT,
-				RelativeLayout.LayoutParams.FILL_PARENT);
-		lp.addRule(RelativeLayout.BELOW,R.id.topBar);
+		RelativeLayout swipeLayout = (RelativeLayout) swipe.findViewById(R.id.swipe_layout);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		swipeLayout.setLayoutParams(lp);
 		mainLayout.addView(swipe);
-		pager = (ViewPager)swipe.findViewById(R.id.page_swiper);
+		pager = (ViewPager) swipe.findViewById(R.id.page_swiper);
 		SwipePagerAdapter adapter = new SwipePagerAdapter();
 		pager.setAdapter(adapter);
 
-		RelativeLayout change_view_btn_holder = (RelativeLayout)findViewById(R.id.change_view_btn_holder);
+		RelativeLayout change_view_btn_holder = (RelativeLayout) findViewById(R.id.change_view_btn_holder);
 		change_view_btn_holder.setOnClickListener(changeViewClickListener);
-		ImageButton change_view_btn = (ImageButton)findViewById(R.id.change_view_btn);
+		ImageButton change_view_btn = (ImageButton) findViewById(R.id.change_view_btn);
 		change_view_btn.setOnClickListener(changeViewClickListener);
 
-		ImageButton add_post_btn = (ImageButton)findViewById(R.id.add_post_btn);
+		ImageButton add_post_btn = (ImageButton) findViewById(R.id.add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -119,47 +117,47 @@ public class MainActivity extends BaseActivity{
 			}
 		});
 
-		RelativeLayout profile_view_btn_holder = (RelativeLayout)findViewById(R.id.profile_btn_holder);
+		RelativeLayout profile_view_btn_holder = (RelativeLayout) findViewById(R.id.profile_btn_holder);
 		profile_view_btn_holder.setOnClickListener(profileClickListener);
-		ImageButton profile_view_btn = (ImageButton)findViewById(R.id.profile_btn);
+		ImageButton profile_view_btn = (ImageButton) findViewById(R.id.profile_btn);
 		profile_view_btn.setOnClickListener(profileClickListener);
 
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
-			
+
 			@Override
 			public void onPageSelected(int arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
-				((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+				((BaseActivity) currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 			}
 		});
-		
-	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event)  {
-	    if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-	        // do something on back.
-	    	if(pager.getCurrentItem()==1){
-	    		pager.setCurrentItem(0, true);
-				ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
-				btn.setBackgroundResource(R.drawable.map_icon);
-	    	}
-	        return true;
-	    }
 
-	    return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			// do something on back.
+			if (pager.getCurrentItem() == 1) {
+				pager.setCurrentItem(0, true);
+				ImageButton btn = (ImageButton) findViewById(R.id.change_view_btn);
+				btn.setBackgroundResource(R.drawable.map_icon);
+			}
+			return true;
+		}
+
+		return super.onKeyDown(keyCode, event);
 	}
 
 	OnClickListener profileClickListener = new OnClickListener() {
@@ -168,7 +166,7 @@ public class MainActivity extends BaseActivity{
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(cxt, ProfileActivity.class);
-			intent.putExtra("profileId", User.user_id);			
+			intent.putExtra("profileId", User.user_id);
 			cxt.startActivity(intent);
 		}
 	};
@@ -178,20 +176,19 @@ public class MainActivity extends BaseActivity{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if(pager.getCurrentItem()==0){
+			if (pager.getCurrentItem() == 0) {
 				pager.setCurrentItem(1, true);
-				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
+				ImageButton btn = (ImageButton) v.findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.menu_icon);
-			}else{
+			} else {
 				pager.setCurrentItem(0, true);
-				ImageButton btn = (ImageButton)v.findViewById(R.id.change_view_btn);
+				ImageButton btn = (ImageButton) v.findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.map_icon);
 			}
 		}
 	};
 
-
-	public class SwipePagerAdapter extends PagerAdapter{
+	public class SwipePagerAdapter extends PagerAdapter {
 
 		@Override
 		public int getCount() {
@@ -201,141 +198,148 @@ public class MainActivity extends BaseActivity{
 		@Override
 		public Object instantiateItem(ViewGroup collection, int position) {
 			View v;
-			if(position == 0){
+			if (position == 0) {
 				v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
-				postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
-/*
-				SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
-
-					@Override
-					public void callback_events(ArrayList<Event> Events) {
-						// TODO Auto-generated method stub
-//						for (Event e : Events) {
-//							map.addMarker(new MarkerOptions().position(new LatLng(e.latitute, e.longtitute)).title(e.title + ";"+e.category));
-//						}
-						postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
-						map.setMyLocationEnabled(true);
-					//map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
-					}
-
-					@Override
-					public void callback_ack() {}
-				});
-				r.execute();
-				postListView.setOnRefreshListener(new OnRefreshListener() {
-					@Override
-					public void onRefresh(RefreshableListView listView) {
-						// TODO Auto-generated method stub
-						//new NewDataTask().execute();
-						SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
-
-							@Override
-							public void callback_events(ArrayList<Event> Events) {
-								postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
-								map.setMyLocationEnabled(true);
-//								map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
-								postListView.completeRefreshing();
-							}
-
-							@Override
-							public void callback_ack() {
-								// TODO Auto-generated method stub
-							}
-						});
-						r.execute();
-					}
-				});
-				*/
+				postListView = (RefreshableListView) v.findViewById(R.id.post_list_view);
+				/*
+				 * SendLocation r = new
+				 * SendLocation(User.hash,gpsObject.latitude
+				 * ,gpsObject.longitude,new RespCallback() {
+				 * 
+				 * @Override public void callback_events(ArrayList<Event>
+				 * Events) { // TODO Auto-generated method stub // for (Event e
+				 * : Events) { // map.addMarker(new MarkerOptions().position(new
+				 * LatLng(e.latitute, e.longtitute)).title(e.title +
+				 * ";"+e.category)); // } postListView.setAdapter(new
+				 * EventPreviewAdapter(postListView,cxt, R.id.post_list_view,
+				 * Events,map)); map.setMyLocationEnabled(true);
+				 * //map.addMarker(new MarkerOptions().position(new
+				 * LatLng(gpsObject.latitude,
+				 * gpsObject.longitude)).title("You are here!")); }
+				 * 
+				 * @Override public void callback_ack() {} }); r.execute();
+				 * postListView.setOnRefreshListener(new OnRefreshListener() {
+				 * 
+				 * @Override public void onRefresh(RefreshableListView listView)
+				 * { // TODO Auto-generated method stub //new
+				 * NewDataTask().execute(); SendLocation r = new
+				 * SendLocation(User
+				 * .hash,gpsObject.latitude,gpsObject.longitude,new
+				 * RespCallback() {
+				 * 
+				 * @Override public void callback_events(ArrayList<Event>
+				 * Events) { postListView.setAdapter(new
+				 * EventPreviewAdapter(postListView,cxt, R.id.post_list_view,
+				 * Events,map)); map.setMyLocationEnabled(true); //
+				 * map.addMarker(new MarkerOptions().position(new
+				 * LatLng(gpsObject.latitude,
+				 * gpsObject.longitude)).title("You are here!"));
+				 * postListView.completeRefreshing(); }
+				 * 
+				 * @Override public void callback_ack() { // TODO Auto-generated
+				 * method stub } }); r.execute(); } });
+				 */
 				Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
 
 					@Override
 					public void onStart() {
 						// TODO Auto-generated method stub
-						
+
 					}
 
 					@Override
-					public void onSuccess(com.shoutapp.entity.Event[] obj) {
-						Log.d("Recieved:", obj.length + " events");
-						for(com.shoutapp.entity.Event e: obj){
+					public void onSuccess(com.shoutapp.entity.Event[] events) {
+						Log.d("Recieved:", events.length + " events");
+						for (Event e : events) {
 							Log.d("Event:", e.toString());
+							map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title(e.getTitle() + ";" + e.getCategory()));
 						}
+
+						postListView.setAdapter(new EventPreviewAdapter(postListView, cxt, R.id.post_list_view, events, map));
+						map.setMyLocationEnabled(true);
+						postListView.completeRefreshing();
+
 					}
 
 					@Override
 					public void onFail() {
 						// TODO Auto-generated method stub
-						
-					}					
-				} );
-				collection.addView(v,position);
-			}else{
 
-				LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.post_map, null,false);
-				collection.addView(v,position);
+					}
+				});
+				collection.addView(v, position);
+			} else {
+
+				LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				v = inflater.inflate(R.layout.post_map, null, false);
+				collection.addView(v, position);
 				gpsObject = new GPSTracker(MainActivity.this);
 
 				final LatLng loc = new LatLng(gpsObject.latitude, gpsObject.longitude);
 				map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
-//				map.addMarker(new MarkerOptions().position(loc).title("You are here!"));
+				// map.addMarker(new
+				// MarkerOptions().position(loc).title("You are here!"));
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 				map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-//				ImageButton swipe_btn = (ImageButton)v.findViewById(R.id.swipe_btn_map);
-//				swipe_btn.setOnTouchListener(new OnTouchListener() {
-//					
-//					@Override
-//					public boolean onTouch(View v, MotionEvent event) {
-//
-//						if(event.getAction() == MotionEvent.ACTION_UP){
-//							((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-////							return false;
-//						}else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
-//							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
-//							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-//							sm.clearAnimation();
-//							sm.clearFocus();
-////							SlidingMenu sm = ((BaseActivity)currentactivity).getSlidingMenu();
-////							sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-////							sm.clearAnimation();
-////							sm.clearFocus();
-////							MotionEventCompat me = new MotionEventCompat();
-////							event.setAction(MotionEvent.ACTION_UP);
-////							pager.dispatchTouchEvent(event);
-//						}
-//						
-//						return false;
-//					}
-//				});
-//				swipe_btn.bringToFront();
-//				swipe_btn_map
+				// ImageButton swipe_btn =
+				// (ImageButton)v.findViewById(R.id.swipe_btn_map);
+				// swipe_btn.setOnTouchListener(new OnTouchListener() {
+				//
+				// @Override
+				// public boolean onTouch(View v, MotionEvent event) {
+				//
+				// if(event.getAction() == MotionEvent.ACTION_UP){
+				// ((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+				// // return false;
+				// }else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
+				// SlidingMenu sm =
+				// ((BaseActivity)currentactivity).getSlidingMenu();
+				// sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+				// sm.clearAnimation();
+				// sm.clearFocus();
+				// // SlidingMenu sm =
+				// ((BaseActivity)currentactivity).getSlidingMenu();
+				// // sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+				// // sm.clearAnimation();
+				// // sm.clearFocus();
+				// // MotionEventCompat me = new MotionEventCompat();
+				// // event.setAction(MotionEvent.ACTION_UP);
+				// // pager.dispatchTouchEvent(event);
+				// }
+				//
+				// return false;
+				// }
+				// });
+				// swipe_btn.bringToFront();
+				// swipe_btn_map
 			}
 			return v;
 		}
-		
+
 		@Override
 		public void destroyItem(ViewGroup collection, int position, Object view) {
 			collection.removeView((TextView) view);
 		}
-		
+
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
-			return (view==object);
+			return (view == object);
 		}
-		
+
 		@Override
 		public void finishUpdate(ViewGroup arg0) {
-			if(pager.getCurrentItem()==0){
-				ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
+			if (pager.getCurrentItem() == 0) {
+				ImageButton btn = (ImageButton) findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.map_icon);
-			}else{
-				ImageButton btn = (ImageButton)findViewById(R.id.change_view_btn);
+			} else {
+				ImageButton btn = (ImageButton) findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.menu_icon);
 			}
 		}
 
 		@Override
-		public void restoreState(Parcelable arg0, ClassLoader arg1) {}
+		public void restoreState(Parcelable arg0, ClassLoader arg1) {
+		}
 
 		@Override
 		public Parcelable saveState() {
@@ -343,7 +347,8 @@ public class MainActivity extends BaseActivity{
 		}
 
 		@Override
-		public void startUpdate(ViewGroup arg0) {}
+		public void startUpdate(ViewGroup arg0) {
+		}
 
 	}
 }

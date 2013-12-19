@@ -34,7 +34,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 	ArrayAdapter<Event> adapter;
 
 
-	public EventPreviewAdapter(ListView listView,Context context, int textViewResourceId,ArrayList<Event> list,GoogleMap map) {
+	public EventPreviewAdapter(ListView listView,Context context, int textViewResourceId, Event[] list,GoogleMap map) {
 		super(context, textViewResourceId,list);
 		this.cxt = context;
 		adapter = this;

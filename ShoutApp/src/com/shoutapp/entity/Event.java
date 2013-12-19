@@ -84,10 +84,15 @@ public class Event {
 	}
 
 	public static void fetchEventDetails(int id, Callback<Event> c) {
-		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEventX", c);
+		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEvent", c);
 		u.execute("id", id);
 	}
-
+	
+	public static void fetchEventsOfUser(int userid, Callback<Event[]> c) {
+		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
+		u.execute("userid", userid);
+	}
+	
 	public int distance(Context cxt) {
 
 		GPSTracker gpsObject = new GPSTracker(cxt);

@@ -171,7 +171,7 @@ public class ProfileActivity extends BaseActivity{
 
 	public class MyEventPreviewAdapter extends EventPreviewAdapter {
 
-		public MyEventPreviewAdapter(ListView listView,Context context, int textViewResourceId,ArrayList<Event> list) {
+		public MyEventPreviewAdapter(ListView listView,Context context, int textViewResourceId, Event[] list) {
 			super(listView,context, textViewResourceId,list,null);
 			// list.add(new Event("", 0, 0, 0, null, null,0, "")); TODO: bu ne
 		}

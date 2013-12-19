@@ -107,7 +107,6 @@ public class PostItemViewActivity extends BaseActivity {
 		eventOwner = extras.getString("owner");
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
-		
 
 		Event.fetchEventDetails(eventId, new Callback<Event>() {
 			@Override
@@ -272,20 +271,14 @@ public class PostItemViewActivity extends BaseActivity {
 		}
 	};
 
-	private void addCommentPreview(Comment object) {
+	private void addCommentPreview(Comment comment) {
 		View comment_item = LayoutInflater.from(getBaseContext()).inflate(R.layout.comment_item, null);
 
-		((TextView) comment_item.findViewById(R.id.comment_text)).setText(object.getContent());
+		((TextView) comment_item.findViewById(R.id.comment_text)).setText(comment.getContent());
 		TextView comment_owner = (TextView) comment_item.findViewById(R.id.comment_owner);
-		comment_owner.setText(object.getName());
-		((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(object.getUserId());
-		((TextView) comment_item.findViewById(R.id.comment_time)).setText("Zamaneklencek"/*
-																						 * object
-																						 * .
-																						 * getTime
-																						 * (
-																						 * )
-																						 */);
+		comment_owner.setText(comment.getName());
+		// ((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(comment.getUserId());
+		((TextView) comment_item.findViewById(R.id.comment_time)).setText("Zamaneklencek");
 
 		comment_owner.setOnClickListener(new OnClickListener() {
 
