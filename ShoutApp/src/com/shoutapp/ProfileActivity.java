@@ -7,6 +7,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 import com.shoutapp.entity.Event;
+import com.shoutapp.entity.FetchJsonTask.Callback;
+import com.shoutapp.entity.Profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -48,7 +50,7 @@ public class ProfileActivity extends BaseActivity{
 	ImageButton add_post_btn;
 	int scrollX = 0;
 	int scrollY = 0;
-	String UserId;
+	int UserId;
 	ListView postListView,notificationListView,badgeListView; 
 
 	@Override
@@ -68,27 +70,33 @@ public class ProfileActivity extends BaseActivity{
 		mainLayout.addView(profileLayout);
 		
 		Bundle extras = getIntent().getExtras();
-		UserId=extras.getString("profileId");
-		/*
-		(new GetProfile(new ProfileCallback() {
-			
+		int userId = extras.getInt("profileId");
+
+		Profile.getProfile(userId, new Callback<Profile>() {
+
 			@Override
-			public void callback_profilInfo(Profile profil) {
-				// TODO Auto-generated method stub
-				((TextView)findViewById(R.id.userName)).setText(profil.name);
-				getProfilePhoto.execute(profil.picURL);
-				((TextView)findViewById(R.id.location_name)).setText(profil.location);
-				((TextView)findViewById(R.id.profile_rating)).setText(profil.popularity+"");
+			public void onStart() {				
 			}
-		}, UserId)).execute();
-		*/
+
+			@Override
+			public void onSuccess(Profile p) {
+				((TextView)findViewById(R.id.userName)).setText(p.getName());
+				getProfilePhoto.execute(p.getPicture());
+				((TextView)findViewById(R.id.location_name)).setText(p.getLocation());
+				// ((TextView)findViewById(R.id.profile_rating)).setText(p.getPopularity());				
+			}
+
+			@Override
+			public void onFail() {
+				
+			}			
+		});
 
 		add_post_btn = (ImageButton)findViewById(R.id.profile_add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent i = new Intent();
 				i.setClassName("com.shoutapp", "com.shoutapp.AddPostActivity");
 				startActivity(i);
@@ -145,12 +153,12 @@ public class ProfileActivity extends BaseActivity{
 	}
 	
 	private AsyncTask<String, Void, Void> getProfilePhoto = new AsyncTask<String, Void, Void>() {
+		Bitmap bm;
 		
 		@Override
 		protected Void doInBackground(String... params) {
 			if(params.length>0){
 				String photoUrl = params[0];
-				Bitmap bm = null;
 				try {
 					URL aURL = new URL(photoUrl);
 					URLConnection conn = aURL.openConnection();
@@ -160,13 +168,18 @@ public class ProfileActivity extends BaseActivity{
 					bm = BitmapFactory.decodeStream(bis);
 					bis.close();
 					is.close();
-					((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bm);
 				} catch (Exception e) {
 					Log.e("get profile pic", "Error getting bitmap", e);
 				}
 			}
 			return null;
 		}
+		
+		protected void onPostExecute(Void result) {
+			if ( bm != null){
+				((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bm);
+			}
+		};
 	};
 
 	public class MyEventPreviewAdapter extends EventPreviewAdapter {
@@ -279,21 +292,24 @@ public class ProfileActivity extends BaseActivity{
 				postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				lv = postListView;
 				Bundle extras = getIntent().getExtras();
-				UserId=extras.getString("profileId");
+				UserId = extras.getInt("profileId");
 				
-				/*
-				GetEvents gmy = new GetEvents(UserId, new RespCallback() {
+				Event.fetchEventsOfUser(UserId, new Callback<Event[]>() {
 
 					@Override
-					public void callback_events(ArrayList<Event> Events) {
-						postListView.setAdapter(new MyEventPreviewAdapter(postListView,cxt, R.id.post_list_view,Events));
+					public void onStart() {
+						
 					}
 
 					@Override
-					public void callback_ack() {}
-				}); 
-				gmy.execute(); 
-				*/
+					public void onSuccess(Event[] events) {
+						postListView.setAdapter(new MyEventPreviewAdapter(postListView,cxt, R.id.post_list_view,events));
+					}
+
+					@Override
+					public void onFail() {
+					}
+				});
 			}else if(titles[position] == "Badges"){ // badges
 				badgeListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				badgeListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));

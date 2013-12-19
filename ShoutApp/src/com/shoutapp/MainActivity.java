@@ -111,7 +111,6 @@ public class MainActivity extends BaseActivity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent();
-
 				i.setClassName("com.shoutapp", "com.shoutapp.AddPostActivity");
 				startActivity(i);
 			}
@@ -165,7 +164,7 @@ public class MainActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Intent intent = new Intent(cxt, ProfileActivity.class);
+			Intent intent = new Intent(cxt, ProfileActivity.class);			
 			intent.putExtra("profileId", User.user_id);
 			cxt.startActivity(intent);
 		}
@@ -201,44 +200,7 @@ public class MainActivity extends BaseActivity {
 			if (position == 0) {
 				v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
 				postListView = (RefreshableListView) v.findViewById(R.id.post_list_view);
-				/*
-				 * SendLocation r = new
-				 * SendLocation(User.hash,gpsObject.latitude
-				 * ,gpsObject.longitude,new RespCallback() {
-				 * 
-				 * @Override public void callback_events(ArrayList<Event>
-				 * Events) { // TODO Auto-generated method stub // for (Event e
-				 * : Events) { // map.addMarker(new MarkerOptions().position(new
-				 * LatLng(e.latitute, e.longtitute)).title(e.title +
-				 * ";"+e.category)); // } postListView.setAdapter(new
-				 * EventPreviewAdapter(postListView,cxt, R.id.post_list_view,
-				 * Events,map)); map.setMyLocationEnabled(true);
-				 * //map.addMarker(new MarkerOptions().position(new
-				 * LatLng(gpsObject.latitude,
-				 * gpsObject.longitude)).title("You are here!")); }
-				 * 
-				 * @Override public void callback_ack() {} }); r.execute();
-				 * postListView.setOnRefreshListener(new OnRefreshListener() {
-				 * 
-				 * @Override public void onRefresh(RefreshableListView listView)
-				 * { // TODO Auto-generated method stub //new
-				 * NewDataTask().execute(); SendLocation r = new
-				 * SendLocation(User
-				 * .hash,gpsObject.latitude,gpsObject.longitude,new
-				 * RespCallback() {
-				 * 
-				 * @Override public void callback_events(ArrayList<Event>
-				 * Events) { postListView.setAdapter(new
-				 * EventPreviewAdapter(postListView,cxt, R.id.post_list_view,
-				 * Events,map)); map.setMyLocationEnabled(true); //
-				 * map.addMarker(new MarkerOptions().position(new
-				 * LatLng(gpsObject.latitude,
-				 * gpsObject.longitude)).title("You are here!"));
-				 * postListView.completeRefreshing(); }
-				 * 
-				 * @Override public void callback_ack() { // TODO Auto-generated
-				 * method stub } }); r.execute(); } });
-				 */
+
 				Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
 
 					@Override
@@ -263,8 +225,7 @@ public class MainActivity extends BaseActivity {
 
 					@Override
 					public void onFail() {
-						// TODO Auto-generated method stub
-
+				
 					}
 				});
 				collection.addView(v, position);
@@ -277,41 +238,8 @@ public class MainActivity extends BaseActivity {
 
 				final LatLng loc = new LatLng(gpsObject.latitude, gpsObject.longitude);
 				map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
-				// map.addMarker(new
-				// MarkerOptions().position(loc).title("You are here!"));
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 				map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-				// ImageButton swipe_btn =
-				// (ImageButton)v.findViewById(R.id.swipe_btn_map);
-				// swipe_btn.setOnTouchListener(new OnTouchListener() {
-				//
-				// @Override
-				// public boolean onTouch(View v, MotionEvent event) {
-				//
-				// if(event.getAction() == MotionEvent.ACTION_UP){
-				// ((BaseActivity)currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-				// // return false;
-				// }else{// if(event.getAction() == MotionEvent.ACTION_DOWN) {
-				// SlidingMenu sm =
-				// ((BaseActivity)currentactivity).getSlidingMenu();
-				// sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-				// sm.clearAnimation();
-				// sm.clearFocus();
-				// // SlidingMenu sm =
-				// ((BaseActivity)currentactivity).getSlidingMenu();
-				// // sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-				// // sm.clearAnimation();
-				// // sm.clearFocus();
-				// // MotionEventCompat me = new MotionEventCompat();
-				// // event.setAction(MotionEvent.ACTION_UP);
-				// // pager.dispatchTouchEvent(event);
-				// }
-				//
-				// return false;
-				// }
-				// });
-				// swipe_btn.bringToFront();
-				// swipe_btn_map
 			}
 			return v;
 		}

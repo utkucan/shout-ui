@@ -88,9 +88,9 @@ public class Event {
 		u.execute("id", id);
 	}
 	
-	public static void fetchEventsOfUser(int userid, Callback<Event[]> c) {
+	public static void fetchEventsOfUser(int userId, Callback<Event[]> c) {
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
-		u.execute("userid", userid);
+		u.execute("userId", userId);
 	}
 	
 	public int distance(Context cxt) {

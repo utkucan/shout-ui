@@ -104,7 +104,7 @@ public class PostItemViewActivity extends BaseActivity {
 
 		Bundle extras = getIntent().getExtras();
 		eventId = extras.getInt("eventId");
-		eventOwner = extras.getString("owner");
+		//eventOwner = extras.getInt("owner");
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
 
