@@ -1,26 +1,41 @@
 package com.shoutapp.entity;
 
+import java.util.Date;
+
+import com.google.gson.annotations.SerializedName;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
 public class Event {
 	private int id;
 	private double lat, lon;
 	private int category;
+	
+	@SerializedName("creator")
 	private int userId;
-	private int title;
-	private long creationTime;
-	private long expireTime;
+	
+	private String title;
+	
+	@SerializedName("creation")
+	private Date creationTime;
+	
+	@SerializedName("expire")
+	private Date expireTime;
+	
 	private Comment[] comments;
+
+	public Comment[] getComments() {
+		return comments;
+	}
 
 	public int getCategory() {
 		return category;
 	}
 
-	public long getCreationTime() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
 
-	public long getExpireTime() {
+	public Date getExpireTime() {
 		return expireTime;
 	}
 
@@ -36,7 +51,7 @@ public class Event {
 		return lon;
 	}
 
-	public int getTitle() {
+	public String getTitle() {
 		return title;
 	}
 
@@ -44,11 +59,14 @@ public class Event {
 		return userId;
 	}
 	
-	public void fetchNearbyEventList(double lat, double lon, Callback<Event[]> c){
-		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "submitLocation",
-				c);
-		u.execute("lat", lat, "lon", lon);
+	@Override
+	public String toString() {
+		return id + " " + title + " "  + lat + " " + lon;
 	}
-	
-	
+
+	public static void fetchNearbyEventList(String hash, double lat, double lon, Callback<Event[]> c) {
+		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class,
+				"getNearbyEvents", c);
+		u.execute("hash", hash, "lat", lat, "lon", lon);
+	}
 }

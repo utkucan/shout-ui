@@ -57,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptionsCreator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
+import com.shoutapp.entity.FetchJsonTask.Callback;
 
 
 public class MainActivity extends BaseActivity{
@@ -273,6 +274,28 @@ public class MainActivity extends BaseActivity{
 						r.execute();
 					}
 				});
+				com.shoutapp.entity.Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<com.shoutapp.entity.Event[]>() {
+
+					@Override
+					public void onStart() {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void onSuccess(com.shoutapp.entity.Event[] obj) {
+						Log.d("Recieved:", obj.length + " events");
+						for(com.shoutapp.entity.Event e: obj){
+							Log.d("Event:", e.toString());
+						}
+					}
+
+					@Override
+					public void onFail() {
+						// TODO Auto-generated method stub
+						
+					}					
+				} );
 				collection.addView(v,position);
 			}else{
 

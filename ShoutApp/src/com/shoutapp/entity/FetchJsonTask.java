@@ -63,9 +63,15 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 
 			// Execute HTTP Post Request
 			HttpResponse response = httpclient.execute(httppost);
-			InputStream is = response.getEntity().getContent();
-			Gson gson = new GsonBuilder().create();
+			if ( response.getStatusLine().getStatusCode() != 200){
+				// Meaning an error has occured
+				return null;
+			}
+			InputStream is = response.getEntity().getContent();					
+			// Compatible with JavaScript's Date format
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'hh:mm:ss.sss'Z'").create();
 			Reader reader = new InputStreamReader(is);
+			// Parse the fetched JSON object to a Java object 
 			T myObj = gson.fromJson(reader, object);
 			Log.d("Recieved Object", myObj.toString());
 			return myObj;
