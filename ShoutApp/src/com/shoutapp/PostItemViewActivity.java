@@ -10,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.shoutapp.entity.FetchJsonTask.Callback;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -149,6 +150,23 @@ public class PostItemViewActivity extends BaseActivity{
 			@Override
 			public void callback_ack() {}
 		})).execute();
+		
+		
+		com.shoutapp.entity.Event.fetchEventDetails(2, new Callback<com.shoutapp.entity.Event>() {
+
+			@Override
+			public void onStart() {
+			}
+
+			@Override
+			public void onSuccess(com.shoutapp.entity.Event obj) {
+				Log.d("Event", obj.toString());
+			}
+
+			@Override
+			public void onFail() {				
+			}
+		});
 
 
 		rateEditBtn = (ImageButton)findViewById(R.id.rate_btn);

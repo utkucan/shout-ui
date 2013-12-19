@@ -2,7 +2,7 @@ package com.shoutapp.entity;
 
 public class Comment {
 	private int userId;
-	private String username;
+	private String name;
 	private String content;
 
 	public String getContent() {
@@ -13,8 +13,12 @@ public class Comment {
 		return userId;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 	
+	@Override
+	public String toString() {
+		return "@" + name + " : " + content;
+	}
 }

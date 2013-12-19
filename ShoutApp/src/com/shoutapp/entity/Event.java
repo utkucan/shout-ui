@@ -9,18 +9,18 @@ public class Event {
 	private int id;
 	private double lat, lon;
 	private int category;
-	
+
 	@SerializedName("creator")
 	private int userId;
-	
+
 	private String title;
-	
+
 	@SerializedName("creation")
 	private Date creationTime;
-	
+
 	@SerializedName("expire")
 	private Date expireTime;
-	
+
 	private Comment[] comments;
 
 	public Comment[] getComments() {
@@ -58,15 +58,22 @@ public class Event {
 	public int getUserId() {
 		return userId;
 	}
-	
+
 	@Override
 	public String toString() {
-		return id + " " + title + " "  + lat + " " + lon;
+		return id + " " + title + " " + lat + " " + lon + (comments == null || comments.length == 0 ? " No comments" : comments[0]);
 	}
 
-	public static void fetchNearbyEventList(String hash, double lat, double lon, Callback<Event[]> c) {
+	public static void fetchNearbyEventList(String hash, double lat,
+			double lon, Callback<Event[]> c) {
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class,
 				"getNearbyEvents", c);
 		u.execute("hash", hash, "lat", lat, "lon", lon);
+	}
+
+	public static void fetchEventDetails(int id, Callback<Event> c) {
+		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class,
+				"getEventX", c);
+		u.execute("id", id);
 	}
 }

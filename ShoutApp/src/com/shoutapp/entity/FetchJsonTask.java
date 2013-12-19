@@ -50,7 +50,9 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 	@Override
 	protected T doInBackground(Object... params) {
 		HttpClient httpclient = new DefaultHttpClient();
+		Log.d("FetchJsonRequest", Constants.URL + path);
 		HttpPost httppost = new HttpPost(Constants.URL + path);
+		
 		try {
 			// Add your data
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -82,6 +84,7 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Log.d("FetchJsonRequestFail", Constants.URL + path);
 		return null;
 	}
 
