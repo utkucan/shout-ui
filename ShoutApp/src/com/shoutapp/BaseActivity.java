@@ -1,10 +1,5 @@
 package com.shoutapp;
 
-import java.util.ArrayList;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 	//	public PlusClient mPlusClient;

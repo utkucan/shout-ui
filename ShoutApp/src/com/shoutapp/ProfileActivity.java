@@ -6,10 +6,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import com.shoutapp.entity.Event;
-import com.shoutapp.entity.FetchJsonTask.Callback;
-import com.shoutapp.entity.Profile;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,10 +23,10 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,6 +34,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.shoutapp.entity.Event;
+import com.shoutapp.entity.FetchJsonTask.Callback;
+import com.shoutapp.entity.Profile;
 
 public class ProfileActivity extends BaseActivity{
 

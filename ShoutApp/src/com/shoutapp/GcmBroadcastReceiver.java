@@ -1,15 +1,12 @@
 package com.shoutapp;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-//import android.support.v4.content.WakefulBroadcastReceiver;
-import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
-import android.widget.Toast;
+//import android.support.v4.content.WakefulBroadcastReceiver;
 
 
 public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {

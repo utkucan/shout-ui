@@ -16,11 +16,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 	private Class<T> object;

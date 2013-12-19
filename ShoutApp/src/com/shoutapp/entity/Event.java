@@ -93,6 +93,10 @@ public class Event {
 		u.execute("userId", userId);
 	}
 	
+	public static void submitEvent(){
+		
+	}
+	
 	public int distance(Context cxt) {
 
 		GPSTracker gpsObject = new GPSTracker(cxt);

@@ -1,33 +1,21 @@
 package com.shoutapp;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-
-
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.format.DateFormat;
-import android.text.method.DateTimeKeyListener;
-import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -35,17 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
-
-
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -220,14 +202,7 @@ public class AddPostActivity extends BaseActivity {
 				*/
 				
 				
-				
-				
-//				if(!Model.add_post("",category, time, sure, header, desc)){
-//					Toast.makeText(appContext, "Error!", Toast.LENGTH_LONG).show();
-//				}else{
-//					Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
-//					onBackPressed();
-//				}
+
 			}else if(v.equals(saat)){
 				openTimeDialog();
 			}else if(v.equals(duration)){
