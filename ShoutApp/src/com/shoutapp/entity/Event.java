@@ -87,16 +87,17 @@ public class Event {
 		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEvent", c);
 		u.execute("id", id);
 	}
-	
+
 	public static void fetchEventsOfUser(int userId, Callback<Event[]> c) {
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
 		u.execute("userId", userId);
 	}
-	
-	public static void submitEvent(){
-		
+
+	public static void submitEvent(String hash, double lat, double lon, int category, String title, String description, Date creation, Date expire, Callback<Status> c) {
+		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "submitEvent", c);
+		u.execute("hash", hash, "lat", lat, "lon", lon, "category", category, "title", title, "description", description, "creation", creation, "expire", expire);
 	}
-	
+
 	public int distance(Context cxt) {
 
 		GPSTracker gpsObject = new GPSTracker(cxt);
