@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+
+import com.shoutapp.entity.Event;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -66,6 +69,7 @@ public class ProfileActivity extends BaseActivity{
 		
 		Bundle extras = getIntent().getExtras();
 		UserId=extras.getString("profileId");
+		/*
 		(new GetProfile(new ProfileCallback() {
 			
 			@Override
@@ -77,7 +81,7 @@ public class ProfileActivity extends BaseActivity{
 				((TextView)findViewById(R.id.profile_rating)).setText(profil.popularity+"");
 			}
 		}, UserId)).execute();
-		
+		*/
 
 		add_post_btn = (ImageButton)findViewById(R.id.profile_add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
@@ -169,7 +173,7 @@ public class ProfileActivity extends BaseActivity{
 
 		public MyEventPreviewAdapter(ListView listView,Context context, int textViewResourceId,ArrayList<Event> list) {
 			super(listView,context, textViewResourceId,list,null);
-			list.add(new Event("", 0, 0, 0, null, null,0, ""));
+			// list.add(new Event("", 0, 0, 0, null, null,0, "")); TODO: bu ne
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -276,6 +280,8 @@ public class ProfileActivity extends BaseActivity{
 				lv = postListView;
 				Bundle extras = getIntent().getExtras();
 				UserId=extras.getString("profileId");
+				
+				/*
 				GetEvents gmy = new GetEvents(UserId, new RespCallback() {
 
 					@Override
@@ -287,6 +293,7 @@ public class ProfileActivity extends BaseActivity{
 					public void callback_ack() {}
 				}); 
 				gmy.execute(); 
+				*/
 			}else if(titles[position] == "Badges"){ // badges
 				badgeListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
 				badgeListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));

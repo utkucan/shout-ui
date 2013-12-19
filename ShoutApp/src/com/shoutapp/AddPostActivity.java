@@ -192,7 +192,7 @@ public class AddPostActivity extends BaseActivity {
 					return;
 				}			
 				String category = (String)categoryPicker.getSelectedItem();
-				
+				/*
 				SubmitEvent se = new SubmitEvent(
 						User.username, 
 						header, desc, 
@@ -217,7 +217,7 @@ public class AddPostActivity extends BaseActivity {
 						});
 				
 				se.execute();
-				
+				*/
 				
 				
 				

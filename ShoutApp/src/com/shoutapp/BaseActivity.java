@@ -134,6 +134,7 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 			Log.d("TRIM", sb.toString() +" -> "+ last);	
 		}
 		editor.commit();
+		/*
 		(new SubmitReferences(last,
 				((SeekBar) findViewById(R.id.distance_bar)).getProgress(),
 				((SeekBar) findViewById(R.id.clock_bar)).getProgress(),
@@ -149,6 +150,7 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 
 			}
 		})).execute();
+		*/
 	}
 
 	OnClickListener slidingMenuClickListener = new OnClickListener() {

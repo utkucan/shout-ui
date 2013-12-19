@@ -57,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptionsCreator;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenListener;
 import com.shoutapp.RefreshableListView.OnRefreshListener;
+import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
 
@@ -189,37 +190,7 @@ public class MainActivity extends BaseActivity{
 		}
 	};
 
-		
-	// serverdan gelenler bu kodun içinde listeye eklenecek, ona göre modifiye et
-	/*
-	private class NewDataTask extends AsyncTask<Void, Void, Event> {
 
-		@Override
-		protected Event doInBackground(Void... params) {
-			SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
-
-				@Override
-				public void callback_events(ArrayList<Event> Events) {
-					postListView.setAdapter(new EventPreviewAdapter(postListView,cxt, R.id.post_list_view, Events,map));
-					map.addMarker(new MarkerOptions().position(new LatLng(gpsObject.latitude, gpsObject.longitude)).title("You are here!"));
-				}
-
-				@Override
-				public void callback_ack() {
-					// TODO Auto-generated method stub
-				}
-			});
-			r.execute();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Event result) {
-			postListView.completeRefreshing();
-			super.onPostExecute(result);
-		}
-	}
-	 */
 	public class SwipePagerAdapter extends PagerAdapter{
 
 		@Override
@@ -233,7 +204,7 @@ public class MainActivity extends BaseActivity{
 			if(position == 0){
 				v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
 				postListView = (RefreshableListView)v.findViewById(R.id.post_list_view);
-
+/*
 				SendLocation r = new SendLocation(User.hash,gpsObject.latitude,gpsObject.longitude,new RespCallback() {
 
 					@Override
@@ -274,7 +245,8 @@ public class MainActivity extends BaseActivity{
 						r.execute();
 					}
 				});
-				com.shoutapp.entity.Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<com.shoutapp.entity.Event[]>() {
+				*/
+				Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
 
 					@Override
 					public void onStart() {
