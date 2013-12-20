@@ -1,7 +1,7 @@
 package com.shoutapp.entity;
 
 public class Comment {
-	private int userId;
+	private int userid;
 	private String name;
 	private String content;
 
@@ -10,7 +10,7 @@ public class Comment {
 	}
 
 	public int getUserId() {
-		return userId;
+		return userid;
 	}
 
 	public String getName() {

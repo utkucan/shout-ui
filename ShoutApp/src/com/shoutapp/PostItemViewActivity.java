@@ -42,7 +42,7 @@ public class PostItemViewActivity extends BaseActivity {
 	private GoogleMap map;
 	LatLng loc;
 	int eventId;
-	String eventOwner;
+	int eventOwner;
 	Event event;
 	Context cxt;
 	TextView title_view, category_view, time_view, distance_view, description_view, owner_view;
@@ -110,7 +110,8 @@ public class PostItemViewActivity extends BaseActivity {
 				distance_view.setText(obj.distance(cxt) + " km");
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreatorName());
-
+				eventOwner = obj.getCreatorid();
+				
 				for (Comment c : obj.getComments()) {
 					addCommentPreview(c);
 				}
@@ -141,7 +142,7 @@ public class PostItemViewActivity extends BaseActivity {
 		rateEditBtn = (ImageButton) findViewById(R.id.rate_btn);
 		rateEditLayout = (RelativeLayout) findViewById(R.id.rate_btn_holder);
 
-		if (User.hash == eventOwner) {
+		if (User.user_id == eventOwner) {
 			rateEditBtn.setBackgroundResource(R.drawable.trash);
 			rateEditBtn.setOnClickListener(deleteClickListener);
 			rateEditLayout.setOnClickListener(deleteClickListener);
@@ -260,15 +261,13 @@ public class PostItemViewActivity extends BaseActivity {
 		comment_owner.setText(comment.getName());
 		// ((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(comment.getUserId());
 		((TextView) comment_item.findViewById(R.id.comment_time)).setText("Zamaneklencek");
-
+		final int commentingUserId = comment.getUserId();
 		comment_owner.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
-				View parent = (View) v.getParent();
-				String commnet_owner_id = ((TextView) parent.findViewById(R.id.comment_owner_id)).getText().toString();
+			public void onClick(View v) {				
 				Intent intent = new Intent(cxt, ProfileActivity.class);
-				intent.putExtra("profileId", commnet_owner_id);
+				intent.putExtra("profileId", commentingUserId);
 				cxt.startActivity(intent);
 			}
 		});
