@@ -268,7 +268,7 @@ public class ProfileActivity extends BaseActivity{
 
 		private String[] titles;// = { "Notification", "Posts", "Badges" };
 		public SwipeTabAdapter(){
-			if(User.hash.equals(UserId))
+			if(User.user_id == UserId)
 				titles = new String[] { "Notification", "Posts", "Badges" };
 			else
 				titles = new String[] { "Posts", "Badges" };
