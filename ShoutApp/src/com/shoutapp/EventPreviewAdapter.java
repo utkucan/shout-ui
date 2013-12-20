@@ -114,7 +114,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			categoryView.setText(category+"");
 
 			TextView time = (TextView) convertView.findViewById(R.id.time);
-			time.setText(e.getCreationTime().toString());
+			time.setText(e.getDateString());
 
 			TextView distanceView = (TextView) convertView.findViewById(R.id.distance);
 			String distance = e.distance(cxt) + " km";

@@ -1,5 +1,7 @@
 package com.shoutapp.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
@@ -73,6 +75,19 @@ public class Event {
 		return creator;
 	}
 
+	public String getDateString(){
+		long timestamp = creationTime.getTime();
+		long now = System.currentTimeMillis();
+		final long DAY = 24 * 60 * 1000;
+		if ( now - timestamp >  DAY ){
+			DateFormat df = new SimpleDateFormat("EEE HH:mm");			
+			return df.format(creationTime);			
+		} else {
+			DateFormat df = new SimpleDateFormat("HH:mm");			
+			return df.format(creationTime);
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return id + " " + title + " " + lat + " " + lon + (comments == null || comments.length == 0 ? " No comments" : comments[0]);

@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.shoutapp.RefreshableListView.OnRefreshListener;
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
@@ -58,7 +61,8 @@ public class MainActivity extends BaseActivity {
 
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout) swipe.findViewById(R.id.swipe_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,
+				RelativeLayout.LayoutParams.FILL_PARENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		swipeLayout.setLayoutParams(lp);
 		mainLayout.addView(swipe);
@@ -130,7 +134,7 @@ public class MainActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			Intent intent = new Intent(cxt, ProfileActivity.class);			
+			Intent intent = new Intent(cxt, ProfileActivity.class);
 			intent.putExtra("profileId", User.user_id);
 			cxt.startActivity(intent);
 		}
@@ -153,6 +157,36 @@ public class MainActivity extends BaseActivity {
 		}
 	};
 
+	private void fetchEvents() {
+		gpsObject = new GPSTracker(MainActivity.this);
+		Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
+
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onSuccess(com.shoutapp.entity.Event[] events) {
+				Log.d("Recieved:", events.length + " events");
+				for (Event e : events) {
+					Log.d("Event:", e.toString());
+					map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title(e.getTitle() + ";" + e.getCategory()));
+				}
+
+				postListView.setAdapter(new EventPreviewAdapter(postListView, cxt, R.id.post_list_view, events, map));
+				map.setMyLocationEnabled(true);
+				postListView.completeRefreshing();
+			}
+
+			@Override
+			public void onFail() {
+
+			}
+		});
+	}
+
 	public class SwipePagerAdapter extends PagerAdapter {
 
 		@Override
@@ -166,34 +200,15 @@ public class MainActivity extends BaseActivity {
 			if (position == 0) {
 				v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
 				postListView = (RefreshableListView) v.findViewById(R.id.post_list_view);
-
-				Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
-
-					@Override
-					public void onStart() {
-						// TODO Auto-generated method stub
-
-					}
+				fetchEvents();
+				postListView.setOnRefreshListener(new OnRefreshListener() {
 
 					@Override
-					public void onSuccess(com.shoutapp.entity.Event[] events) {
-						Log.d("Recieved:", events.length + " events");
-						for (Event e : events) {
-							Log.d("Event:", e.toString());
-							map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title(e.getTitle() + ";" + e.getCategory()));
-						}
-
-						postListView.setAdapter(new EventPreviewAdapter(postListView, cxt, R.id.post_list_view, events, map));
-						map.setMyLocationEnabled(true);
-						postListView.completeRefreshing();
-
-					}
-
-					@Override
-					public void onFail() {
-				
+					public void onRefresh(RefreshableListView listView) {
+						fetchEvents();
 					}
 				});
+				
 				collection.addView(v, position);
 			} else {
 

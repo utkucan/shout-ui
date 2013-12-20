@@ -109,8 +109,7 @@ public class PostItemViewActivity extends BaseActivity {
 				loc = new LatLng(obj.getLat(), obj.getLon());
 				title_view.setText(obj.getTitle());
 				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get(obj.getCategory()));
-				time_view.setText(obj.getCreationTime().toGMTString()); // TODO:
-																		// Fix
+				time_view.setText(obj.getDateString());
 				distance_view.setText(obj.distance(cxt) + " km");
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreator());
