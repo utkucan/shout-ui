@@ -21,7 +21,7 @@ public class Event {
 		return creatorid;
 	}
 
-	private String creator;
+	private String creatorname;
 
 	private String title;
 
@@ -71,8 +71,8 @@ public class Event {
 		return title;
 	}
 
-	public String getCreator() {
-		return creator;
+	public String getCreatorName() {
+		return creatorname;
 	}
 
 	public String getDateString(){

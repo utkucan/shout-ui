@@ -109,7 +109,7 @@ public class PostItemViewActivity extends BaseActivity {
 				time_view.setText(obj.getDateString());
 				distance_view.setText(obj.distance(cxt) + " km");
 				description_view.setText(obj.getDescription());
-				owner_view.setText(obj.getCreator());
+				owner_view.setText(obj.getCreatorName());
 
 				for (Comment c : obj.getComments()) {
 					addCommentPreview(c);
@@ -151,12 +151,10 @@ public class PostItemViewActivity extends BaseActivity {
 		}
 
 		owner_view.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(cxt, ProfileActivity.class);
-				intent.putExtra("profileId", event.getCreator());
+				intent.putExtra("profileId", event.getCreatorid());
 				cxt.startActivity(intent);
 			}
 		});
