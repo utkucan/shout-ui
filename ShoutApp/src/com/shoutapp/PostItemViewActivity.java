@@ -55,9 +55,6 @@ public class PostItemViewActivity extends BaseActivity {
 
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.post_item_preview, null);
-		// View layout =
-		// LayoutInflater.from(getBaseContext()).inflate(R.layout.post_item_preview,
-		// null);
 		RelativeLayout post_item_view_layout = (RelativeLayout) layout.findViewById(R.id.post_item_preview_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
@@ -104,7 +101,7 @@ public class PostItemViewActivity extends BaseActivity {
 			}
 
 			@Override
-			public void onSuccess(com.shoutapp.entity.Event obj) {
+			public void onSuccess(Event obj) {
 				event = obj;
 				loc = new LatLng(obj.getLat(), obj.getLon());
 				title_view.setText(obj.getTitle());
@@ -224,9 +221,7 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-
-			// delete event
+			
 
 		}
 	};
@@ -235,7 +230,7 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			
 
 		}
 	};
@@ -251,7 +246,6 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
 			sendIntent.putExtra(Intent.EXTRA_TEXT, "Someone share a shout with you bayb!");

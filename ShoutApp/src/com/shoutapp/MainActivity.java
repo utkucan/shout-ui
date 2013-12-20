@@ -144,7 +144,6 @@ public class MainActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			if (pager.getCurrentItem() == 0) {
 				pager.setCurrentItem(1, true);
 				ImageButton btn = (ImageButton) v.findViewById(R.id.change_view_btn);
@@ -163,8 +162,6 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onStart() {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override

@@ -79,7 +79,7 @@ public class Event {
 		long timestamp = creationTime.getTime();
 		long now = System.currentTimeMillis();
 		final long DAY = 24 * 60 * 1000;
-		if ( now - timestamp >  DAY ){
+		if ( Math.abs(now - timestamp) >  DAY ){
 			DateFormat df = new SimpleDateFormat("EEE HH:mm");			
 			return df.format(creationTime);			
 		} else {
