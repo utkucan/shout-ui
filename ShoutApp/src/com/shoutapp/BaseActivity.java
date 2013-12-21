@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.shoutapp.entity.FetchJsonTask.Callback;
+import com.shoutapp.entity.Profile;
+import com.shoutapp.entity.Status;
 
 public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 	//	public PlusClient mPlusClient;
@@ -111,44 +114,42 @@ public class BaseActivity extends SlidingMenuBaseActivity/*Activity */{
 		editor.putBoolean("activity", ((CheckBox) findViewById(R.id.activityCheckBox)).isChecked());
 		editor.putBoolean("art", ((CheckBox) findViewById(R.id.artCheckBox)).isChecked());
 		editor.putBoolean("other", ((CheckBox) findViewById(R.id.otherCheckBox)).isChecked());
-		StringBuilder sb = new StringBuilder();
-		if(((CheckBox) findViewById(R.id.sportCheckBox)).isChecked())
-			sb.append("1;");
-		if(((CheckBox) findViewById(R.id.partyCheckBox)).isChecked())
-			sb.append("2;");
-		if(((CheckBox) findViewById(R.id.gameCheckBox)).isChecked())
-			sb.append("3;");
-		if(((CheckBox) findViewById(R.id.activityCheckBox)).isChecked())
-			sb.append("4;");
-		if(((CheckBox) findViewById(R.id.artCheckBox)).isChecked())
-			sb.append("5;");
-		if(((CheckBox) findViewById(R.id.otherCheckBox)).isChecked())
-			sb.append("6;");
-
-		String prefStr = sb.toString();
-		String last ="";
-		if(prefStr.length()!=0){
-			last = prefStr.substring(0,prefStr.lastIndexOf(';'));
-			Log.d("TRIM", sb.toString() +" -> "+ last);	
-		}
 		editor.commit();
-		/*
-		(new SubmitReferences(last,
-				((SeekBar) findViewById(R.id.distance_bar)).getProgress(),
-				((SeekBar) findViewById(R.id.clock_bar)).getProgress(),
-				new RespCallback() {
+		
+		int value = 0;
+		if(((CheckBox) findViewById(R.id.sportCheckBox)).isChecked())
+			value += 1;
+		if(((CheckBox) findViewById(R.id.partyCheckBox)).isChecked())
+			value += 2;
+		if(((CheckBox) findViewById(R.id.gameCheckBox)).isChecked())
+			value += 4;
+		if(((CheckBox) findViewById(R.id.activityCheckBox)).isChecked())
+			value += 8;
+		if(((CheckBox) findViewById(R.id.artCheckBox)).isChecked())
+			value += 16;
+		if(((CheckBox) findViewById(R.id.otherCheckBox)).isChecked())
+			value += 32;
+
+		int distance = ((SeekBar) findViewById(R.id.distance_bar)).getProgress();
+		int time = ((SeekBar) findViewById(R.id.clock_bar)).getProgress();
+		Profile.submitPreferences(User.hash, value, distance, time, new Callback<Status>() {
 
 			@Override
-			public void callback_events(ArrayList<Event> Events) {
+			public void onStart() {
 				// TODO Auto-generated method stub
 			}
 
 			@Override
-			public void callback_ack() {
-
+			public void onSuccess(Status obj) {
+				// TODO Auto-generated method stub
 			}
-		})).execute();
-		*/
+
+			@Override
+			public void onFail() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	OnClickListener slidingMenuClickListener = new OnClickListener() {

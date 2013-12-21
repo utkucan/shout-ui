@@ -37,7 +37,8 @@ public class Profile {
 		u.execute("userId", userId);
 	}
 	
-	public static void submitPreferences(String hash, Callback<Status> c){
-
+	public static void submitPreferences(String hash, int categoryMask, int distance, int time, Callback<Status> c){
+		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "submitPreferences", c);
+		u.execute("hash",hash, "category", categoryMask, "distance", distance, "time", time);
 	}
 }
