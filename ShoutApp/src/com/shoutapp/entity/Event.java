@@ -113,6 +113,11 @@ public class Event {
 		u.execute("hash", hash, "lat", lat, "lon", lon, "category", category, "title", title, "description", description, "creation", creation, "expire", expire);
 	}
 
+	public static void removeEvent(String hash, int eventId, Callback<Status> c) {
+		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "removeEvent", c);
+		u.execute("hash", hash, "eventId", eventId);
+	}
+	
 	public int distance(Context cxt) {
 
 		GPSTracker gpsObject = new GPSTracker(cxt);

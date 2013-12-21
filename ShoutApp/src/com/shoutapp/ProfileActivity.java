@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,9 +38,10 @@ import android.widget.TextView;
 
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
+import com.shoutapp.entity.Notification;
 import com.shoutapp.entity.Profile;
 
-public class ProfileActivity extends BaseActivity{
+public class ProfileActivity extends BaseActivity {
 
 	private Context cxt;
 	ViewPager pager;
@@ -51,48 +53,47 @@ public class ProfileActivity extends BaseActivity{
 	int scrollX = 0;
 	int scrollY = 0;
 	int UserId;
-	ListView postListView,notificationListView,badgeListView; 
+	ListView postListView, notificationListView, badgeListView;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		cxt = this;
-		
-		RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
+
+		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 
 		View profileView = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile, null);
-		profileLayout = (RelativeLayout)profileView.findViewById(R.id.profile_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
+		profileLayout = (RelativeLayout) profileView.findViewById(R.id.profile_layout);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.MATCH_PARENT);
-		lp.addRule(RelativeLayout.BELOW,R.id.topBar);
+		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		profileLayout.setLayoutParams(lp);
 		mainLayout.addView(profileLayout);
-		
+
 		Bundle extras = getIntent().getExtras();
 		int userId = extras.getInt("profileId");
 
 		Profile.getProfile(userId, new Callback<Profile>() {
 
 			@Override
-			public void onStart() {				
+			public void onStart() {
 			}
 
 			@Override
 			public void onSuccess(Profile p) {
-				((TextView)findViewById(R.id.userName)).setText(p.getName());
+				((TextView) findViewById(R.id.userName)).setText(p.getName());
 				getProfilePhoto.execute(p.getPicture());
-				((TextView)findViewById(R.id.location_name)).setText(p.getLocation());
-				// ((TextView)findViewById(R.id.profile_rating)).setText(p.getPopularity());				
+				((TextView) findViewById(R.id.location_name)).setText(p.getLocation());
+				// ((TextView)findViewById(R.id.profile_rating)).setText(p.getPopularity());
 			}
 
 			@Override
 			public void onFail() {
-				
-			}			
+
+			}
 		});
 
-		add_post_btn = (ImageButton)findViewById(R.id.profile_add_post_btn);
+		add_post_btn = (ImageButton) findViewById(R.id.profile_add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -102,9 +103,9 @@ public class ProfileActivity extends BaseActivity{
 				startActivity(i);
 			}
 		});
-	
-		scrollv = (ScrollView)findViewById(R.id.scrollView1);
-		pager = (ViewPager)profileLayout.findViewById(R.id.profile_pager);
+
+		scrollv = (ScrollView) findViewById(R.id.scrollView1);
+		pager = (ViewPager) profileLayout.findViewById(R.id.profile_pager);
 
 		PagerTabStrip strip = PagerTabStrip.class.cast(findViewById(R.id.profile_tabs));
 		strip.setDrawFullUnderline(false);
@@ -122,42 +123,43 @@ public class ProfileActivity extends BaseActivity{
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {}
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {}
+			public void onPageScrollStateChanged(int arg0) {
+			}
 		});
 
 		ViewTreeObserver vto = scrollv.getViewTreeObserver();
 		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 			public boolean onPreDraw() {
-				if(!isTabLayHeightSet){
+				if (!isTabLayHeightSet) {
 					int h = scrollv.getMeasuredHeight();
-					pager.getLayoutParams().height = h-13;
+					pager.getLayoutParams().height = h - 13;
 					isTabLayHeightSet = true;
 					scrollv.scrollTo(0, 0);
 				}
-				if(tabPageChanged){
+				if (tabPageChanged) {
 					int X = scrollv.getScrollX();
 					int Y = scrollv.getScrollY();
-					if(scrollX != X || scrollY != Y)
+					if (scrollX != X || scrollY != Y)
 						scrollv.scrollTo(scrollX, scrollY);
 					else
 						tabPageChanged = false;
 				}
 				return true;
 			}
-		});  
-		
-		
+		});
+
 	}
-	
+
 	private AsyncTask<String, Void, Void> getProfilePhoto = new AsyncTask<String, Void, Void>() {
 		Bitmap bm;
-		
+
 		@Override
 		protected Void doInBackground(String... params) {
-			if(params.length>0){
+			if (params.length > 0) {
 				String photoUrl = params[0];
 				try {
 					URL aURL = new URL(photoUrl);
@@ -174,18 +176,18 @@ public class ProfileActivity extends BaseActivity{
 			}
 			return null;
 		}
-		
+
 		protected void onPostExecute(Void result) {
-			if ( bm != null){
-				((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(bm);
+			if (bm != null) {
+				((ImageView) findViewById(R.id.profile_pic)).setImageBitmap(bm);
 			}
 		};
 	};
 
 	public class MyEventPreviewAdapter extends EventPreviewAdapter {
 
-		public MyEventPreviewAdapter(ListView listView,Context context, int textViewResourceId, Event[] list) {
-			super(listView,context, textViewResourceId,list,null);
+		public MyEventPreviewAdapter(ListView listView, Context context, int textViewResourceId, Event[] list) {
+			super(listView, context, textViewResourceId, list, null);
 			// list.add(new Event("", 0, 0, 0, null, null,0, "")); TODO: bu ne
 		}
 
@@ -195,7 +197,7 @@ public class ProfileActivity extends BaseActivity{
 				@Override
 				public boolean onTouch(View arg0, MotionEvent arg1) {
 					// TODO Auto-generated method stub
-					if(arg1.getAction() == MotionEvent.ACTION_MOVE){
+					if (arg1.getAction() == MotionEvent.ACTION_MOVE) {
 						scrollv.requestDisallowInterceptTouchEvent(true);
 					}
 					return false;
@@ -205,22 +207,22 @@ public class ProfileActivity extends BaseActivity{
 		}
 	}
 
-	public class BadgeAdapter extends ArrayAdapter<BadgeObject>{
+	public class BadgeAdapter extends ArrayAdapter<BadgeObject> {
 
-		public BadgeAdapter(Context context, int textViewResourceId,ArrayList<BadgeObject> list) {
-			super(context, textViewResourceId,list);
+		public BadgeAdapter(Context context, int textViewResourceId, ArrayList<BadgeObject> list) {
+			super(context, textViewResourceId, list);
 			list.add(new BadgeObject(-1, "", ""));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			if(getItem(position).imageId < 0){	
+			if (getItem(position).imageId < 0) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
 				convertView.setVisibility(View.INVISIBLE);
-			}else{
+			} else {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.badge_list_item, null);
 				ImageView image = (ImageView) convertView.findViewById(R.id.badge_image);
-				image.setImageResource(getItem(position).imageId);//(R.drawable.events_cat_bicycle);
+				image.setImageResource(getItem(position).imageId);// (R.drawable.events_cat_bicycle);
 
 				TextView description = (TextView) convertView.findViewById(R.id.badge_description);
 				description.setText(getItem(position).desc);
@@ -232,50 +234,48 @@ public class ProfileActivity extends BaseActivity{
 		}
 	}
 
-	public class NatificationAdapter extends ArrayAdapter<NotificationItemObject>{
-		public NatificationAdapter(Context context, int textViewResourceId,ArrayList<NotificationItemObject> list) {
-			super(context, textViewResourceId,list);
-			list.add(new NotificationItemObject("", "", "",0));
+	public class NotificationAdapter extends ArrayAdapter<Notification> {
+
+		public NotificationAdapter(Context context, int textViewResourceId, ArrayList<Notification> list) {
+			super(context, textViewResourceId, list);
+			list.add(null);
+			// list.add(new NotificationItemObject("", "", "",0));
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			if(getItem(position).notificationText == ""){	
+			if (getItem(position) == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
 				convertView.setVisibility(View.INVISIBLE);
-			}else{
+			} else {
+				Notification n = getItem(position);
+
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.comment_item, null);
 				TextView comment = (TextView) convertView.findViewById(R.id.comment_text);
-				comment.setText("");
-				String ownerName = getItem(position).owner;
-				if(ownerName != ""){
-					comment.setText(Html.fromHtml("<font color='#f37f77'><b>" + ownerName + "</b></font>"));
-					comment.append(" ");
-				}
-
-				comment.append(getItem(position).notificationText);
-
+				TextView time = (TextView) convertView.findViewById(R.id.comment_time);
 				TextView owner = (TextView) convertView.findViewById(R.id.comment_owner);
 				owner.setVisibility(View.GONE);
-				TextView time = (TextView) convertView.findViewById(R.id.comment_time);
-				time.setText(getItem(position).time);
+
+				comment.setText(n.getMessage());
+				time.setText(getItem(position).getTime().toString());
 			}
 			return convertView;
 		}
 	}
 
-	public class SwipeTabAdapter extends PagerAdapter{
+	public class SwipeTabAdapter extends PagerAdapter {
 
 		private String[] titles;// = { "Notification", "Posts", "Badges" };
-		public SwipeTabAdapter(){
+
+		public SwipeTabAdapter() {
 			Bundle extras = getIntent().getExtras();
 			UserId = extras.getInt("profileId");
-			if(User.user_id == UserId)
+			if (User.user_id == UserId)
 				titles = new String[] { "Notification", "Posts", "Badges" };
 			else
 				titles = new String[] { "Posts", "Badges" };
 		}
-		
+
 		@Override
 		public int getCount() {
 			return titles.length;
@@ -285,35 +285,58 @@ public class ProfileActivity extends BaseActivity{
 		public Object instantiateItem(ViewGroup collection, int position) {
 			View v = LayoutInflater.from(getBaseContext()).inflate(R.layout.profile_tab_list_layout, null);
 			ListView lv = null;
-			if(titles[position] == "Notification"){ //notifications
-				notificationListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
-				notificationListView.setAdapter(new NatificationAdapter(cxt, R.id.post_list_view, (ArrayList<NotificationItemObject>) Model.getNotifications().clone()));
+			if (titles[position] == "Notification") { // notifications
+				notificationListView = (ListView) v.findViewById(R.id.profile_tab_list_view);
+				Notification.getNotifications(User.hash, new Callback<Notification[]>() {
+
+					@Override
+					public void onStart() {
+
+					}
+
+					@Override
+					public void onSuccess(Notification[] notifs) {
+						Log.d("Notif count", notifs.length + "");
+						ArrayList<Notification> notifList = new ArrayList<Notification>(Arrays.asList(notifs));
+						NotificationAdapter na = new NotificationAdapter(cxt, R.id.post_list_view, notifList);
+						notificationListView.setAdapter(na);
+					}
+
+					@Override
+					public void onFail() {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
 				lv = notificationListView;
-				//                		postListView.setAdapter(new PostPreviewAdapter(cxt, R.id.post_list_view, (ArrayList<PostPreviewItemObject>) Model.getPostPreviews().clone()));
-			}else if(titles[position] == "Posts"){ // events
-				postListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
+				// postListView.setAdapter(new PostPreviewAdapter(cxt,
+				// R.id.post_list_view, (ArrayList<PostPreviewItemObject>)
+				// Model.getPostPreviews().clone()));
+			} else if (titles[position] == "Posts") { // events
+				postListView = (ListView) v.findViewById(R.id.profile_tab_list_view);
 				lv = postListView;
 				Bundle extras = getIntent().getExtras();
 				UserId = extras.getInt("profileId");
-				
+
 				Event.fetchEventsOfUser(UserId, new Callback<Event[]>() {
 
 					@Override
 					public void onStart() {
-						
+
 					}
 
 					@Override
 					public void onSuccess(Event[] events) {
-						postListView.setAdapter(new MyEventPreviewAdapter(postListView,cxt, R.id.post_list_view,events));
+						postListView.setAdapter(new MyEventPreviewAdapter(postListView, cxt, R.id.post_list_view, events));
 					}
 
 					@Override
 					public void onFail() {
 					}
 				});
-			}else if(titles[position] == "Badges"){ // badges
-				badgeListView = (ListView)v.findViewById(R.id.profile_tab_list_view);
+			} else if (titles[position] == "Badges") { // badges
+				badgeListView = (ListView) v.findViewById(R.id.profile_tab_list_view);
 				badgeListView.setAdapter(new BadgeAdapter(cxt, R.id.post_list_view, Model.getBadge()));
 				lv = badgeListView;
 			}
@@ -321,13 +344,13 @@ public class ProfileActivity extends BaseActivity{
 
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
-					if(event.getAction() == MotionEvent.ACTION_MOVE){
+					if (event.getAction() == MotionEvent.ACTION_MOVE) {
 						scrollv.requestDisallowInterceptTouchEvent(true);
 					}
 					return false;
 				}
 			});
-			collection.addView(v,position);
+			collection.addView(v, position);
 			return v;
 		}
 
@@ -343,7 +366,7 @@ public class ProfileActivity extends BaseActivity{
 
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
-			return (view==object);
+			return (view == object);
 		}
 
 		@Override
@@ -351,9 +374,9 @@ public class ProfileActivity extends BaseActivity{
 			tabPageChanged = true;
 		}
 
-
 		@Override
-		public void restoreState(Parcelable arg0, ClassLoader arg1) {}
+		public void restoreState(Parcelable arg0, ClassLoader arg1) {
+		}
 
 		@Override
 		public Parcelable saveState() {
@@ -361,7 +384,8 @@ public class ProfileActivity extends BaseActivity{
 		}
 
 		@Override
-		public void startUpdate(ViewGroup arg0) {}
+		public void startUpdate(ViewGroup arg0) {
+		}
 
 	}
 
