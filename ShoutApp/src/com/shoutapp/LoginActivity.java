@@ -246,7 +246,7 @@ public class LoginActivity extends FragmentActivity {
 
 		@Override
 		public void onConnected(Bundle connectionHint) {
-			Log.d("connected", "connected");
+			// Log.d("connected", "connected");
 			checkPlayServices();
 			registerInBackground();
 		}

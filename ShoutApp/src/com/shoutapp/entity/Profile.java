@@ -36,4 +36,8 @@ public class Profile {
 		FetchJsonTask<Profile> u = new FetchJsonTask<Profile>(Profile.class, "getProfile", c);
 		u.execute("userId", userId);
 	}
+	
+	public static void submitPreferences(String hash, Callback<Status> c){
+
+	}
 }
