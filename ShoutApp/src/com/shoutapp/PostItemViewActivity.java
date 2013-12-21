@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.shoutapp.entity.Comment;
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
+import com.shoutapp.entity.Status;
 
 public class PostItemViewActivity extends BaseActivity {
 
@@ -56,7 +57,8 @@ public class PostItemViewActivity extends BaseActivity {
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.post_item_preview, null);
 		RelativeLayout post_item_view_layout = (RelativeLayout) layout.findViewById(R.id.post_item_preview_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		post_item_view_layout.setLayoutParams(lp);
 		mainLayout.addView(post_item_view_layout);
@@ -91,7 +93,7 @@ public class PostItemViewActivity extends BaseActivity {
 
 		Bundle extras = getIntent().getExtras();
 		eventId = extras.getInt("eventId");
-		//eventOwner = extras.getInt("owner");
+		// eventOwner = extras.getInt("owner");
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
 
@@ -111,7 +113,7 @@ public class PostItemViewActivity extends BaseActivity {
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreatorName());
 				eventOwner = obj.getCreatorid();
-				
+
 				for (Comment c : obj.getComments()) {
 					addCommentPreview(c);
 				}
@@ -183,6 +185,27 @@ public class PostItemViewActivity extends BaseActivity {
 					public void onClick(View v) {
 						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
 						Log.d("SubmitComment", "submittin comment for event: " + eventId + " username: " + User.username);
+						Comment.addComment(User.hash, eventId, textBox.getText().toString(), new Callback<Status>() {
+
+							@Override
+							public void onStart() {
+							}
+
+							@Override
+							public void onSuccess(Status obj) {
+								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+								View remove = (View) ln.findViewById(R.layout.add_comment_xml);
+								View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+								ln.removeAllViews();
+								ln.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onFail() {
+								// TODO: Copy of the onSuccess?
+
+							}
+						});
 						/*
 						 * new AddComment(new Comment(User.hash, User.username,
 						 * textBox.getText().toString()), eventId, new
@@ -220,7 +243,6 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			
 
 		}
 	};
@@ -229,7 +251,6 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
-			
 
 		}
 	};
@@ -259,13 +280,14 @@ public class PostItemViewActivity extends BaseActivity {
 		((TextView) comment_item.findViewById(R.id.comment_text)).setText(comment.getContent());
 		TextView comment_owner = (TextView) comment_item.findViewById(R.id.comment_owner);
 		comment_owner.setText(comment.getName());
-		// ((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(comment.getUserId());
+		// ((TextView)
+		// comment_item.findViewById(R.id.comment_owner_id)).setText(comment.getUserId());
 		((TextView) comment_item.findViewById(R.id.comment_time)).setText(comment.getDateString());
 		final int commentingUserId = comment.getUserId();
 		comment_owner.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {				
+			public void onClick(View v) {
 				Intent intent = new Intent(cxt, ProfileActivity.class);
 				intent.putExtra("profileId", commentingUserId);
 				cxt.startActivity(intent);

@@ -3,6 +3,8 @@ package com.shoutapp.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.shoutapp.entity.FetchJsonTask.Callback;
+
 public class Comment {
 	private int userid;
 	private String name;
@@ -33,5 +35,10 @@ public class Comment {
 	@Override
 	public String toString() {
 		return "@" + name + " : " + content;
+	}
+	
+	public static void addComment(String hash, int eventId, String content, Callback<Status> c) {
+		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "addComment", c);
+		u.execute("hash", hash, "eventId", eventId, "content", content);
 	}
 }
