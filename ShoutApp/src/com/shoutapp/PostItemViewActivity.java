@@ -260,7 +260,7 @@ public class PostItemViewActivity extends BaseActivity {
 		TextView comment_owner = (TextView) comment_item.findViewById(R.id.comment_owner);
 		comment_owner.setText(comment.getName());
 		// ((TextView) comment_item.findViewById(R.id.comment_owner_id)).setText(comment.getUserId());
-		((TextView) comment_item.findViewById(R.id.comment_time)).setText("Zamaneklencek");
+		((TextView) comment_item.findViewById(R.id.comment_time)).setText(comment.getDateString());
 		final int commentingUserId = comment.getUserId();
 		comment_owner.setOnClickListener(new OnClickListener() {
 
