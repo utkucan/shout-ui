@@ -6,4 +6,9 @@ public class Status {
 	public String getMessage() {
 		return message;
 	}
+	
+	@Override
+	public String toString() {
+		return "Status: " + message;
+	}
 }

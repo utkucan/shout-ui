@@ -215,7 +215,7 @@
                                 android:paddingTop="8dp"
                                 android:text="Sercan Aksoy"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="#000000"
+                                android:textColor="#f37f77"
                                 android:textSize="10sp" />
 
                             <FrameLayout

@@ -216,8 +216,8 @@ public class MainActivity extends BaseActivity {
 
 				final LatLng loc = new LatLng(gpsObject.latitude, gpsObject.longitude);
 				map = ((MapFragment) currentactivity.getFragmentManager().findFragmentById(R.id.map)).getMap();
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-				map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
+				map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 			}
 			return v;
 		}

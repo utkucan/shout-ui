@@ -203,29 +203,8 @@ public class PostItemViewActivity extends BaseActivity {
 							@Override
 							public void onFail() {
 								// TODO: Copy of the onSuccess?
-
 							}
 						});
-						/*
-						 * new AddComment(new Comment(User.hash, User.username,
-						 * textBox.getText().toString()), eventId, new
-						 * RespCallback() {
-						 * 
-						 * @Override public void
-						 * callback_events(ArrayList<Event> Events) {
-						 * 
-						 * }
-						 * 
-						 * @Override public void callback_ack() { LinearLayout
-						 * ln = (LinearLayout)
-						 * findViewById(R.id.add_comment_layout); View remove =
-						 * (View) ln.findViewById(R.layout.add_comment_xml); //
-						 * View comm = //
-						 * LayoutInflater.from(getBaseContext()).inflate
-						 * (R.layout.add_comment_xml, // null);
-						 * ln.removeAllViews(); ln.setVisibility(View.GONE); }
-						 * }).execute();
-						 */
 					}
 
 				});
