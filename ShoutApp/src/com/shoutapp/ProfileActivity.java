@@ -189,8 +189,9 @@ public class ProfileActivity extends BaseActivity {
 	public class MyEventPreviewAdapter extends EventPreviewAdapter {
 
 		public MyEventPreviewAdapter(ListView listView, Context context, int textViewResourceId, Event[] list) {
-			super(listView, context, textViewResourceId, list, null);
-			// list.add(new Event("", 0, 0, 0, null, null,0, "")); TODO: bu ne
+			super(listView, context, textViewResourceId, list, null);			
+			// list.add(new Event("", 0, 0, 0, null, null,0, "")); 
+			
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -303,12 +304,12 @@ public class ProfileActivity extends BaseActivity {
 								Log.d("OnItem click", position +"");
 								Notification n = notifs[position];
 								int type = n.getType();
-								if (type == 0) { // Meaning event
+								if (type == 1) { // Meaning event
 									Intent intent = new Intent(cxt, PostItemViewActivity.class);
 									intent.putExtra("eventId", n.getRelatedid());
 									intent.putExtra("owner", -1);
 									cxt.startActivity(intent);
-								} else if (type == 1) { // Meaning User
+								} else if (type == 0) { // Meaning User
 									Intent intent = new Intent(cxt, ProfileActivity.class);
 									intent.putExtra("profileId", n.getRelatedid());
 									cxt.startActivity(intent);
