@@ -28,6 +28,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -243,19 +245,14 @@ public class ProfileActivity extends BaseActivity {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-
-			if (getItem(position) == null) {
+			Notification n = getItem(position);
+			if (n == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
 				convertView.setVisibility(View.INVISIBLE);
 			} else {
-				Notification n = getItem(position);
-
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.comment_item, null);
 				TextView comment = (TextView) convertView.findViewById(R.id.comment_text);
 				TextView time = (TextView) convertView.findViewById(R.id.comment_time);
-				TextView owner = (TextView) convertView.findViewById(R.id.comment_owner);
-				owner.setVisibility(View.GONE);
-
 				comment.setText(n.getMessage());
 				time.setText(getItem(position).getTime().toString());
 			}
@@ -295,11 +292,31 @@ public class ProfileActivity extends BaseActivity {
 					}
 
 					@Override
-					public void onSuccess(Notification[] notifs) {
+					public void onSuccess(final Notification[] notifs) {
 						Log.d("Notif count", notifs.length + "");
 						ArrayList<Notification> notifList = new ArrayList<Notification>(Arrays.asList(notifs));
 						NotificationAdapter na = new NotificationAdapter(cxt, R.id.post_list_view, notifList);
 						notificationListView.setAdapter(na);
+						notificationListView.setOnItemClickListener(new OnItemClickListener() {
+							@Override
+							public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+								Log.d("OnItem click", position +"");
+								Notification n = notifs[position];
+								int type = n.getType();
+								if (type == 0) { // Meaning event
+									Intent intent = new Intent(cxt, PostItemViewActivity.class);
+									intent.putExtra("eventId", n.getRelatedid());
+									intent.putExtra("owner", -1);
+									cxt.startActivity(intent);
+								} else if (type == 1) { // Meaning User
+									Intent intent = new Intent(cxt, ProfileActivity.class);
+									intent.putExtra("profileId", n.getRelatedid());
+									cxt.startActivity(intent);
+								}
+
+							}
+						});
+
 					}
 
 					@Override
