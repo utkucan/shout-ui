@@ -143,7 +143,7 @@ public class LoginActivity extends FragmentActivity {
 
 		@Override
 		public void onConnected(Bundle connectionHint) {
-			// Log.d("connected", "connected");
+			Log.d("connected", "connected");
 			checkPlayServices();
 			registerInBackground();
 		}
@@ -262,7 +262,8 @@ public class LoginActivity extends FragmentActivity {
 		context = this;
 		checkPlayServices();
 		if (getRegistrationId(this).equals("")) {
-			registerInBackground();
+			// registerInBackground(); TODO: Don't otherwise fails because not yet connected to google+
+			
 		}
 
 		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
@@ -270,9 +271,7 @@ public class LoginActivity extends FragmentActivity {
 		login_activity = this;
 		if (mPlusClient.isConnected()) {
 			Intent intent = new Intent(getBaseContext(), MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other
-																// Activities
-																// from stack
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
 			startActivity(intent);
 		}
 		setContentView(R.layout.login);
