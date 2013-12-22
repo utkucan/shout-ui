@@ -32,14 +32,13 @@ public class SeekbarActivity extends Activity {
 
 	public SeekbarActivity(View parent) {
 		this.parent2 = parent;
-		// newNotification(parent.getContext());
+
 
 		distanceControl = (SeekBar) parent.findViewById(R.id.distance_bar);
 		int distance = getDistance(parent.getContext());
 		distanceControl.setProgress(distance);
 
-		// volumeControl.setThumb(writeOnDrawable(R.drawable.add_event_button,
-		// volumeControl.getProgress()+""));
+
 		distanceLabel = ((TextView) parent.findViewById(R.id.distanceLabel));
 		distanceLabel.setText(distanceControl.getProgress() + "");
 
@@ -50,23 +49,16 @@ public class SeekbarActivity extends Activity {
 
 				progressChanged = seekBar.getProgress();
 				if (progressChanged == 0) {
-					// Toast.makeText(parent2.getContext(),
-					// "Near Shouts will be shown!",Toast.LENGTH_SHORT).show();
+
 					distanceLabel.setText(progressChanged + "km");
 				} else if (progressChanged == 1) {
-					// Toast.makeText(parent2.getContext(), "Shouts within "+
-					// progressChanged
-					// +"km will be shown!",Toast.LENGTH_SHORT).show();
+
 					distanceLabel.setText(progressChanged + "km");
 				} else {
-					// Toast.makeText(parent2.getContext(), "Shouts within "+
-					// progressChanged
-					// +"kms will be shown!",Toast.LENGTH_SHORT).show();
+
 					distanceLabel.setText(progressChanged + "kms");
 				}
 
-				// volumeControl.setThumb(writeOnDrawable(R.drawable.add_event_button,
-				// progressChanged+""));
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -90,18 +82,10 @@ public class SeekbarActivity extends Activity {
 
 				progressChanged = seekBar.getProgress();
 				if (progressChanged == 0) {
-					// Toast.makeText(parent2.getContext(),
-					// "Currently active Shouts will appear",Toast.LENGTH_SHORT).show();
 					timeLabel.setText("NOW!");
 				} else if (progressChanged == 1) {
-					// Toast.makeText(parent2.getContext(), "Shouts within "+
-					// progressChanged
-					// +"hour will be shown!",Toast.LENGTH_SHORT).show();
 					timeLabel.setText(progressChanged + " hour");
 				} else {
-					// Toast.makeText(parent2.getContext(), "Shouts within "+
-					// progressChanged
-					// +"hours will be shown!",Toast.LENGTH_SHORT).show();
 					timeLabel.setText(progressChanged + " hours");
 				}
 			}
@@ -112,9 +96,6 @@ public class SeekbarActivity extends Activity {
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
 
-				// timeLabel.setText(progressChanged+"");
-				// timeControl.setThumb(writeOnDrawable(R.drawable.add_event_button,
-				// progressChanged+""));
 			}
 		});
 
@@ -142,32 +123,6 @@ public class SeekbarActivity extends Activity {
 		canvas.drawText(text, 0, bm.getHeight() / 2, paint);
 
 		return new BitmapDrawable(bm);
-	}
-
-	public void newNotification(Context ctx) {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ctx).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!")
-				.setContentText("100 metre uzaðýnýzda tam size göre bir etkinlik var!");
-		/*
-		 * // Creates an explicit intent for an Activity in your app Intent
-		 * resultIntent = new Intent(ctx, BaseActivity.class);
-		 * 
-		 * // The stack builder object will contain an artificial back stack for
-		 * the // started Activity. // This ensures that navigating backward
-		 * from the Activity leads out of // your application to the Home
-		 * screen. TaskStackBuilder stackBuilder = TaskStackBuilder.create(ctx);
-		 * // Adds the back stack for the Intent (but not the Intent itself)
-		 * stackBuilder.addParentStack(MainActivity.class); // Adds the Intent
-		 * that starts the Activity to the top of the stack
-		 * stackBuilder.addNextIntent(resultIntent); PendingIntent
-		 * resultPendingIntent = stackBuilder.getPendingIntent( 0,
-		 * PendingIntent.FLAG_UPDATE_CURRENT );
-		 * mBuilder.setContentIntent(resultPendingIntent);
-		 */
-
-		NotificationManager mNotificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-		// mId allows you to update the notification later on.
-		mNotificationManager.notify(99, mBuilder.build());
-
 	}
 
 	public int getDistance(Context ctx) {
