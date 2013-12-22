@@ -14,56 +14,9 @@ import android.widget.TextView;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class SlidingMenuBaseActivity extends SlidingFragmentActivity   {
-	
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		setBehindContentView(R.layout.menu_frame);
-		ListFragment mFrag;
-		if (savedInstanceState == null) {
-			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
-			mFrag = new MenuListFragment();
-			t.replace(R.id.menu_frame, mFrag);
-			t.commit();
-		} else {
-			mFrag = (ListFragment)this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
-		}
-		
-		SlidingMenu sm = getSlidingMenu();
-		sm.setShadowWidthRes(R.dimen.shadow_width);
-		sm.setShadowDrawable(R.drawable.shadow);
-		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		sm.setFadeDegree(0.35f);
-		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-	}
-	
-	public static class MenuListFragment extends ListFragment{
-		
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			return inflater.inflate(R.layout.sliding_menu_list, null);
-		}
-		
-		public void onActivityCreated(Bundle savedInstanceState) {
-			super.onActivityCreated(savedInstanceState);
-			SampleAdapter adapter = new SampleAdapter(getActivity());
-			
-			adapter.add(new SampleItem("Help", R.drawable.ipod_icon_unknown));
-			adapter.add(new SampleItem("Share", R.drawable.android_share_icon));
-			adapter.add(new SampleItem("About", R.drawable.info_icon));
-			adapter.add(new SampleItem("Account", R.drawable.login_icon));
-			adapter.add(new SampleItem("Notifications", R.drawable.thread_announcement));
-			setListAdapter(adapter);
-		}
+public class SlidingMenuBaseActivity extends SlidingFragmentActivity {
 
-		private class SampleItem {
-			public String tag;
-			public int iconRes;
-			public SampleItem(String tag, int iconRes) {
-				this.tag = tag; 
-				this.iconRes = iconRes;
-			}
-		}
+	public static class MenuListFragment extends ListFragment {
 
 		public class SampleAdapter extends ArrayAdapter<SampleItem> {
 
@@ -71,6 +24,7 @@ public class SlidingMenuBaseActivity extends SlidingFragmentActivity   {
 				super(context, 0);
 			}
 
+			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null) {
 					convertView = LayoutInflater.from(getContext()).inflate(R.layout.side_menu_row, null);
@@ -84,6 +38,57 @@ public class SlidingMenuBaseActivity extends SlidingFragmentActivity   {
 			}
 
 		}
+
+		private class SampleItem {
+			public String tag;
+			public int iconRes;
+
+			public SampleItem(String tag, int iconRes) {
+				this.tag = tag;
+				this.iconRes = iconRes;
+			}
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState);
+			SampleAdapter adapter = new SampleAdapter(getActivity());
+
+			adapter.add(new SampleItem("Help", R.drawable.ipod_icon_unknown));
+			adapter.add(new SampleItem("Share", R.drawable.android_share_icon));
+			adapter.add(new SampleItem("About", R.drawable.info_icon));
+			adapter.add(new SampleItem("Account", R.drawable.login_icon));
+			adapter.add(new SampleItem("Notifications", R.drawable.thread_announcement));
+			setListAdapter(adapter);
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			return inflater.inflate(R.layout.sliding_menu_list, null);
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setBehindContentView(R.layout.menu_frame);
+		ListFragment mFrag;
+		if (savedInstanceState == null) {
+			FragmentTransaction t = this.getSupportFragmentManager().beginTransaction();
+			mFrag = new MenuListFragment();
+			t.replace(R.id.menu_frame, mFrag);
+			t.commit();
+		} else {
+			mFrag = (ListFragment) this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
+		}
+
+		SlidingMenu sm = getSlidingMenu();
+		sm.setShadowWidthRes(R.dimen.shadow_width);
+		sm.setShadowDrawable(R.drawable.shadow);
+		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		sm.setFadeDegree(0.35f);
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 	}
 
 }

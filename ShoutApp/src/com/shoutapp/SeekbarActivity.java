@@ -2,7 +2,6 @@ package com.shoutapp;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,11 +31,9 @@ public class SeekbarActivity extends Activity {
 	public SeekbarActivity(View parent) {
 		this.parent2 = parent;
 
-
 		distanceControl = (SeekBar) parent.findViewById(R.id.distance_bar);
 		int distance = getDistance(parent.getContext());
 		distanceControl.setProgress(distance);
-
 
 		distanceLabel = ((TextView) parent.findViewById(R.id.distanceLabel));
 		distanceLabel.setText(distanceControl.getProgress() + "");
@@ -45,6 +41,7 @@ public class SeekbarActivity extends Activity {
 		distanceControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged = 0;
 
+			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
 				progressChanged = seekBar.getProgress();
@@ -61,10 +58,12 @@ public class SeekbarActivity extends Activity {
 
 			}
 
+			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 			}
 
+			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 			}
 
@@ -78,6 +77,7 @@ public class SeekbarActivity extends Activity {
 		timeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged = 0;
 
+			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
 				progressChanged = seekBar.getProgress();
@@ -90,10 +90,12 @@ public class SeekbarActivity extends Activity {
 				}
 			}
 
+			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 			}
 
+			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 
 			}
@@ -110,19 +112,11 @@ public class SeekbarActivity extends Activity {
 
 	}
 
-	public BitmapDrawable writeOnDrawable(int drawableId, String text) {
-
-		Bitmap bm = BitmapFactory.decodeResource(parent2.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-
-		Paint paint = new Paint();
-		paint.setStyle(Style.FILL);
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(20);
-
-		Canvas canvas = new Canvas(bm);
-		canvas.drawText(text, 0, bm.getHeight() / 2, paint);
-
-		return new BitmapDrawable(bm);
+	public boolean[] getCheckBoxes(Context ctx) {
+		SharedPreferences storedSettings = ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0);
+		return new boolean[] { storedSettings.getBoolean("sports", true), storedSettings.getBoolean("party", true),
+				storedSettings.getBoolean("game", true), storedSettings.getBoolean("activity", true), storedSettings.getBoolean("art", true),
+				storedSettings.getBoolean("other", true) };
 	}
 
 	public int getDistance(Context ctx) {
@@ -137,10 +131,18 @@ public class SeekbarActivity extends Activity {
 		return silent;
 	}
 
-	public boolean[] getCheckBoxes(Context ctx) {
-		SharedPreferences storedSettings = ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0);
-		return new boolean[] { storedSettings.getBoolean("sports", true), storedSettings.getBoolean("party", true),
-				storedSettings.getBoolean("game", true), storedSettings.getBoolean("activity", true), storedSettings.getBoolean("art", true),
-				storedSettings.getBoolean("other", true) };
+	public BitmapDrawable writeOnDrawable(int drawableId, String text) {
+
+		Bitmap bm = BitmapFactory.decodeResource(parent2.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+
+		Paint paint = new Paint();
+		paint.setStyle(Style.FILL);
+		paint.setColor(Color.BLACK);
+		paint.setTextSize(20);
+
+		Canvas canvas = new Canvas(bm);
+		canvas.drawText(text, 0, bm.getHeight() / 2, paint);
+
+		return new BitmapDrawable(bm);
 	}
 }

@@ -31,25 +31,25 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 	private GoogleMap map;
 	ArrayAdapter<Event> adapter;
 
-
-	public EventPreviewAdapter(ListView listView,Context context, int textViewResourceId, Event[] list,GoogleMap map) {
-		super(context, textViewResourceId,list);
+	public EventPreviewAdapter(ListView listView, Context context, int textViewResourceId, Event[] list, GoogleMap map) {
+		super(context, textViewResourceId, list);
 		this.cxt = context;
 		adapter = this;
 		categorys = new ArrayList<String>(Arrays.asList(context.getResources().getStringArray(R.array.Categories)));
 		rlv = listView;
 		this.map = map;
-		if(map != null){
+		if (map != null) {
 			map.clear();
 			map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-				
+
 				@Override
 				public void onInfoWindowClick(Marker marker) {
 					// TODO Auto-generated method stub
 					String content = marker.getTitle();
-					//					ArrayList<String> items = (ArrayList<String>) Arrays.asList(content.split(";"));
+					// ArrayList<String> items = (ArrayList<String>)
+					// Arrays.asList(content.split(";"));
 					String[] items = content.split(";");
-					if(items.length>1){
+					if (items.length > 1) {
 						int position = Integer.parseInt(items[1]);
 						Event obj = adapter.getItem(position);
 						Intent intent = new Intent(cxt, PostItemViewActivity.class);
@@ -63,33 +63,31 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			map.setInfoWindowAdapter(new InfoWindowAdapter() {
 
 				@Override
+				public View getInfoContents(Marker marker) {
+
+					return null;
+				}
+
+				@Override
 				public View getInfoWindow(Marker marker) {
 					String content = marker.getTitle();
 					String[] items = content.split(";");
-					if(items.length>1){
+					if (items.length > 1) {
 						int position = Integer.parseInt(items[1]);
 						View convertView = adapter.getView(position, null, null);
 						return convertView;
 					}
 					return null;
 				}
-
-				@Override
-				public View getInfoContents(Marker marker) {
-
-				
-					return null;
-				}
 			});
 		}
 		rlv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0,
-					View arg1, int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				// TODO Auto-generated method stub
-				Log.d("Position of event",""+ position);
+				Log.d("Position of event", "" + position);
 
-				Event obj = (Event)arg0.getItemAtPosition(position + 1);
+				Event obj = (Event) arg0.getItemAtPosition(position + 1);
 				Intent intent = new Intent(cxt, PostItemViewActivity.class);
 				intent.putExtra("eventId", obj.getId());
 				intent.putExtra("owner", obj.getCreatorid());
@@ -98,12 +96,12 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 		});
 	}
 
+	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if(getItem(position).getTitle() == ""){
+		if (getItem(position).getTitle() == "") {
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.tab_list_empty_item, null);
 			convertView.setVisibility(View.INVISIBLE);
-		}
-		else{
+		} else {
 			Event e = getItem(position);
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.post_list_item_preview, null);
 			TextView title = (TextView) convertView.findViewById(R.id.post_title);
@@ -111,7 +109,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 
 			TextView categoryView = (TextView) convertView.findViewById(R.id.category);
 			String category = categorys.get(e.getCategory());
-			categoryView.setText(category+"");
+			categoryView.setText(category + "");
 
 			TextView time = (TextView) convertView.findViewById(R.id.time);
 			time.setText(e.getDateString());
@@ -119,8 +117,8 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			TextView distanceView = (TextView) convertView.findViewById(R.id.distance);
 			String distance = e.distance(cxt) + " km";
 			distanceView.setText(distance);
-			if(map != null){
-				map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title("id;"+position));
+			if (map != null) {
+				map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title("id;" + position));
 			}
 		}
 		return convertView;

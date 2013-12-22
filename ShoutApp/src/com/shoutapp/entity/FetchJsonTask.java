@@ -23,8 +23,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
+	public interface Callback<T> {
+		public abstract void onFail();
+
+		public abstract void onStart();
+
+		public abstract void onSuccess(T obj);
+	}
 	private Class<T> object;
 	private String path;
+
 	private Callback<T> callback;
 
 	public FetchJsonTask(Class<T> object, String path, Callback<T> callback) {
@@ -34,25 +42,11 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 	}
 
 	@Override
-	protected void onPreExecute() {
-		callback.onStart();
-	}
-
-	@Override
-	protected void onPostExecute(T result) {
-		if (null == result) {
-			callback.onFail();
-		} else {
-			callback.onSuccess(result);
-		}
-	}
-
-	@Override
 	protected T doInBackground(Object... params) {
 		HttpClient httpclient = new DefaultHttpClient();
 		Log.d("FetchJsonRequest", Constants.URL + path);
 		HttpPost httppost = new HttpPost(Constants.URL + path);
-		
+
 		try {
 			// Add your data
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -65,15 +59,15 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 
 			// Execute HTTP Post Request
 			HttpResponse response = httpclient.execute(httppost);
-			if ( response.getStatusLine().getStatusCode() != 200){
+			if (response.getStatusLine().getStatusCode() != 200) {
 				// Meaning an error has occured
 				return null;
 			}
-			InputStream is = response.getEntity().getContent();					
+			InputStream is = response.getEntity().getContent();
 			// Compatible with JavaScript's Date format
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'hh:mm:ss.sss'Z'").create();
 			Reader reader = new InputStreamReader(is);
-			// Parse the fetched JSON object to a Java object 
+			// Parse the fetched JSON object to a Java object
 			T myObj = gson.fromJson(reader, object);
 			Log.d("Recieved Object", myObj.toString());
 			return myObj;
@@ -88,11 +82,17 @@ public class FetchJsonTask<T> extends AsyncTask<Object, Void, T> {
 		return null;
 	}
 
-	public interface Callback<T> {
-		public abstract void onStart();
+	@Override
+	protected void onPostExecute(T result) {
+		if (null == result) {
+			callback.onFail();
+		} else {
+			callback.onSuccess(result);
+		}
+	}
 
-		public abstract void onSuccess(T obj);
-
-		public abstract void onFail();
+	@Override
+	protected void onPreExecute() {
+		callback.onStart();
 	}
 }

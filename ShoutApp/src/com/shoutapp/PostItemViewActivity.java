@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,176 +49,6 @@ public class PostItemViewActivity extends BaseActivity {
 	Event event;
 	Context cxt;
 	TextView title_view, category_view, time_view, distance_view, description_view, owner_view;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		cxt = this;
-		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-
-		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.post_item_preview, null);
-		RelativeLayout post_item_view_layout = (RelativeLayout) layout.findViewById(R.id.post_item_preview_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
-		post_item_view_layout.setLayoutParams(lp);
-		mainLayout.addView(post_item_view_layout);
-		comment_list_lay = (LinearLayout) findViewById(R.id.comment_list_layout);
-		scrollv = (ScrollView) findViewById(R.id.post_preview_scrollView);
-		mapLay = (RelativeLayout) findViewById(R.id.post_map);
-		ViewTreeObserver vto = scrollv.getViewTreeObserver();
-		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-			public boolean onPreDraw() {
-				if (!isMapLayHeightSet) {
-					int h = scrollv.getMeasuredHeight();
-					mapLay.getLayoutParams().height = (2 * h) / 5;
-					isMapLayHeightSet = true;
-					scrollv.scrollTo(0, 0);
-				}
-				return true;
-			}
-		});
-		title_view = ((TextView) findViewById(R.id.post_item_title));
-		category_view = (TextView) findViewById(R.id.post_item_category);
-		time_view = (TextView) findViewById(R.id.post_item_time);
-		distance_view = (TextView) findViewById(R.id.post_item_distance);
-		description_view = (TextView) findViewById(R.id.post_item_description);
-		owner_view = (TextView) findViewById(R.id.post_item_owner);
-
-		title_view.setText("");
-		category_view.setText("");
-		time_view.setText("");
-		distance_view.setText("");
-		description_view.setText("");
-		owner_view.setText("");
-
-		Bundle extras = getIntent().getExtras();
-		eventId = extras.getInt("eventId");
-		// eventOwner = extras.getInt("owner");
-
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
-
-		Event.fetchEventDetails(eventId, new Callback<Event>() {
-			@Override
-			public void onStart() {
-			}
-
-			@Override
-			public void onSuccess(Event obj) {
-				event = obj;
-				loc = new LatLng(obj.getLat(), obj.getLon());
-				title_view.setText(obj.getTitle());
-				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get(obj.getCategory()));
-				time_view.setText(obj.getDateString());
-				distance_view.setText(obj.distance(cxt) + " km");
-				description_view.setText(obj.getDescription());
-				owner_view.setText(obj.getCreatorName());
-				eventOwner = obj.getCreatorid();
-
-				for (Comment c : obj.getComments()) {
-					addCommentPreview(c);
-				}
-
-				map.addMarker(new MarkerOptions().position(loc).title(event.getTitle()));
-				map.setMyLocationEnabled(true);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
-
-				map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-			}
-
-			@Override
-			public void onFail() {
-				AlertDialog ad = (new Builder(cxt)).create();
-				ad.setMessage("The post was canceled");
-				ad.setCancelable(false);
-				ad.setButton(android.content.DialogInterface.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						onBackPressed();
-					}
-				});
-				ad.show();
-			}
-		});
-
-		rateEditBtn = (ImageButton) findViewById(R.id.rate_btn);
-		rateEditLayout = (RelativeLayout) findViewById(R.id.rate_btn_holder);
-
-		if (User.user_id == eventOwner) {
-			rateEditBtn.setBackgroundResource(R.drawable.trash);
-			rateEditBtn.setOnClickListener(deleteClickListener);
-			rateEditLayout.setOnClickListener(deleteClickListener);
-		} else {
-			rateEditBtn.setOnClickListener(rateClickListener);
-			rateEditLayout.setOnClickListener(rateClickListener);
-		}
-
-		owner_view.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(cxt, ProfileActivity.class);
-				intent.putExtra("profileId", event.getCreatorid());
-				cxt.startActivity(intent);
-			}
-		});
-
-		ImageButton addCommentBtn = (ImageButton) findViewById(R.id.add_comment_btn);
-		addCommentBtn.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (findViewById(R.id.add_comment_layout).isShown()) {
-					return;
-				}
-				LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
-				ScrollView sv = (ScrollView) findViewById(R.id.post_preview_scrollView);
-				sv.fullScroll(View.FOCUS_DOWN);
-				ln.setVisibility(View.VISIBLE);
-				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
-				ln.addView(comm);
-
-				Button submitCommentBtn = (Button) findViewById(R.id.submitCommentBtn);
-				submitCommentBtn.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
-						Log.d("SubmitComment", "submittin comment for event: " + eventId + " username: " + User.username);
-						Comment.addComment(User.hash, eventId, textBox.getText().toString(), new Callback<Status>() {
-
-							@Override
-							public void onStart() {
-							}
-
-							@Override
-							public void onSuccess(Status obj) {
-								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
-								View remove = (View) ln.findViewById(R.layout.add_comment_xml);
-								View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
-								ln.removeAllViews();
-								ln.setVisibility(View.GONE);
-							}
-
-							@Override
-							public void onFail() {
-								// TODO: Copy of the onSuccess?
-							}
-						});
-					}
-
-				});
-
-			}
-		});
-
-		shareBtn = (ImageButton) findViewById(R.id.share_btn);
-		shareBtnLayout = (RelativeLayout) findViewById(R.id.share_btn_holder);
-		shareBtn.setOnClickListener(shareClickListener);
-		shareBtnLayout.setOnClickListener(shareClickListener);
-	}
 
 	private OnClickListener deleteClickListener = new OnClickListener() {
 
@@ -275,5 +106,176 @@ public class PostItemViewActivity extends BaseActivity {
 		});
 
 		comment_list_lay.addView(comment_item);
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		cxt = this;
+		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+
+		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.post_item_preview, null);
+		RelativeLayout post_item_view_layout = (RelativeLayout) layout.findViewById(R.id.post_item_preview_layout);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
+		post_item_view_layout.setLayoutParams(lp);
+		mainLayout.addView(post_item_view_layout);
+		comment_list_lay = (LinearLayout) findViewById(R.id.comment_list_layout);
+		scrollv = (ScrollView) findViewById(R.id.post_preview_scrollView);
+		mapLay = (RelativeLayout) findViewById(R.id.post_map);
+		ViewTreeObserver vto = scrollv.getViewTreeObserver();
+		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+			@Override
+			public boolean onPreDraw() {
+				if (!isMapLayHeightSet) {
+					int h = scrollv.getMeasuredHeight();
+					mapLay.getLayoutParams().height = (2 * h) / 5;
+					isMapLayHeightSet = true;
+					scrollv.scrollTo(0, 0);
+				}
+				return true;
+			}
+		});
+		title_view = ((TextView) findViewById(R.id.post_item_title));
+		category_view = (TextView) findViewById(R.id.post_item_category);
+		time_view = (TextView) findViewById(R.id.post_item_time);
+		distance_view = (TextView) findViewById(R.id.post_item_distance);
+		description_view = (TextView) findViewById(R.id.post_item_description);
+		owner_view = (TextView) findViewById(R.id.post_item_owner);
+
+		title_view.setText("");
+		category_view.setText("");
+		time_view.setText("");
+		distance_view.setText("");
+		description_view.setText("");
+		owner_view.setText("");
+
+		Bundle extras = getIntent().getExtras();
+		eventId = extras.getInt("eventId");
+		// eventOwner = extras.getInt("owner");
+
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
+
+		Event.fetchEventDetails(eventId, new Callback<Event>() {
+			@Override
+			public void onFail() {
+				AlertDialog ad = (new Builder(cxt)).create();
+				ad.setMessage("The post was canceled");
+				ad.setCancelable(false);
+				ad.setButton(android.content.DialogInterface.BUTTON_NEUTRAL, "Ok", new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						onBackPressed();
+					}
+				});
+				ad.show();
+			}
+
+			@Override
+			public void onStart() {
+			}
+
+			@Override
+			public void onSuccess(Event obj) {
+				event = obj;
+				loc = new LatLng(obj.getLat(), obj.getLon());
+				title_view.setText(obj.getTitle());
+				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get(obj.getCategory()));
+				time_view.setText(obj.getDateString());
+				distance_view.setText(obj.distance(cxt) + " km");
+				description_view.setText(obj.getDescription());
+				owner_view.setText(obj.getCreatorName());
+				eventOwner = obj.getCreatorid();
+
+				for (Comment c : obj.getComments()) {
+					addCommentPreview(c);
+				}
+
+				map.addMarker(new MarkerOptions().position(loc).title(event.getTitle()));
+				map.setMyLocationEnabled(true);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+
+				map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+			}
+		});
+
+		rateEditBtn = (ImageButton) findViewById(R.id.rate_btn);
+		rateEditLayout = (RelativeLayout) findViewById(R.id.rate_btn_holder);
+
+		if (User.user_id == eventOwner) {
+			rateEditBtn.setBackgroundResource(R.drawable.trash);
+			rateEditBtn.setOnClickListener(deleteClickListener);
+			rateEditLayout.setOnClickListener(deleteClickListener);
+		} else {
+			rateEditBtn.setOnClickListener(rateClickListener);
+			rateEditLayout.setOnClickListener(rateClickListener);
+		}
+
+		owner_view.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(cxt, ProfileActivity.class);
+				intent.putExtra("profileId", event.getCreatorid());
+				cxt.startActivity(intent);
+			}
+		});
+
+		ImageButton addCommentBtn = (ImageButton) findViewById(R.id.add_comment_btn);
+		addCommentBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (findViewById(R.id.add_comment_layout).isShown()) {
+					return;
+				}
+				LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+				ScrollView sv = (ScrollView) findViewById(R.id.post_preview_scrollView);
+				sv.fullScroll(View.FOCUS_DOWN);
+				ln.setVisibility(View.VISIBLE);
+				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+				ln.addView(comm);
+
+				Button submitCommentBtn = (Button) findViewById(R.id.submitCommentBtn);
+				submitCommentBtn.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						EditText textBox = (EditText) findViewById(R.id.addCommentInput);
+						Log.d("SubmitComment", "submittin comment for event: " + eventId + " username: " + User.username);
+						Comment.addComment(User.hash, eventId, textBox.getText().toString(), new Callback<Status>() {
+
+							@Override
+							public void onFail() {
+								// TODO: Copy of the onSuccess?
+							}
+
+							@Override
+							public void onStart() {
+							}
+
+							@Override
+							public void onSuccess(Status obj) {
+								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
+								View remove = ln.findViewById(R.layout.add_comment_xml);
+								View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+								ln.removeAllViews();
+								ln.setVisibility(View.GONE);
+							}
+						});
+					}
+
+				});
+
+			}
+		});
+
+		shareBtn = (ImageButton) findViewById(R.id.share_btn);
+		shareBtnLayout = (RelativeLayout) findViewById(R.id.share_btn_holder);
+		shareBtn.setOnClickListener(shareClickListener);
+		shareBtnLayout.setOnClickListener(shareClickListener);
 	}
 }

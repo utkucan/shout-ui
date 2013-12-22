@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,6 +39,33 @@ import com.shoutapp.entity.Status;
 
 public class AddPostActivity extends BaseActivity {
 
+	private class RangeTimePickerDialog extends TimePickerDialog {
+		private int currentHour = 0;
+		private int currentMinute = 0;
+		private int maxDuration = 240;
+		private boolean frst = false;
+
+		public RangeTimePickerDialog(Context context, OnTimeSetListener callBack, int hourOfDay, int minute, boolean is24HourView) {
+			super(context, callBack, hourOfDay, minute, is24HourView);
+			currentHour = hourOfDay;
+			currentMinute = minute;
+		}
+
+		@Override
+		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+			super.onTimeChanged(view, hourOfDay, minute);
+			if (hourOfDay * 60 + minute <= maxDuration) {
+				currentHour = hourOfDay;
+				currentMinute = minute;
+				frst = false;
+			} else {
+				if (!frst) {
+					frst = true;
+					updateTime(currentHour, currentMinute);
+				}
+			}
+		}
+	}
 	EditText saat, duration, title, description;
 	Context appContext;
 	ScrollView scrollv;
@@ -49,9 +77,105 @@ public class AddPostActivity extends BaseActivity {
 	boolean isEdit = false;
 	private GoogleMap map;
 	private int difInMin, durInMin;
+
 	// private Date creationdate,exdate;
 	private Marker mrkr;
 
+	private OnClickListener onClicked = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if (v.equals(save_btn_lay) || v.equals(save_btn)) {
+				if (categoryPicker.getSelectedItemPosition() == -1) {
+					Toast.makeText(appContext, "Please select a category for your post.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				String time = saat.getText().toString();
+				if (!time.contains(":")) {
+					Toast.makeText(appContext, "Please specify the start time.", Toast.LENGTH_LONG).show();
+					return;
+				}
+				String sure = duration.getText().toString();
+				if (!sure.contains(":")) {
+					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				String header = title.getText().toString();
+				if (header.equals("Title") || header.equals("")) {
+					Toast.makeText(appContext, "Please specify the Title of post.", Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				String desc = description.getText().toString();
+				if (desc.equals("Description") || desc.equals("")) {
+					Toast.makeText(appContext, "Please specify the Description of post.", Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				String hash = User.hash;
+				double lat = mrkr.getPosition().latitude, lon = mrkr.getPosition().longitude;
+				int category = categoryPicker.getSelectedItemPosition();
+				Date creation = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000));
+				Date expire = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000) + (durInMin * 60 * 1000));
+
+				Event.submitEvent(hash, lat, lon, category, title.getText().toString(), description.getText().toString(), creation, expire,
+						new Callback<Status>() {
+							@Override
+							public void onFail() {
+
+							}
+
+							@Override
+							public void onStart() {
+
+							}
+
+							@Override
+							public void onSuccess(Status obj) {
+								Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
+								onBackPressed();
+							}
+						});
+			} else if (v.equals(saat)) {
+				openTimeDialog();
+			} else if (v.equals(duration)) {
+				openDurationDialog();
+			} else if (v.equals(cancel_btn_lay) || v.equals(cancel_btn)) {
+				onBackPressed();
+			} else if (v.equals(delete_btn_lay) || v.equals(delete_btn)) {
+				// delete post!
+				onBackPressed();
+			}
+		}
+	};
+
+	private OnFocusChangeListener focusChanged = new OnFocusChangeListener() {
+
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			if (hasFocus) {
+				if (v.equals(duration)) {
+					openDurationDialog();
+				} else if (v.equals(saat)) {
+					openTimeDialog();
+				} else if (v.equals(title) && title.getText().toString().equals("Title")) {
+					title.setText("");
+				} else if (v.equals(description) && description.getText().toString().equals("Description")) {
+					description.setText("");
+				}
+			} else {
+				if (v.equals(title) && title.getText().toString().equals("")) {
+					title.setText("Title");
+				} else if (v.equals(description) && description.getText().toString().equals("")) {
+					description.setText("Description");
+				}
+			}
+		}
+	};
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
@@ -63,8 +187,8 @@ public class AddPostActivity extends BaseActivity {
 		// LayoutInflater.from(getBaseContext()).inflate(R.layout.add_post,
 		// null);
 		RelativeLayout addPostLayout = (RelativeLayout) add_post.findViewById(R.id.add_post_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		addPostLayout.setLayoutParams(lp);
 		mainLayout.addView(add_post);
@@ -96,6 +220,7 @@ public class AddPostActivity extends BaseActivity {
 
 		ViewTreeObserver vto = scrollv.getViewTreeObserver();
 		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+			@Override
 			public boolean onPreDraw() {
 				if (!isMapLayHeightSet) {
 					int h = scrollv.getMeasuredHeight();
@@ -143,100 +268,6 @@ public class AddPostActivity extends BaseActivity {
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 		map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 	}
-
-	private OnClickListener onClicked = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			if (v.equals(save_btn_lay) || v.equals(save_btn)) {
-				if (categoryPicker.getSelectedItemPosition() == -1) {
-					Toast.makeText(appContext, "Please select a category for your post.", Toast.LENGTH_LONG).show();
-					return;
-				}
-				String time = saat.getText().toString();
-				if (!time.contains(":")) {
-					Toast.makeText(appContext, "Please specify the start time.", Toast.LENGTH_LONG).show();
-					return;
-				}
-				String sure = duration.getText().toString();
-				if (!sure.contains(":")) {
-					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				String header = title.getText().toString();
-				if (header.equals("Title") || header.equals("")) {
-					Toast.makeText(appContext, "Please specify the Title of post.", Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				String desc = description.getText().toString();
-				if (desc.equals("Description") || desc.equals("")) {
-					Toast.makeText(appContext, "Please specify the Description of post.", Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				String hash = User.hash;
-				double lat = mrkr.getPosition().latitude, lon = mrkr.getPosition().longitude;
-				int category = categoryPicker.getSelectedItemPosition();
-				Date creation = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000));
-				Date expire = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000) + (durInMin * 60 * 1000));
-
-				Event.submitEvent(hash, lat, lon, category, title.getText().toString(), description.getText().toString(), creation, expire,
-						new Callback<Status>() {
-							@Override
-							public void onStart() {
-
-							}
-
-							@Override
-							public void onSuccess(Status obj) {
-								Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
-								onBackPressed();
-							}
-
-							@Override
-							public void onFail() {
-
-							}
-						});
-			} else if (v.equals(saat)) {
-				openTimeDialog();
-			} else if (v.equals(duration)) {
-				openDurationDialog();
-			} else if (v.equals(cancel_btn_lay) || v.equals(cancel_btn)) {
-				onBackPressed();
-			} else if (v.equals(delete_btn_lay) || v.equals(delete_btn)) {
-				// delete post!
-				onBackPressed();
-			}
-		}
-	};
-
-	private OnFocusChangeListener focusChanged = new OnFocusChangeListener() {
-
-		@Override
-		public void onFocusChange(View v, boolean hasFocus) {
-			if (hasFocus) {
-				if (v.equals(duration)) {
-					openDurationDialog();
-				} else if (v.equals(saat)) {
-					openTimeDialog();
-				} else if (v.equals(title) && title.getText().toString().equals("Title")) {
-					title.setText("");
-				} else if (v.equals(description) && description.getText().toString().equals("Description")) {
-					description.setText("");
-				}
-			} else {
-				if (v.equals(title) && title.getText().toString().equals("")) {
-					title.setText("Title");
-				} else if (v.equals(description) && description.getText().toString().equals("")) {
-					description.setText("Description");
-				}
-			}
-		}
-	};
 
 	private void openDurationDialog() {
 		String sure = duration.getText().toString();
@@ -295,7 +326,7 @@ public class AddPostActivity extends BaseActivity {
 			hour = c.get(Calendar.HOUR_OF_DAY);
 			min = c.get(Calendar.MINUTE);
 		}
-		Dialog d = (Dialog) (new TimePickerDialog(appContext, new OnTimeSetListener() {
+		Dialog d = (new TimePickerDialog(appContext, new OnTimeSetListener() {
 
 			@Override
 			public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
@@ -343,33 +374,5 @@ public class AddPostActivity extends BaseActivity {
 			}
 		}, hour, min, true));
 		d.show();
-	}
-
-	private class RangeTimePickerDialog extends TimePickerDialog {
-		private int currentHour = 0;
-		private int currentMinute = 0;
-		private int maxDuration = 240;
-		private boolean frst = false;
-
-		public RangeTimePickerDialog(Context context, OnTimeSetListener callBack, int hourOfDay, int minute, boolean is24HourView) {
-			super(context, callBack, hourOfDay, minute, is24HourView);
-			currentHour = hourOfDay;
-			currentMinute = minute;
-		}
-
-		@Override
-		public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-			super.onTimeChanged(view, hourOfDay, minute);
-			if (hourOfDay * 60 + minute <= maxDuration) {
-				currentHour = hourOfDay;
-				currentMinute = minute;
-				frst = false;
-			} else {
-				if (!frst) {
-					frst = true;
-					updateTime(currentHour, currentMinute);
-				}
-			}
-		}
 	}
 }

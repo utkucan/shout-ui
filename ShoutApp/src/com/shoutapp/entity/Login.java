@@ -3,7 +3,12 @@ package com.shoutapp.entity;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
 public class Login {
+	public static void peform(String socialId, String deviceId, Callback<Login> c) {
+		FetchJsonTask<Login> u = new FetchJsonTask<Login>(Login.class, "register", c);
+		u.execute("socialId", socialId, "deviceId", deviceId);
+	}
 	private int userId;
+
 	private String hash;
 
 	public String getHash() {
@@ -12,13 +17,6 @@ public class Login {
 
 	public int getUserId() {
 		return userId;
-	}
-
-	public static void peform(String socialId, String deviceId,
-			Callback<Login> c) {
-		FetchJsonTask<Login> u = new FetchJsonTask<Login>(Login.class,
-				"register", c);
-		u.execute("socialId", socialId, "deviceId", deviceId);
 	}
 
 	@Override

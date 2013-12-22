@@ -18,6 +18,11 @@ public class GcmIntentService extends IntentService {
 	NotificationCompat.Builder builder;
 	String TAG = "GcmIntentService";
 
+	// Put the message into a notification and post it.
+	// This is just one simple example of what you might choose to do with
+	// a GCM message.
+	private static int notificationID = 0;
+
 	public GcmIntentService() {
 		super("GcmIntentService");
 	}
@@ -39,11 +44,6 @@ public class GcmIntentService extends IntentService {
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
 		// GcmBroadcastReceiver.completeWakefulIntent(intent);
 	}
-
-	// Put the message into a notification and post it.
-	// This is just one simple example of what you might choose to do with
-	// a GCM message.
-	private static int notificationID = 0;
 
 	private void sendNotification(String msg) {
 		Log.w("BReceiver", "MOTUR YUKARDA MI KALDI");

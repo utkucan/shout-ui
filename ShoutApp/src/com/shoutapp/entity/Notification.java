@@ -5,13 +5,14 @@ import java.util.Date;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
 public class Notification {
+	public static void getNotifications(String hash, Callback<Notification[]> c) {
+		FetchJsonTask<Notification[]> u = new FetchJsonTask<Notification[]>(Notification[].class, "getNotifications", c);
+		u.execute("hash", hash);
+	}
 	private int type, relatedid;
 	private String message;
-	private Date time;
 
-	public Date getTime() {
-		return time;
-	}
+	private Date time;
 
 	public String getMessage() {
 		return message;
@@ -21,12 +22,11 @@ public class Notification {
 		return relatedid;
 	}
 
-	public int getType() {
-		return type;
+	public Date getTime() {
+		return time;
 	}
 
-	public static void getNotifications(String hash, Callback<Notification[]> c) {
-		FetchJsonTask<Notification[]> u = new FetchJsonTask<Notification[]>(Notification[].class, "getNotifications", c);
-		u.execute("hash", hash);
+	public int getType() {
+		return type;
 	}
 }
