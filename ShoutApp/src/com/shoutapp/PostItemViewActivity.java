@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.shoutapp.entity.Comment;
+import com.shoutapp.entity.Constants;
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 import com.shoutapp.entity.Status;
@@ -247,7 +248,7 @@ public class PostItemViewActivity extends BaseActivity {
 		public void onClick(View v) {
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent.putExtra(Intent.EXTRA_TEXT, "Someone share a shout with you bayb!");
+			sendIntent.putExtra(Intent.EXTRA_TEXT, "Shout! " + Constants.URL + "event/" + event.getId());
 			sendIntent.setType("text/plain");
 			startActivity(Intent.createChooser(sendIntent, "Share Shout To"));
 		}
