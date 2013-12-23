@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -56,40 +57,11 @@ public class BaseActivity extends SlidingMenuBaseActivity/* Activity */{
 		slidingMenuBtn.setOnClickListener(slidingMenuClickListener);
 
 		RelativeLayout filterButtonHolder = (RelativeLayout) findViewById(R.id.filterButtonHolder);
-
+		ImageButton filterButton = (ImageButton)findViewById(R.id.filterButton);
 		// filtre butonuna basýlýnca bu kod calýþacak inþallah
-
-		filterButtonHolder.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				readPrefs(v);
-				RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-				View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
-				SeekbarActivity sa = new SeekbarActivity(seek);
-				RelativeLayout seekLayout = (RelativeLayout) seek.findViewById(R.id.seek_layout);
-
-				RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
-						LayoutParams.FILL_PARENT);
-				seekLayout.setLayoutParams(lp);
-				mainLayout.addView(seek);
-
-				Button filterDoneBtn = (Button) findViewById(R.id.filter_save_btn);
-				filterDoneBtn.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						savePrefs();
-						RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-						View seek = findViewById(R.id.seek_layout);
-						mainLayout.removeView(seek);
-
-					}
-				});
-			}
-		});
-
+		filterButtonHolder.setOnClickListener(settingsListener);
+		filterButton.setOnClickListener(settingsListener);
+		
 		ImageView logo = (ImageView) findViewById(R.id.titleLogo);
 		logo.setOnClickListener(new OnClickListener() {
 
@@ -109,10 +81,39 @@ public class BaseActivity extends SlidingMenuBaseActivity/* Activity */{
 		});
 	}
 
+	private OnClickListener settingsListener = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+//			readPrefs(v);
+			RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+			View seek = LayoutInflater.from(getBaseContext()).inflate(R.layout.activity_seekbar, null);
+			SeekbarActivity sa = new SeekbarActivity(seek);
+			RelativeLayout seekLayout = (RelativeLayout) seek.findViewById(R.id.seek_layout);
+
+			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
+			seekLayout.setLayoutParams(lp);
+			mainLayout.addView(seek);
+
+			Button filterDoneBtn = (Button) findViewById(R.id.filter_save_btn);
+			filterDoneBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					savePrefs();
+					RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
+					View seek = findViewById(R.id.seek_layout);
+					mainLayout.removeView(seek);
+				}
+			});
+		}
+	};
+	
 	public void readPrefs(View v) {
 		SharedPreferences settings = getSharedPreferences(FILTER_PREFS, 0);
-		int silent = settings.getInt("distance", -1);
-		Toast.makeText(v.getContext(), "Shouts within " + silent + "kms will be shown!", Toast.LENGTH_SHORT).show();
+//		int silent = settings.getInt("distance", -1);
+//		Toast.makeText(v.getContext(), "Shouts within " + silent + "kms will be shown!", Toast.LENGTH_SHORT).show();
 	}
 
 	public void savePrefs() {
@@ -123,7 +124,9 @@ public class BaseActivity extends SlidingMenuBaseActivity/* Activity */{
 		editor.putInt("timeMin", ((SeekBar) findViewById(R.id.clock_bar)).getProgress());
 		// editor.putInt("timeMax", ((SeekBar)
 		// findViewById(R.id.distance_bar)).getProgress());
-
+		editor.putBoolean("notification", ((Switch) findViewById(R.id.silenceNotifications)).isChecked());
+		
+		
 		editor.putBoolean("sports", ((CheckBox) findViewById(R.id.sportCheckBox)).isChecked());
 		editor.putBoolean("party", ((CheckBox) findViewById(R.id.partyCheckBox)).isChecked());
 		editor.putBoolean("game", ((CheckBox) findViewById(R.id.gameCheckBox)).isChecked());

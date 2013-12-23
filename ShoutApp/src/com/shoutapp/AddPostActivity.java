@@ -135,6 +135,7 @@ public class AddPostActivity extends BaseActivity {
 							@Override
 							public void onSuccess(Status obj) {
 								Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
+								
 								onBackPressed();
 							}
 						});

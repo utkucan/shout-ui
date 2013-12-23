@@ -44,6 +44,8 @@
                 android:textSize="30sp" />
         </LinearLayout>
 
+      
+
         <SeekBar
             android:id="@+id/distance_bar"
             android:layout_width="fill_parent"
@@ -171,6 +173,16 @@
                     android:text="Other" />
             </LinearLayout>
         </LinearLayout>
+          <Switch
+            android:id="@+id/silenceNotifications"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+           	android:padding="10dp"
+            android:layout_weight="1"
+                 android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Notifications" />
+
+
     </LinearLayout>
 
 

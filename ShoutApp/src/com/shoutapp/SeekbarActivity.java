@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Switch;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -47,13 +48,13 @@ public class SeekbarActivity extends Activity {
 				progressChanged = seekBar.getProgress();
 				if (progressChanged == 0) {
 
-					distanceLabel.setText(progressChanged + "km");
+					distanceLabel.setText(progressChanged + " km");
 				} else if (progressChanged == 1) {
 
-					distanceLabel.setText(progressChanged + "km");
+					distanceLabel.setText(progressChanged + " km");
 				} else {
 
-					distanceLabel.setText(progressChanged + "kms");
+					distanceLabel.setText(progressChanged + " kms");
 				}
 
 			}
@@ -109,7 +110,9 @@ public class SeekbarActivity extends Activity {
 		((CheckBox) parent.findViewById(R.id.activityCheckBox)).setChecked(checkList[3]);
 		((CheckBox) parent.findViewById(R.id.artCheckBox)).setChecked(checkList[4]);
 		((CheckBox) parent.findViewById(R.id.otherCheckBox)).setChecked(checkList[5]);
-
+		
+		
+		((Switch) parent.findViewById(R.id.silenceNotifications)).setChecked(getNotification(parent.getContext()));
 	}
 
 	public boolean[] getCheckBoxes(Context ctx) {
@@ -119,30 +122,29 @@ public class SeekbarActivity extends Activity {
 				storedSettings.getBoolean("other", true) };
 	}
 
-	public int getDistance(Context ctx) {
-		SharedPreferences settings = ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0);
-		int silent = settings.getInt("distance", 100);
-		return silent;
+	private int getDistance(Context ctx) {
+//		SharedPreferences settings = ;
+		return ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getInt("distance", 100);
+	}
+	private boolean getNotification(Context ctx){
+		return ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getBoolean("notification", true);
+	}
+	private int getTime(Context ctx) {
+		return ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getInt("timeMin", 24);
 	}
 
-	public int getTime(Context ctx) {
-		SharedPreferences settings = ctx.getSharedPreferences(BaseActivity.FILTER_PREFS, 1);
-		int silent = settings.getInt("timeMin", 24);
-		return silent;
-	}
-
-	public BitmapDrawable writeOnDrawable(int drawableId, String text) {
-
-		Bitmap bm = BitmapFactory.decodeResource(parent2.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
-
-		Paint paint = new Paint();
-		paint.setStyle(Style.FILL);
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(20);
-
-		Canvas canvas = new Canvas(bm);
-		canvas.drawText(text, 0, bm.getHeight() / 2, paint);
-
-		return new BitmapDrawable(bm);
-	}
+//	public BitmapDrawable writeOnDrawable(int drawableId, String text) {
+//
+//		Bitmap bm = BitmapFactory.decodeResource(parent2.getResources(), drawableId).copy(Bitmap.Config.ARGB_8888, true);
+//
+//		Paint paint = new Paint();
+//		paint.setStyle(Style.FILL);
+//		paint.setColor(Color.BLACK);
+//		paint.setTextSize(20);
+//
+//		Canvas canvas = new Canvas(bm);
+//		canvas.drawText(text, 0, bm.getHeight() / 2, paint);
+//
+//		return new BitmapDrawable(bm);
+//	}
 }

@@ -11,12 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/background_view_rounded_single"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
         <EditText
             android:id="@+id/addCommentInput"
-            android:layout_width="fill_parent"
-            android:layout_height="116dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
             android:ems="10"
             android:inputType="textMultiLine" >
 
@@ -25,9 +26,10 @@
 
         <Button
             android:id="@+id/submitCommentBtn"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gönder" />
+            android:text="Send" />
+
     </LinearLayout>
 
 </RelativeLayout>

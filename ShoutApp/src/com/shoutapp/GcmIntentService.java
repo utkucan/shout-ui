@@ -36,7 +36,7 @@ public class GcmIntentService extends IntentService {
 		if (!extras.isEmpty()) {
 
 			if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-
+				
 				sendNotification("Mesaj: " + extras.getString("mesaj"));
 			}
 
@@ -46,6 +46,7 @@ public class GcmIntentService extends IntentService {
 	}
 
 	private void sendNotification(String msg) {
+		this.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getBoolean("notification", true);
 		Log.w("BReceiver", "MOTUR YUKARDA MI KALDI");
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!")
 				.setContentText(msg);// "100 metre uzaðýnýzda tam size göre bir etkinlik var!");

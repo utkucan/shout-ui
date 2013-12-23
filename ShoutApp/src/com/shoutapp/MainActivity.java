@@ -150,7 +150,7 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onFail() {
-
+				Log.d("Event:", "eventler çekilirken sýkýntý oldu");
 			}
 
 			@Override
@@ -214,23 +214,23 @@ public class MainActivity extends BaseActivity {
 		ImageButton profile_view_btn = (ImageButton) findViewById(R.id.profile_btn);
 		profile_view_btn.setOnClickListener(profileClickListener);
 
-		pager.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-				((BaseActivity) currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-			}
-
-			@Override
-			public void onPageSelected(int arg0) {
-
-			}
-		});
+//		pager.setOnPageChangeListener(new OnPageChangeListener() {
+//
+//			@Override
+//			public void onPageScrolled(int arg0, float arg1, int arg2) {
+//
+//			}
+//
+//			@Override
+//			public void onPageScrollStateChanged(int arg0) {
+//				((BaseActivity) currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+//			}
+//
+//			@Override
+//			public void onPageSelected(int arg0) {
+//
+//			}
+//		});
 
 	}
 
@@ -252,5 +252,6 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		fetchEvents();
 	}
 }

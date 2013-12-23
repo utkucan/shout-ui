@@ -128,7 +128,7 @@ public class LoginActivity extends FragmentActivity {
 							mConnectionResult = null;
 							mPlusClient.connect();
 						}
-						mConnectionProgressDialog.dismiss();
+						//mConnectionProgressDialog.dismiss();
 					} else {
 						mPlusClient.connect();
 					}
@@ -258,16 +258,18 @@ public class LoginActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-
+		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
+				"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
+		
+		Log.e("BTOM-REGID",getRegistrationId(this));
 		context = this;
 		checkPlayServices();
 		if (getRegistrationId(this).equals("")) {
-			// registerInBackground(); TODO: Don't otherwise fails because not yet connected to google+
+			 registerInBackground(); //TODO: Don't otherwise fails because not yet connected to google+
 			
 		}
 
-		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
-				"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
+		
 		login_activity = this;
 		if (mPlusClient.isConnected()) {
 			Intent intent = new Intent(getBaseContext(), MainActivity.class);
