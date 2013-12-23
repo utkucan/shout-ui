@@ -66,7 +66,7 @@ public class AddPostActivity extends BaseActivity {
 			}
 		}
 	}
-	EditText saat, duration, title, description;
+	EditText saat,  title, description; //duration
 	Context appContext;
 	ScrollView scrollv;
 	RelativeLayout mapLay, save_btn_lay, cancel_btn_lay, delete_btn_lay;
@@ -76,7 +76,8 @@ public class AddPostActivity extends BaseActivity {
 	boolean isActivityStarted = false;
 	boolean isEdit = false;
 	private GoogleMap map;
-	private int difInMin, durInMin;
+	private int difInMin;
+	private int durInMin = 4 * 60;
 
 	// private Date creationdate,exdate;
 	private Marker mrkr;
@@ -96,7 +97,7 @@ public class AddPostActivity extends BaseActivity {
 					Toast.makeText(appContext, "Please specify the start time.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				String sure = duration.getText().toString();
+				String sure = "4:00"; //duration.getText().toString();
 				if (!sure.contains(":")) {
 					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
 					return;
@@ -141,8 +142,9 @@ public class AddPostActivity extends BaseActivity {
 						});
 			} else if (v.equals(saat)) {
 				openTimeDialog();
-			} else if (v.equals(duration)) {
-				openDurationDialog();
+//			} 
+//			else if (v.equals(duration)) {
+//				openDurationDialog();
 			} else if (v.equals(cancel_btn_lay) || v.equals(cancel_btn)) {
 				onBackPressed();
 			} else if (v.equals(delete_btn_lay) || v.equals(delete_btn)) {
@@ -157,9 +159,10 @@ public class AddPostActivity extends BaseActivity {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
-				if (v.equals(duration)) {
-					openDurationDialog();
-				} else if (v.equals(saat)) {
+//				if (v.equals(duration)) {
+//					openDurationDialog();
+//				} else 
+					if (v.equals(saat)) {
 					openTimeDialog();
 				} else if (v.equals(title) && title.getText().toString().equals("Title")) {
 					title.setText("");
@@ -195,7 +198,7 @@ public class AddPostActivity extends BaseActivity {
 		mainLayout.addView(add_post);
 
 		saat = (EditText) findViewById(R.id.time);
-		duration = (EditText) findViewById(R.id.duration);
+		//duration = (EditText) findViewById(R.id.duration);
 		mapLay = (RelativeLayout) findViewById(R.id.mapLay);
 		scrollv = (ScrollView) findViewById(R.id.addPostScrollView);
 		save_btn_lay = (RelativeLayout) findViewById(R.id.save_btn_holder);
@@ -215,9 +218,9 @@ public class AddPostActivity extends BaseActivity {
 		title.setOnFocusChangeListener(focusChanged);
 		description.setOnFocusChangeListener(focusChanged);
 
-		duration.setInputType(InputType.TYPE_NULL);
-		duration.setOnFocusChangeListener(focusChanged);
-		duration.setOnClickListener(onClicked);
+//		duration.setInputType(InputType.TYPE_NULL);
+//		duration.setOnFocusChangeListener(focusChanged);
+//		duration.setOnClickListener(onClicked);
 
 		ViewTreeObserver vto = scrollv.getViewTreeObserver();
 		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -269,9 +272,9 @@ public class AddPostActivity extends BaseActivity {
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 		map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 	}
-
+/*
 	private void openDurationDialog() {
-		String sure = duration.getText().toString();
+	String sure = "4:00"; //duration.getText().toString();
 		int hour = 0;
 		int min = 0;
 		if (sure.contains(":")) {
@@ -293,7 +296,7 @@ public class AddPostActivity extends BaseActivity {
 				if (selectedMinute < 10)
 					sb.append("0");
 				sb.append(selectedMinute);
-				duration.setText(sb);
+				//duration.setText(sb);
 
 				StringBuilder text = new StringBuilder();
 				text.append("The duration is ");
@@ -313,7 +316,7 @@ public class AddPostActivity extends BaseActivity {
 		}, hour, min, true);
 		d.show();
 	}
-
+*/	
 	private void openTimeDialog() {
 		String time = saat.getText().toString();
 		int hour = 0;

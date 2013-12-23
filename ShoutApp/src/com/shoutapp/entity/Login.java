@@ -8,7 +8,7 @@ public class Login {
 		u.execute("socialId", socialId, "deviceId", deviceId);
 	}
 	private int userId;
-
+	//public String devideId;
 	private String hash;
 
 	public String getHash() {

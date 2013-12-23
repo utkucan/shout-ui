@@ -57,7 +57,7 @@ public class LoginActivity extends FragmentActivity {
 				Login.peform(id, regid, new Callback<Login>() {
 					@Override
 					public void onFail() {
-
+						Log.d("Shout-registration","sýkýntý oldu gibi");
 					}
 
 					@Override
@@ -67,6 +67,7 @@ public class LoginActivity extends FragmentActivity {
 
 					@Override
 					public void onSuccess(Login login) {
+						Log.d("Shout-registration","oldu gibi");
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
 						User.user_id = login.getUserId();
