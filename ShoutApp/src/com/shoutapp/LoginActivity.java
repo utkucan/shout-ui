@@ -266,7 +266,7 @@ public class LoginActivity extends FragmentActivity {
 		context = this;
 		checkPlayServices();
 		if (getRegistrationId(this).equals("")) {
-			 registerInBackground(); //TODO: Don't otherwise fails because not yet connected to google+
+			 // registerInBackground(); //TODO: deðiþtrmeyin bunu
 			
 		}
 

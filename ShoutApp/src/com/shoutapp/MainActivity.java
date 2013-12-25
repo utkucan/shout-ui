@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity {
 
 					@Override
 					public void onRefresh(RefreshableListView listView) {
+						Log.d("On refresh", "called");
 						fetchEvents();
 					}
 				});

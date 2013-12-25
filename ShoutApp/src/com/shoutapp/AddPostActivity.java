@@ -66,7 +66,8 @@ public class AddPostActivity extends BaseActivity {
 			}
 		}
 	}
-	EditText saat,  title, description; //duration
+
+	EditText saat, title, description; // duration
 	Context appContext;
 	ScrollView scrollv;
 	RelativeLayout mapLay, save_btn_lay, cancel_btn_lay, delete_btn_lay;
@@ -97,7 +98,7 @@ public class AddPostActivity extends BaseActivity {
 					Toast.makeText(appContext, "Please specify the start time.", Toast.LENGTH_LONG).show();
 					return;
 				}
-				String sure = "4:00"; //duration.getText().toString();
+				String sure = "4:00"; // duration.getText().toString();
 				if (!sure.contains(":")) {
 					Toast.makeText(appContext, "Please specify the duration.", Toast.LENGTH_LONG).show();
 					return;
@@ -117,7 +118,7 @@ public class AddPostActivity extends BaseActivity {
 
 				String hash = User.hash;
 				double lat = mrkr.getPosition().latitude, lon = mrkr.getPosition().longitude;
-				int category = categoryPicker.getSelectedItemPosition();
+				int category = (int) Math.pow(2, categoryPicker.getSelectedItemPosition());
 				Date creation = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000));
 				Date expire = new Date(System.currentTimeMillis() + (difInMin * 60 * 1000) + (durInMin * 60 * 1000));
 
@@ -136,15 +137,15 @@ public class AddPostActivity extends BaseActivity {
 							@Override
 							public void onSuccess(Status obj) {
 								Toast.makeText(appContext, "Your Post is successfully added!", Toast.LENGTH_LONG).show();
-								
+
 								onBackPressed();
 							}
 						});
 			} else if (v.equals(saat)) {
 				openTimeDialog();
-//			} 
-//			else if (v.equals(duration)) {
-//				openDurationDialog();
+				// }
+				// else if (v.equals(duration)) {
+				// openDurationDialog();
 			} else if (v.equals(cancel_btn_lay) || v.equals(cancel_btn)) {
 				onBackPressed();
 			} else if (v.equals(delete_btn_lay) || v.equals(delete_btn)) {
@@ -159,10 +160,10 @@ public class AddPostActivity extends BaseActivity {
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
 			if (hasFocus) {
-//				if (v.equals(duration)) {
-//					openDurationDialog();
-//				} else 
-					if (v.equals(saat)) {
+				// if (v.equals(duration)) {
+				// openDurationDialog();
+				// } else
+				if (v.equals(saat)) {
 					openTimeDialog();
 				} else if (v.equals(title) && title.getText().toString().equals("Title")) {
 					title.setText("");
@@ -191,14 +192,13 @@ public class AddPostActivity extends BaseActivity {
 		// LayoutInflater.from(getBaseContext()).inflate(R.layout.add_post,
 		// null);
 		RelativeLayout addPostLayout = (RelativeLayout) add_post.findViewById(R.id.add_post_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		addPostLayout.setLayoutParams(lp);
 		mainLayout.addView(add_post);
 
 		saat = (EditText) findViewById(R.id.time);
-		//duration = (EditText) findViewById(R.id.duration);
+		// duration = (EditText) findViewById(R.id.duration);
 		mapLay = (RelativeLayout) findViewById(R.id.mapLay);
 		scrollv = (ScrollView) findViewById(R.id.addPostScrollView);
 		save_btn_lay = (RelativeLayout) findViewById(R.id.save_btn_holder);
@@ -218,9 +218,9 @@ public class AddPostActivity extends BaseActivity {
 		title.setOnFocusChangeListener(focusChanged);
 		description.setOnFocusChangeListener(focusChanged);
 
-//		duration.setInputType(InputType.TYPE_NULL);
-//		duration.setOnFocusChangeListener(focusChanged);
-//		duration.setOnClickListener(onClicked);
+		// duration.setInputType(InputType.TYPE_NULL);
+		// duration.setOnFocusChangeListener(focusChanged);
+		// duration.setOnClickListener(onClicked);
 
 		ViewTreeObserver vto = scrollv.getViewTreeObserver();
 		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -272,51 +272,33 @@ public class AddPostActivity extends BaseActivity {
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 		map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 	}
-/*
-	private void openDurationDialog() {
-	String sure = "4:00"; //duration.getText().toString();
-		int hour = 0;
-		int min = 0;
-		if (sure.contains(":")) {
-			String[] comp = sure.split(":");
-			hour = Integer.parseInt(comp[0]);
-			min = Integer.parseInt(comp[1]);
-		}
 
-		TimePickerDialog d = new RangeTimePickerDialog(appContext, new OnTimeSetListener() {
-
-			@Override
-			public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
-				// TODO Auto-generated method stub
-				StringBuilder sb = new StringBuilder();
-				if (selectedHour < 10)
-					sb.append("0");
-				sb.append(selectedHour);
-				sb.append(':');
-				if (selectedMinute < 10)
-					sb.append("0");
-				sb.append(selectedMinute);
-				//duration.setText(sb);
-
-				StringBuilder text = new StringBuilder();
-				text.append("The duration is ");
-				int dur = selectedHour * 60 + selectedMinute;
-				if (dur == 1) {
-					text.append(dur + " minute");
-				} else {
-					text.append(dur + " minutes");
-				}
-				durInMin = dur;
-				Toast toast = Toast.makeText(appContext, text, Toast.LENGTH_LONG);
-				toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
-
-				((TextView) ((LinearLayout) toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
-				toast.show();
-			}
-		}, hour, min, true);
-		d.show();
-	}
-*/	
+	/*
+	 * private void openDurationDialog() { String sure = "4:00";
+	 * //duration.getText().toString(); int hour = 0; int min = 0; if
+	 * (sure.contains(":")) { String[] comp = sure.split(":"); hour =
+	 * Integer.parseInt(comp[0]); min = Integer.parseInt(comp[1]); }
+	 * 
+	 * TimePickerDialog d = new RangeTimePickerDialog(appContext, new
+	 * OnTimeSetListener() {
+	 * 
+	 * @Override public void onTimeSet(TimePicker view, int selectedHour, int
+	 * selectedMinute) { // TODO Auto-generated method stub StringBuilder sb =
+	 * new StringBuilder(); if (selectedHour < 10) sb.append("0");
+	 * sb.append(selectedHour); sb.append(':'); if (selectedMinute < 10)
+	 * sb.append("0"); sb.append(selectedMinute); //duration.setText(sb);
+	 * 
+	 * StringBuilder text = new StringBuilder();
+	 * text.append("The duration is "); int dur = selectedHour * 60 +
+	 * selectedMinute; if (dur == 1) { text.append(dur + " minute"); } else {
+	 * text.append(dur + " minutes"); } durInMin = dur; Toast toast =
+	 * Toast.makeText(appContext, text, Toast.LENGTH_LONG);
+	 * toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
+	 * 
+	 * ((TextView) ((LinearLayout)
+	 * toast.getView()).getChildAt(0)).setGravity(Gravity.CENTER_HORIZONTAL);
+	 * toast.show(); } }, hour, min, true); d.show(); }
+	 */
 	private void openTimeDialog() {
 		String time = saat.getText().toString();
 		int hour = 0;

@@ -26,7 +26,16 @@ import com.shoutapp.entity.Event;
 public class EventPreviewAdapter extends ArrayAdapter<Event> {
 
 	Context cxt;
-	ArrayList<String> categorys;
+	public static String getCategoryName(int id){
+		if ( id == 1) return "Sport";
+		if ( id == 2) return "Party";
+		if ( id == 4) return "Game";
+		if ( id == 8) return "Activity";
+		if ( id == 16) return "Art";
+		if ( id == 32) return "Other";
+		return "Unknown category";
+	}
+	
 	ListView rlv;
 	private GoogleMap map;
 	ArrayAdapter<Event> adapter;
@@ -35,7 +44,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 		super(context, textViewResourceId, list);
 		this.cxt = context;
 		adapter = this;
-		categorys = new ArrayList<String>(Arrays.asList(context.getResources().getStringArray(R.array.Categories)));
+		
 		rlv = listView;
 		this.map = map;
 		if (map != null) {
@@ -108,7 +117,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			title.setText(e.getTitle());
 
 			TextView categoryView = (TextView) convertView.findViewById(R.id.category);
-			String category = categorys.get(e.getCategory());
+			String category = getCategoryName(e.getCategory());
 			categoryView.setText(category + "");
 
 			TextView time = (TextView) convertView.findViewById(R.id.time);
