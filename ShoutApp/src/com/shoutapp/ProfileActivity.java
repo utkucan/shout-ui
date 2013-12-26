@@ -115,6 +115,7 @@ public class ProfileActivity extends BaseActivity {
 				TextView comment = (TextView) convertView.findViewById(R.id.comment_text);
 				TextView time = (TextView) convertView.findViewById(R.id.comment_time);
 				comment.setText(n.getMessage());
+				((TextView) convertView.findViewById(R.id.comment_owner)).setVisibility(View.GONE);
 				time.setText(getItem(position).getTime().toString());
 			}
 			return convertView;
