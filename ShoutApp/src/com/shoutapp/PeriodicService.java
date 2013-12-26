@@ -44,9 +44,12 @@ public class PeriodicService extends Service{
 		User.hash = sp.getString("hashval", null);
 
 		Log.i(TAG, "Service onStartCommand");
+		try {
 		myTimer.schedule(myTask, 3000, 1000 * SEND_PERIOD_IN_SECONDS); 
 		gps = new GPSTracker(getBaseContext());
-
+		} catch ( Exception ex){
+			Log.d("Service error!", ex.getMessage());
+		}
 		return Service.START_STICKY;
 	}
 

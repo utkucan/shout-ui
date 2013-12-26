@@ -184,12 +184,12 @@ public class ProfileActivity extends BaseActivity {
 								Log.d("OnItem click", position + "");
 								Notification n = notifs[position];
 								int type = n.getType();
-								if (type == 1) { // Meaning event
+								if (type == 0) { // Meaning event
 									Intent intent = new Intent(cxt, PostItemViewActivity.class);
 									intent.putExtra("eventId", n.getRelatedid());
 									intent.putExtra("owner", -1);
 									cxt.startActivity(intent);
-								} else if (type == 0) { // Meaning User
+								} else if (type == 1) { // Meaning User
 									Intent intent = new Intent(cxt, ProfileActivity.class);
 									intent.putExtra("profileId", n.getRelatedid());
 									cxt.startActivity(intent);
