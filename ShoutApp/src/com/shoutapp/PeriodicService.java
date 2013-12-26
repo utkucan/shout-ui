@@ -11,6 +11,7 @@ import com.shoutapp.entity.FetchJsonTask.Callback;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -20,21 +21,31 @@ public class PeriodicService extends Service{
 	Timer myTimer;
 	MyTimerTask myTask;
 	double prevLat = 0, prevLong = 0;
+	private GPSTracker gps;
 	private static final int SEND_PERIOD_IN_SECONDS = 30;
+	
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "Service onCreate");
 		myTask = new MyTimerTask();
 		myTimer = new Timer();
+		gps = new GPSTracker(getBaseContext());
+		
+		SharedPreferences sp =  getSharedPreferences(LoginActivity.SAVEHASH, 0);
+		User.user_id = sp.getInt("userid", -1);
+		User.hash = sp.getString("hashval", null);
 
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		SharedPreferences sp =  getSharedPreferences(LoginActivity.SAVEHASH, 0);
+		User.user_id = sp.getInt("userid", -1);
+		User.hash = sp.getString("hashval", null);
 
 		Log.i(TAG, "Service onStartCommand");
 		myTimer.schedule(myTask, 3000, 1000 * SEND_PERIOD_IN_SECONDS); 
-
+		gps = new GPSTracker(getBaseContext());
 
 		return Service.START_STICKY;
 	}
@@ -53,10 +64,10 @@ public class PeriodicService extends Service{
 
 	class MyTimerTask extends TimerTask {
 		public void run() {
-			GPSTracker gps = MainActivity.gpsObject;
-			if(gps.latitude != prevLat || gps.longitude != prevLong || true){
+			if(gps != null && gps.latitude != prevLat || gps.longitude != prevLong || true){
 				prevLat = gps.latitude; 
 				prevLong = gps.longitude;
+
 				Event.fetchNearbyEventList(User.hash, gps.latitude, gps.longitude, new Callback<Event[]>() {
 
 					@Override
