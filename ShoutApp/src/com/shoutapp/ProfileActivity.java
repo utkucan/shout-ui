@@ -326,7 +326,7 @@ public class ProfileActivity extends BaseActivity {
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		profileLayout.setLayoutParams(lp);
 		mainLayout.addView(profileLayout);
-
+		
 		Bundle extras = getIntent().getExtras();
 		int userId = extras.getInt("profileId");
 

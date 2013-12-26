@@ -71,7 +71,8 @@ public class LoginActivity extends FragmentActivity {
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
 						User.user_id = login.getUserId();
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(intent);
 					}
 				});

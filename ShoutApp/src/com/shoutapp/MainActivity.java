@@ -243,8 +243,9 @@ public class MainActivity extends BaseActivity {
 				pager.setCurrentItem(0, true);
 				ImageButton btn = (ImageButton) findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.map_icon);
+				return true;
 			}
-			return true;
+			
 		}
 
 		return super.onKeyDown(keyCode, event);

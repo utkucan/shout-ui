@@ -14,7 +14,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 public class GcmIntentService extends IntentService {
 	public static final int NOTIFICATION_ID = 1;
-	private NotificationManager mNotificationManager;
+	//private NotificationManager mNotificationManager;
 	NotificationCompat.Builder builder;
 	String TAG = "GcmIntentService";
 
@@ -37,33 +37,30 @@ public class GcmIntentService extends IntentService {
 
 			if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 				String type = extras.getString("type");
-				int relatedid = Integer.parseInt(extras.getString("relatedid"));
-				long time = Long.parseLong(extras.getString("time"));
-				String message = extras.getString("message",null);
-				
+				int relatedid = Integer.parseInt(extras.getString("relatedid","0"));
+				long time = Long.parseLong(extras.getString("time","1321354"));
+				String message = extras.getString("message","Boþ mesaj");
 				Log.d("Cloud Message", type + "," + relatedid + "," + time + "," + message);			
-
-				// sendNotification("Mesaj: " + extras.getString("mesaj"));
+				sendNotification("Mesaj: " +message);
 			}
-
 		}
-		// Release the wake lock provided by the WakefulBroadcastReceiver.
-		// GcmBroadcastReceiver.completeWakefulIntent(intent);
+        GcmBroadcastReceiver.completeWakefulIntent(intent);		
+        Log.d("Shout", "WakeLock released...");
+        
 	}
 
 	private void sendNotification(String msg) {
-		this.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getBoolean("notification", true);
-		Log.w("BReceiver", "MOTUR YUKARDA MI KALDI");
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!")
-				.setContentText(msg);// "100 metre uzaðýnýzda tam size göre bir etkinlik var!");
+//		this.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getBoolean("notification", true);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!").setContentText(msg);// "100 metre uzaðýnýzda tam size göre bir etkinlik var!");
 		// Creates an explicit intent for an Activity in your app
-		/*
+		
 		Intent resultIntent = new Intent(this, MainActivity.class);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
-		 */
+		
+		
 		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(notificationID++, mBuilder.build());
 	}
