@@ -299,7 +299,7 @@ public class PostItemViewActivity extends BaseActivity {
 				event = obj;
 				loc = new LatLng(obj.getLat(), obj.getLon());
 				title_view.setText(obj.getTitle());
-				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get(obj.getCategory()));
+				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get((int) (Math.log10(obj.getCategory())/Math.log10(2))));
 				time_view.setText(obj.getDateString());
 				distance_view.setText(obj.distance(cxt) + " km");
 				description_view.setText(obj.getDescription());
