@@ -29,6 +29,7 @@ import com.shoutapp.RefreshableListView.OnRefreshListener;
 import com.shoutapp.entity.Event;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 
+
 public class MainActivity extends BaseActivity {
 
 	public class SwipePagerAdapter extends PagerAdapter {
@@ -146,7 +147,7 @@ public class MainActivity extends BaseActivity {
 	};
 
 	private void fetchEvents() {
-		gpsObject = new GPSTracker(MainActivity.this);
+		
 		Event.fetchNearbyEventList(User.hash, gpsObject.latitude, gpsObject.longitude, new Callback<Event[]>() {
 
 			@Override
@@ -182,7 +183,7 @@ public class MainActivity extends BaseActivity {
 		cxt = this;
 		currentactivity = this;
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
-
+		
 		View swipe = LayoutInflater.from(getBaseContext()).inflate(R.layout.swipe, null);
 		RelativeLayout swipeLayout = (RelativeLayout) swipe.findViewById(R.id.swipe_layout);
 		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,
@@ -198,7 +199,13 @@ public class MainActivity extends BaseActivity {
 		change_view_btn_holder.setOnClickListener(changeViewClickListener);
 		ImageButton change_view_btn = (ImageButton) findViewById(R.id.change_view_btn);
 		change_view_btn.setOnClickListener(changeViewClickListener);
-
+		
+		
+		/*start background service to periodically send the location */
+    	Log.d("com.shoutapp.service", "start service");
+		Intent intent = new Intent(this, PeriodicService.class);
+    	startService(intent);
+		
 		ImageButton add_post_btn = (ImageButton) findViewById(R.id.add_post_btn);
 		add_post_btn.setOnClickListener(new OnClickListener() {
 

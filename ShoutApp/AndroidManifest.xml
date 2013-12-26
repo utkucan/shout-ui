@@ -4,7 +4,7 @@
     android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="12"
         android:targetSdkVersion="18" />
     
     <permission
@@ -49,7 +49,7 @@
  <!--        android:theme="@android:style/Theme.NoTitleBar"
         android:theme="@android:style/Theme.Holo.Light" -->
         
-        
+       
         
         <activity 
             android:name="com.shoutapp.LoginActivityX" 
@@ -88,6 +88,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".GcmIntentService" />
+         <service android:name=".PeriodicService" />
         
     </application>
 
