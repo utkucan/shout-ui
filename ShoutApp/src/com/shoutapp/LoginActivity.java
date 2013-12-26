@@ -33,7 +33,6 @@ import com.shoutapp.entity.Login;
 
 public class LoginActivity extends FragmentActivity {
 
-	
 	private class RegistrationClass extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
@@ -54,13 +53,13 @@ public class LoginActivity extends FragmentActivity {
 
 		private void sendRegistrationIdToBackend() {
 			Person user = mPlusClient.getCurrentPerson();
-			
+
 			if (user != null) {
-				//String id = user.getId();
+				// String id = user.getId();
 				Login.peform(mPlusClient.getCurrentPerson().getId(), regid, new Callback<Login>() {
 					@Override
 					public void onFail() {
-						Log.d("Shout-registration","sýkýntý oldu gibi");
+						Log.d("Shout-registration", "sýkýntý oldu gibi");
 					}
 
 					@Override
@@ -70,18 +69,18 @@ public class LoginActivity extends FragmentActivity {
 
 					@Override
 					public void onSuccess(Login login) {
-						Log.d("Shout-registration","oldu gibi");
+						Log.d("Shout-registration", "oldu gibi");
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
 						User.user_id = login.getUserId();
-						
+
 						SharedPreferences settings = getSharedPreferences(SAVEHASH, 0);
 						SharedPreferences.Editor editor = settings.edit();
 						editor.putString("hashval", User.hash);
 						editor.putInt("userid", User.user_id);
 						editor.commit();
-						
-//						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+						// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(intent);
 					}
@@ -95,8 +94,10 @@ public class LoginActivity extends FragmentActivity {
 
 		}
 	}
+
 	public static final String SAVEHASH = "SAVEHASH";
 	private static final String TAG = "Login";
+
 	private static int getAppVersion(Context context) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -106,6 +107,7 @@ public class LoginActivity extends FragmentActivity {
 			throw new RuntimeException("Could not get package name: " + e);
 		}
 	}
+
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private ProgressDialog mConnectionProgressDialog;
@@ -141,11 +143,11 @@ public class LoginActivity extends FragmentActivity {
 							mConnectionResult = null;
 							mPlusClient.connect();
 						}
-						//mConnectionProgressDialog.dismiss();
-					} 
-//					else {
-//						mPlusClient.connect();
-//					}
+						// mConnectionProgressDialog.dismiss();
+					}
+					// else {
+					// mPlusClient.connect();
+					// }
 					mPlusClient.connect();
 				} else {
 					mPlusClient.disconnect();
@@ -273,37 +275,48 @@ public class LoginActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
-				"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
-		
-		Log.e("Shout!-REGID",getRegistrationId(this));
-		context = this;
-		checkPlayServices();
-//		if (getRegistrationId(this).equals("")) {
-//			 // registerInBackground(); //TODO: deðiþtrmeyin bunu
-//			
-//		}
-		login_activity = this;
-		if (mPlusClient.isConnected()) {
-			Intent intent = new Intent(getBaseContext(), MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-			startActivity(intent);
-		}
-		setContentView(R.layout.login);
-		SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
-		for (int i = 0; i < gp_login.getChildCount(); i++) {
-			View v = gp_login.getChildAt(i);
-			if (v instanceof TextView) {
-				TextView tv = (TextView) v;
-				tv.setText("Log in with Google");
-			}
-		}
-		((SignInButton) findViewById(R.id.gp_login_btn)).setOnClickListener(gp_onClick);
-		mConnectionProgressDialog = new ProgressDialog(this);
-		mConnectionProgressDialog.setMessage("Signing in...");
 
-		//onClickX();
+		SharedPreferences sp = getSharedPreferences(LoginActivity.SAVEHASH, 0);
+		User.hash = sp.getString("hashval", null);
+
+		if (User.hash != null) {
+			Intent intent = new Intent(getBaseContext(), MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		} else {
+
+			mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
+					"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
+
+			Log.e("Shout!-REGID", getRegistrationId(this));
+			context = this;
+			checkPlayServices();
+			// if (getRegistrationId(this).equals("")) {
+			// // registerInBackground(); //TODO: deðiþtrmeyin bunu
+			//
+			// }
+			login_activity = this;
+			if (mPlusClient.isConnected()) {
+				Intent intent = new Intent(getBaseContext(), MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+			setContentView(R.layout.login);
+			SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
+			for (int i = 0; i < gp_login.getChildCount(); i++) {
+				View v = gp_login.getChildAt(i);
+				if (v instanceof TextView) {
+					TextView tv = (TextView) v;
+					tv.setText("Log in with Google");
+				}
+			}
+			((SignInButton) findViewById(R.id.gp_login_btn)).setOnClickListener(gp_onClick);
+			mConnectionProgressDialog = new ProgressDialog(this);
+			mConnectionProgressDialog.setMessage("Signing in...");
+		}
+		// onClickX();
 	}
+
 	/**
 	 * Registers the application with GCM servers asynchronously.
 	 * <p>

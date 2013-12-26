@@ -275,7 +275,7 @@ public class RefreshableListView extends ListView {
 		mListener = l;
 	}
 
-	private void startRefreshing() {
+	public void startRefreshing() {
 		mArrow.setVisibility(View.INVISIBLE);
 		mProgress.setVisibility(View.VISIBLE);
 		mText.setText("Loading...");

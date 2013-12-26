@@ -114,9 +114,6 @@ public class MainActivity extends BaseActivity {
 	RefreshableListView postListView;
 
 	public static GPSTracker gpsObject;
-	// private static ArrayList<PostPreviewItemObject> postPreviewItems = null;
-
-	// ArrayList<PostPreviewItemObject> items;
 
 	private GoogleMap map;
 
@@ -158,6 +155,7 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onStart() {
+				// postListView.startRefreshing(); Bu niye olmadý :(
 			}
 
 			@Override
@@ -222,25 +220,6 @@ public class MainActivity extends BaseActivity {
 		profile_view_btn_holder.setOnClickListener(profileClickListener);
 		ImageButton profile_view_btn = (ImageButton) findViewById(R.id.profile_btn);
 		profile_view_btn.setOnClickListener(profileClickListener);
-
-//		pager.setOnPageChangeListener(new OnPageChangeListener() {
-//
-//			@Override
-//			public void onPageScrolled(int arg0, float arg1, int arg2) {
-//
-//			}
-//
-//			@Override
-//			public void onPageScrollStateChanged(int arg0) {
-//				((BaseActivity) currentactivity).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-//			}
-//
-//			@Override
-//			public void onPageSelected(int arg0) {
-//
-//			}
-//		});
-
 	}
 
 	@Override
@@ -252,10 +231,8 @@ public class MainActivity extends BaseActivity {
 				ImageButton btn = (ImageButton) findViewById(R.id.change_view_btn);
 				btn.setBackgroundResource(R.drawable.map_icon);
 				return true;
-			}
-			
+			}		
 		}
-
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -264,7 +241,6 @@ public class MainActivity extends BaseActivity {
 		SharedPreferences sp =  getSharedPreferences(LoginActivity.SAVEHASH, 0);
 		User.user_id = sp.getInt("userid", -1);
 		User.hash = sp.getString("hashval", null);
-
 		super.onResume();
 		fetchEvents();
 	}
