@@ -22,7 +22,7 @@ public class PeriodicService extends Service{
 	MyTimerTask myTask;
 	double prevLat = 0, prevLong = 0;
 	private GPSTracker gps;
-	private static final int SEND_PERIOD_IN_SECONDS = 30;
+	private static final int SEND_PERIOD_IN_SECONDS = 5 * 60;
 	
 	@Override
 	public void onCreate() {
