@@ -52,9 +52,10 @@ public class LoginActivity extends FragmentActivity {
 
 		private void sendRegistrationIdToBackend() {
 			Person user = mPlusClient.getCurrentPerson();
+			
 			if (user != null) {
-				String id = user.getId();
-				Login.peform(id, regid, new Callback<Login>() {
+				//String id = user.getId();
+				Login.peform(mPlusClient.getCurrentPerson().getId(), regid, new Callback<Login>() {
 					@Override
 					public void onFail() {
 						Log.d("Shout-registration","sýkýntý oldu gibi");
@@ -131,9 +132,11 @@ public class LoginActivity extends FragmentActivity {
 							mPlusClient.connect();
 						}
 						//mConnectionProgressDialog.dismiss();
-					} else {
-						mPlusClient.connect();
-					}
+					} 
+//					else {
+//						mPlusClient.connect();
+//					}
+					mPlusClient.connect();
 				} else {
 					mPlusClient.disconnect();
 				}
@@ -263,15 +266,13 @@ public class LoginActivity extends FragmentActivity {
 		mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
 				"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
 		
-		Log.e("BTOM-REGID",getRegistrationId(this));
+		Log.e("Shout!-REGID",getRegistrationId(this));
 		context = this;
 		checkPlayServices();
-		if (getRegistrationId(this).equals("")) {
-			 // registerInBackground(); //TODO: deðiþtrmeyin bunu
-			
-		}
-
-		
+//		if (getRegistrationId(this).equals("")) {
+//			 // registerInBackground(); //TODO: deðiþtrmeyin bunu
+//			
+//		}
 		login_activity = this;
 		if (mPlusClient.isConnected()) {
 			Intent intent = new Intent(getBaseContext(), MainActivity.class);
@@ -291,7 +292,7 @@ public class LoginActivity extends FragmentActivity {
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signing in...");
 
-		onClickX();
+		//onClickX();
 	}
 	/**
 	 * Registers the application with GCM servers asynchronously.
