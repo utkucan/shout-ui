@@ -42,7 +42,7 @@ public class GcmIntentService extends IntentService {
 				long time = Long.parseLong(extras.getString("time","1321354"));
 				String message = extras.getString("message","Boþ mesaj");
 				Log.d("Cloud Message", type + "," + relatedid + "," + time + "," + message);			
-				sendNotification("Mesaj: " +message);
+				sendNotification(message, relatedid);
 			}
 		}
         GcmBroadcastReceiver.completeWakefulIntent(intent);		
@@ -50,17 +50,18 @@ public class GcmIntentService extends IntentService {
         
 	}
 
-	private void sendNotification(String msg) {
+	private void sendNotification(String msg, int relatedid) {
 //		this.getSharedPreferences(BaseActivity.FILTER_PREFS, 0).getBoolean("notification", true);
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!").setContentText(msg);// "100 metre uzaðýnýzda tam size göre bir etkinlik var!");
 		// Creates an explicit intent for an Activity in your app
 		
-		Intent resultIntent = new Intent(this, MainActivity.class);
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-		mBuilder.setContentIntent(resultPendingIntent);
-		
+		Intent intent = new Intent(this, PostItemViewActivity.class);
+		intent.putExtra("eventId", relatedid);
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).
+				setSmallIcon(R.drawable.icon).
+				setContentTitle("Message from ShoutApp!").
+				setContentText(msg).
+				setContentIntent(pIntent).setAutoCancel(true);
 		
 		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(notificationID++, mBuilder.build());
