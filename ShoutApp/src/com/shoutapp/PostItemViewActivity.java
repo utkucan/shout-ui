@@ -135,12 +135,11 @@ public class PostItemViewActivity extends BaseActivity {
 		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.mainLayout);
 
 		isLoadedBefore = false;
-		
+
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.post_item_preview, null);
 		RelativeLayout post_item_view_layout = (RelativeLayout) layout.findViewById(R.id.post_item_preview_layout);
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, R.id.topBar);
 		post_item_view_layout.setLayoutParams(lp);
 		mainLayout.addView(post_item_view_layout);
@@ -177,23 +176,13 @@ public class PostItemViewActivity extends BaseActivity {
 		Bundle extras = getIntent().getExtras();
 		eventId = extras.getInt("eventId");
 		// eventOwner = extras.getInt("owner");
-		
-		
+
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.post_on_map)).getMap();
 
 		appendComments();
 
 		rateEditBtn = (ImageButton) findViewById(R.id.rate_btn);
 		rateEditLayout = (RelativeLayout) findViewById(R.id.rate_btn_holder);
-
-		if (User.user_id == eventOwner ) {//|| true
-			rateEditBtn.setBackgroundResource(R.drawable.trash);
-			rateEditBtn.setOnClickListener(deleteClickListener);
-			rateEditLayout.setOnClickListener(deleteClickListener);
-		} else {
-			rateEditBtn.setOnClickListener(rateClickListener);
-			rateEditLayout.setOnClickListener(rateClickListener);
-		}
 
 		owner_view.setOnClickListener(new OnClickListener() {
 			@Override
@@ -210,42 +199,40 @@ public class PostItemViewActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//scrollv.scrollTo(0, scrollv.getHeight());
-				
-				
-				
-				
+				// scrollv.scrollTo(0, scrollv.getHeight());
+
 				if (findViewById(R.id.add_comment_layout).isShown()) {
 					scrollv.fullScroll(View.FOCUS_DOWN);
 					return;
 				}
-				
+
 				LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
 				ln.setVisibility(View.VISIBLE);
 				View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
-				
+
 				ViewTreeObserver vto = scrollv.getViewTreeObserver();
 				vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 					@Override
 					public boolean onPreDraw() {
 						scrollv.fullScroll(View.FOCUS_DOWN);
-						//((EditText) findViewById(R.id.addCommentInput)).requestFocus();
+						// ((EditText)
+						// findViewById(R.id.addCommentInput)).requestFocus();
 						return true;
 					}
 				});
 				ln.addView(comm);
 				scrollv.fullScroll(View.FOCUS_DOWN);
-				
+
 				Button submitCommentBtn = (Button) findViewById(R.id.submitCommentBtn);
 				submitCommentBtn.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						textBox = (EditText) findViewById(R.id.addCommentInput);
-						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 						imm.hideSoftInputFromWindow(textBox.getWindowToken(), 0);
-						
-						//textBox.setInputType(0);
+
+						// textBox.setInputType(0);
 						Log.d("SubmitComment", "submittin comment for event: " + eventId + " username: " + User.username);
 						Comment.addComment(User.hash, eventId, textBox.getText().toString(), new Callback<Status>() {
 
@@ -261,12 +248,15 @@ public class PostItemViewActivity extends BaseActivity {
 							@Override
 							public void onSuccess(Status obj) {
 								LinearLayout ln = (LinearLayout) findViewById(R.id.add_comment_layout);
-//								View remove = ln.findViewById(R.layout.add_comment_xml);
-//								View comm = LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml, null);
+								// View remove =
+								// ln.findViewById(R.layout.add_comment_xml);
+								// View comm =
+								// LayoutInflater.from(getBaseContext()).inflate(R.layout.add_comment_xml,
+								// null);
 								ln.removeAllViews();
 								ln.setVisibility(View.INVISIBLE);
-								appendComments();	
-								//scrollv.scrollTo(0, scrollv.getHeight());
+								appendComments();
+								// scrollv.scrollTo(0, scrollv.getHeight());
 								isLoadedBefore = true;
 							}
 						});
@@ -282,8 +272,8 @@ public class PostItemViewActivity extends BaseActivity {
 		shareBtn.setOnClickListener(shareClickListener);
 		shareBtnLayout.setOnClickListener(shareClickListener);
 	}
-	
-	private void appendComments(){
+
+	private void appendComments() {
 		Event.fetchEventDetails(eventId, new Callback<Event>() {
 			@Override
 			public void onFail() {
@@ -315,11 +305,21 @@ public class PostItemViewActivity extends BaseActivity {
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreatorName());
 				eventOwner = obj.getCreatorid();
-				
+
 				comment_list_lay.removeAllViews();
-				
+
 				for (Comment c : obj.getComments()) {
 					addCommentPreview(c);
+				}
+
+				Log.d("Userid, eventowner", User.user_id + "-" + eventOwner);
+				if (User.user_id == eventOwner) {// || true
+					rateEditBtn.setBackgroundResource(R.drawable.trash);
+					rateEditBtn.setOnClickListener(deleteClickListener);
+					rateEditLayout.setOnClickListener(deleteClickListener);
+				} else {
+					rateEditBtn.setOnClickListener(rateClickListener);
+					rateEditLayout.setOnClickListener(rateClickListener);
 				}
 
 				map.addMarker(new MarkerOptions().position(loc).title(event.getTitle()));
@@ -327,12 +327,10 @@ public class PostItemViewActivity extends BaseActivity {
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
 				map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
-				if(isLoadedBefore)
+				if (isLoadedBefore)
 					scrollv.fullScroll(View.FOCUS_DOWN);
 			}
 		});
-		
-		
-		
+
 	}
 }
