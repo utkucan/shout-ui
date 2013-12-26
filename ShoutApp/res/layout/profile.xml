@@ -81,7 +81,7 @@
 									    android:layout_width="wrap_content"
 									    android:layout_height="wrap_content"
 									    android:layout_alignParentLeft="true"
-									    android:text="Sercan Aksoy"
+									    android:text=""
 									    android:textAppearance="?android:attr/textAppearanceSmall"
 									    android:textColor="#000000"
 									    android:textSize="13sp" />
@@ -102,7 +102,7 @@
 									    android:layout_marginLeft="12dp"
 									    android:layout_marginTop="27dp"
 									    android:layout_toRightOf="@+id/profile_marker"
-									    android:text="Ankara"
+									    android:text=""
 									    android:textAppearance="?android:attr/textAppearanceSmall"
 									    android:textColor="#787878"
 									    android:textSize="11sp" />

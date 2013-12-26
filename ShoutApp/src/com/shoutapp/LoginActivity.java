@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.shoutapp.entity.Login;
 
 public class LoginActivity extends FragmentActivity {
 
+	
 	private class RegistrationClass extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
@@ -72,6 +74,13 @@ public class LoginActivity extends FragmentActivity {
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
 						User.user_id = login.getUserId();
+						
+						SharedPreferences settings = getSharedPreferences(SAVEHASH, 0);
+						SharedPreferences.Editor editor = settings.edit();
+						editor.putString("hashval", User.hash);
+						editor.putInt("userid", User.user_id);
+						editor.commit();
+						
 //						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(intent);
@@ -86,6 +95,7 @@ public class LoginActivity extends FragmentActivity {
 
 		}
 	}
+	public static final String SAVEHASH = "SAVEHASH";
 	private static final String TAG = "Login";
 	private static int getAppVersion(Context context) {
 		try {

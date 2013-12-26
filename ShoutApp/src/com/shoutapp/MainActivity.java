@@ -3,6 +3,7 @@ package com.shoutapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -61,7 +62,7 @@ public class MainActivity extends BaseActivity {
 			if (position == 0) {
 				v = LayoutInflater.from(getBaseContext()).inflate(R.layout.post_list_layout, null);
 				postListView = (RefreshableListView) v.findViewById(R.id.post_list_view);
-				fetchEvents();
+				//fetchEvents();
 				postListView.setOnRefreshListener(new OnRefreshListener() {
 
 					@Override
@@ -260,7 +261,11 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
+		SharedPreferences sp =  getSharedPreferences(LoginActivity.SAVEHASH, 0);
+		User.user_id = sp.getInt("userid", -1);
+		User.hash = sp.getString("hashval", null);
+
 		super.onResume();
-		//fetchEvents();
+		fetchEvents();
 	}
 }
