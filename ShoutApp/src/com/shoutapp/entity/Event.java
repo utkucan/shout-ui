@@ -15,10 +15,12 @@ public class Event {
 		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEvent", c);
 		u.execute("id", id);
 	}
+
 	public static void fetchEventsOfUser(int userId, Callback<Event[]> c) {
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
 		u.execute("userId", userId);
 	}
+
 	public static void fetchNearbyEventList(String hash, double lat, double lon, Callback<Event[]> c) {
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getNearbyEvents", c);
 		u.execute("hash", hash, "lat", lat, "lon", lon);
@@ -62,7 +64,7 @@ public class Event {
 		return (deg * Math.PI / 180.0);
 	}
 
-	public int distance(Context cxt) {
+	public String distance(Context cxt) {
 
 		GPSTracker gpsObject = new GPSTracker(cxt);
 		double lat2 = gpsObject.getLatitude();
@@ -74,7 +76,12 @@ public class Event {
 		dist = rad2deg(dist);
 		dist = dist * 60 * 1.1515;
 		dist = dist * 1.609344;
-		return (int) (dist);
+		if (dist < 1) {
+			dist = dist * 1000;
+			return String.format("%s m", (int) dist);
+		} else {
+			return String.format("%.2f km", dist);
+		}
 	}
 
 	public int getCategory() {

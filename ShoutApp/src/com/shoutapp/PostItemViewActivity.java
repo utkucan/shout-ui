@@ -301,7 +301,7 @@ public class PostItemViewActivity extends BaseActivity {
 				title_view.setText(obj.getTitle());
 				category_view.setText((new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.Categories)))).get((int) (Math.log10(obj.getCategory())/Math.log10(2))));
 				time_view.setText(obj.getDateString());
-				distance_view.setText(obj.distance(cxt) + " km");
+				distance_view.setText(obj.distance(cxt));
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreatorName());
 				eventOwner = obj.getCreatorid();

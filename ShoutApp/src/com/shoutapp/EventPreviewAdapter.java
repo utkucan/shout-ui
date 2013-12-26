@@ -124,7 +124,7 @@ public class EventPreviewAdapter extends ArrayAdapter<Event> {
 			time.setText(e.getDateString());
 
 			TextView distanceView = (TextView) convertView.findViewById(R.id.distance);
-			String distance = e.distance(cxt) + " km";
+			String distance = e.distance(cxt);
 			distanceView.setText(distance);
 			if (map != null) {
 				map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title("id;" + position));
