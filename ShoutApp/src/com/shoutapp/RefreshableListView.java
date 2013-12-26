@@ -219,17 +219,20 @@ public class RefreshableListView extends ListView {
 			return super.performItemClick(view, position - 1, id);
 		}
 	}
-
+	boolean rotateArrowOnce = false;
+	
 	private void rotateArrow() {
-		Drawable drawable = mArrow.getDrawable();
-		Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Config.ARGB_8888);
-		Canvas canvas = new Canvas(bitmap);
-		canvas.save();
-		canvas.rotate(180.0f, canvas.getWidth() / 2.0f, canvas.getHeight() / 2.0f);
-		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		drawable.draw(canvas);
-		canvas.restore();
-		mArrow.setImageBitmap(bitmap);
+		if ( rotateArrowOnce) return;
+		rotateArrowOnce = true;
+		Drawable arrowDrawable = mArrow.getDrawable();
+		Bitmap arrowBitmap = Bitmap.createBitmap(arrowDrawable.getIntrinsicWidth(), arrowDrawable.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas arrowCanvas = new Canvas(arrowBitmap);
+		arrowCanvas.save();
+		arrowCanvas.rotate(180.0f, arrowCanvas.getWidth() / 2.0f, arrowCanvas.getHeight() / 2.0f);
+		arrowDrawable.setBounds(0, 0, arrowDrawable.getIntrinsicWidth(), arrowDrawable.getIntrinsicHeight());
+		arrowDrawable.draw(arrowCanvas);
+		arrowCanvas.restore();
+		mArrow.setImageBitmap(arrowBitmap);
 	}
 
 	private void setHeaderHeight(final int height) {
