@@ -53,8 +53,8 @@ public class PeriodicService extends Service{
 
 	class MyTimerTask extends TimerTask {
 		public void run() {
-			GPSTracker gps = new GPSTracker(PeriodicService.this);
-			if(gps.latitude != prevLat || gps.longitude != prevLong){
+			GPSTracker gps = MainActivity.gpsObject;
+			if(gps.latitude != prevLat || gps.longitude != prevLong || true){
 				prevLat = gps.latitude; 
 				prevLong = gps.longitude;
 				Event.fetchNearbyEventList(User.hash, gps.latitude, gps.longitude, new Callback<Event[]>() {
@@ -63,10 +63,10 @@ public class PeriodicService extends Service{
 					public void onFail() {
 						Log.d("Event:", "eventler çekilirken sýkýntý oldu");
 					}
-
+ 
 					@Override
 					public void onStart() {
-					}
+					} 
 
 					@Override
 					public void onSuccess(com.shoutapp.entity.Event[] events) {
