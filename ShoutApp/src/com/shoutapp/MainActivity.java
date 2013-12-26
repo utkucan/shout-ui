@@ -160,9 +160,9 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onSuccess(com.shoutapp.entity.Event[] events) {
-				Log.d("Recieved:", events.length + " events");
+				Log.d("Recieved: ", events.length + " events");
 				for (Event e : events) {
-					Log.d("Event:", e.toString());
+					// Log.d("Event:", e.toString());
 					map.addMarker(new MarkerOptions().position(new LatLng(e.getLat(), e.getLon())).title(e.getTitle() + ";" + e.getCategory()));
 				}
 
