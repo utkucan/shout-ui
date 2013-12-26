@@ -36,8 +36,14 @@ public class GcmIntentService extends IntentService {
 		if (!extras.isEmpty()) {
 
 			if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+				String type = extras.getString("type");
+				int relatedid = Integer.parseInt(extras.getString("relatedid"));
+				long time = Long.parseLong(extras.getString("time"));
+				String message = extras.getString("message",null);
 				
-				sendNotification("Mesaj: " + extras.getString("mesaj"));
+				Log.d("Cloud Message", type + "," + relatedid + "," + time + "," + message);			
+
+				// sendNotification("Mesaj: " + extras.getString("mesaj"));
 			}
 
 		}
@@ -51,12 +57,13 @@ public class GcmIntentService extends IntentService {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.icon).setContentTitle("Yeni etkinlik!")
 				.setContentText(msg);// "100 metre uzaðýnýzda tam size göre bir etkinlik var!");
 		// Creates an explicit intent for an Activity in your app
+		/*
 		Intent resultIntent = new Intent(this, MainActivity.class);
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 		mBuilder.setContentIntent(resultPendingIntent);
-
+		 */
 		NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(notificationID++, mBuilder.build());
 	}
