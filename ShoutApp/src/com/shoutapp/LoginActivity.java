@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,11 +32,25 @@ import com.google.android.gms.plus.model.people.Person;
 import com.shoutapp.entity.FetchJsonTask.Callback;
 import com.shoutapp.entity.Login;
 
-public class LoginActivity extends FragmentActivity {
-
+public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, View.OnClickListener {
+	
 	private class RegistrationClass extends AsyncTask<Void, Void, String> {
+		ProgressDialog pd;
+
+		@Override
+		protected void onPreExecute() {
+				pd = new ProgressDialog(context);
+				pd.setTitle("Loading..");
+				pd.setMessage("Contacing ShoutApp cloud..");
+				pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+				pd.show();
+			Log.d("Register in back", "started");
+		}
+
 		@Override
 		protected String doInBackground(Void... params) {
+			Log.d("Register in back", "goin");
+
 			String msg = "";
 			try {
 				if (gcm == null) {
@@ -45,6 +60,7 @@ public class LoginActivity extends FragmentActivity {
 				msg = "Device registered, registration ID=" + regid;
 				sendRegistrationIdToBackend();
 				storeRegistrationId(context, regid);
+				Log.d("Register in back", "stored");
 			} catch (IOException ex) {
 				msg = "Error :" + ex.getMessage();
 			}
@@ -52,6 +68,7 @@ public class LoginActivity extends FragmentActivity {
 		}
 
 		private void sendRegistrationIdToBackend() {
+			Log.d("Register in back", "send reg to backend");
 			Person user = mPlusClient.getCurrentPerson();
 
 			if (user != null) {
@@ -60,6 +77,11 @@ public class LoginActivity extends FragmentActivity {
 					@Override
 					public void onFail() {
 						Log.d("Shout-registration", "sýkýntý oldu gibi");
+						if (pd != null) {
+							pd.dismiss();
+						}
+						if (mConnectionProgressDialog.isShowing())
+							mConnectionProgressDialog.dismiss();
 					}
 
 					@Override
@@ -69,6 +91,8 @@ public class LoginActivity extends FragmentActivity {
 
 					@Override
 					public void onSuccess(Login login) {
+						
+
 						Log.d("Shout-registration", "oldu gibi");
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
@@ -79,7 +103,12 @@ public class LoginActivity extends FragmentActivity {
 						editor.putString("hashval", User.hash);
 						editor.putInt("userid", User.user_id);
 						editor.commit();
-
+						
+						if (pd != null) {
+							pd.dismiss();
+						}
+						if (mConnectionProgressDialog.isShowing())
+							mConnectionProgressDialog.dismiss();
 						// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 						startActivity(intent);
@@ -128,65 +157,6 @@ public class LoginActivity extends FragmentActivity {
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 	String SENDER_ID = "828218329595";
-
-	private View.OnClickListener gp_onClick = new View.OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			if (v.getId() == R.id.gp_login_btn) {
-
-				if (!mPlusClient.isConnected()) {
-					if (mConnectionResult != null) {
-						try {
-							mConnectionResult.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
-						} catch (SendIntentException e) {
-							mConnectionResult = null;
-							mPlusClient.connect();
-						}
-						// mConnectionProgressDialog.dismiss();
-					}
-					// else {
-					// mPlusClient.connect();
-					// }
-					mPlusClient.connect();
-				} else {
-					mPlusClient.disconnect();
-				}
-			}
-		}
-	};
-
-	private ConnectionCallbacks gp_connectionCallback = new ConnectionCallbacks() {
-
-		@Override
-		public void onConnected(Bundle connectionHint) {
-			Log.d("connected", "connected");
-			checkPlayServices();
-			registerInBackground();
-		}
-
-		@Override
-		public void onDisconnected() {
-
-		}
-	};
-
-	private OnConnectionFailedListener gp_OnConnectionFailedListener = new OnConnectionFailedListener() {
-
-		@Override
-		public void onConnectionFailed(ConnectionResult result) {
-			if (mConnectionProgressDialog.isShowing()) {
-				if (result.hasResolution()) {
-					try {
-						result.startResolutionForResult(login_activity, REQUEST_CODE_RESOLVE_ERR);
-					} catch (SendIntentException e) {
-						mPlusClient.connect();
-					}
-				}
-			}
-			mConnectionResult = result;
-		}
-	};
 
 	private boolean checkPlayServices() {
 		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -278,51 +248,34 @@ public class LoginActivity extends FragmentActivity {
 
 		SharedPreferences sp = getSharedPreferences(LoginActivity.SAVEHASH, 0);
 		User.hash = sp.getString("hashval", null);
+		/*
+		 * if (User.hash != null) { Intent intent = new Intent(getBaseContext(),
+		 * MainActivity.class); intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		 * startActivity(intent); } else {
+		 */
+		mPlusClient = new PlusClient.Builder(this, this, this).setVisibleActivities("http://schemas.google.com/AddActivity",
+				"http://schemas.google.com/ListenActivity").build();
 
-		if (User.hash != null) {
-			Intent intent = new Intent(getBaseContext(), MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-		} else {
+		Log.e("Shout!-REGID", getRegistrationId(this));
+		context = this;
+		checkPlayServices();
+		login_activity = this;
 
-			mPlusClient = new PlusClient.Builder(this, gp_connectionCallback, gp_OnConnectionFailedListener).setVisibleActivities(
-					"http://schemas.google.com/AddActivity", "http://schemas.google.com/ListenActivity").build();
+		setContentView(R.layout.login);
+		SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
+		gp_login.setOnClickListener(this);
 
-			Log.e("Shout!-REGID", getRegistrationId(this));
-			context = this;
-			checkPlayServices();
-			// if (getRegistrationId(this).equals("")) {
-			// // registerInBackground(); //TODO: deðiþtrmeyin bunu
-			//
-			// }
-			login_activity = this;
-			if (mPlusClient.isConnected()) {
-				Intent intent = new Intent(getBaseContext(), MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
+		for (int i = 0; i < gp_login.getChildCount(); i++) {
+			View v = gp_login.getChildAt(i);
+			if (v instanceof TextView) {
+				TextView tv = (TextView) v;
+				tv.setText("Log in with Google");
 			}
-			setContentView(R.layout.login);
-			SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
-			for (int i = 0; i < gp_login.getChildCount(); i++) {
-				View v = gp_login.getChildAt(i);
-				if (v instanceof TextView) {
-					TextView tv = (TextView) v;
-					tv.setText("Log in with Google");
-				}
-			}
-			((SignInButton) findViewById(R.id.gp_login_btn)).setOnClickListener(gp_onClick);
-			mConnectionProgressDialog = new ProgressDialog(this);
-			mConnectionProgressDialog.setMessage("Signing in...");
 		}
-		// onClickX();
+		mConnectionProgressDialog = new ProgressDialog(this);
+		mConnectionProgressDialog.setMessage("Signing in...");
 	}
 
-	/**
-	 * Registers the application with GCM servers asynchronously.
-	 * <p>
-	 * Stores the registration ID and app versionCode in the application's
-	 * shared preferences.
-	 */
 	private void registerInBackground() {
 		new RegistrationClass().execute(null, null, null);
 	}
@@ -337,4 +290,74 @@ public class LoginActivity extends FragmentActivity {
 		editor.commit();
 	}
 
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		Log.d("fail", "noluo amk");
+		if (mConnectionProgressDialog.isShowing()) {
+			Log.d("fail", "if icinde");
+			if (result.hasResolution()) {
+				Log.d("fail", "bi daha if icinde");
+				try {
+					result.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+					Log.d("fail", "startaa resolution after");
+				} catch (SendIntentException e) {
+					mPlusClient.connect();
+				}
+			}
+		}
+		mConnectionResult = result;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
+		if (requestCode == REQUEST_CODE_RESOLVE_ERR && responseCode == RESULT_OK) {
+			mConnectionResult = null;
+			mPlusClient.connect();
+		}
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		String accountName = mPlusClient.getAccountName();
+		mConnectionProgressDialog.dismiss();
+		// Toast.makeText(this, accountName + " is connected.",
+		// Toast.LENGTH_LONG).show();
+		registerInBackground();
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.gp_login_btn && !mPlusClient.isConnected()) {
+			if (mConnectionResult == null) {
+				Log.d("aa", "dialog show");
+				mConnectionProgressDialog.show();
+			} else {
+				Log.d("aa", "start reoslution 1");
+				try {
+					mConnectionResult.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
+				} catch (SendIntentException e) {
+					// Try connecting again.
+					mConnectionResult = null;
+					mPlusClient.connect();
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		mPlusClient.connect();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mPlusClient.disconnect();
+	}
 }

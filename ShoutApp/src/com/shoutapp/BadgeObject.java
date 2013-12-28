@@ -8,6 +8,6 @@ public class BadgeObject {
 	public BadgeObject(int imageId, String date, String desc) {
 		this.imageId = imageId;
 		this.date = date;
-		this.desc = desc;
+		this.desc = desc + "";
 	}
 }
