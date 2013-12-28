@@ -33,17 +33,17 @@ import com.shoutapp.entity.FetchJsonTask.Callback;
 import com.shoutapp.entity.Login;
 
 public class LoginActivity extends FragmentActivity implements ConnectionCallbacks, OnConnectionFailedListener, View.OnClickListener {
-	
+
 	private class RegistrationClass extends AsyncTask<Void, Void, String> {
 		ProgressDialog pd;
 
 		@Override
 		protected void onPreExecute() {
-				pd = new ProgressDialog(context);
-				pd.setTitle("Loading..");
-				pd.setMessage("Contacing ShoutApp cloud..");
-				pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				pd.show();
+			pd = new ProgressDialog(context);
+			pd.setTitle("Loading..");
+			pd.setMessage("Contacing ShoutApp cloud..");
+			pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			pd.show();
 			Log.d("Register in back", "started");
 		}
 
@@ -91,7 +91,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 					@Override
 					public void onSuccess(Login login) {
-						
 
 						Log.d("Shout-registration", "oldu gibi");
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
@@ -103,7 +102,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 						editor.putString("hashval", User.hash);
 						editor.putInt("userid", User.user_id);
 						editor.commit();
-						
+
 						if (pd != null) {
 							pd.dismiss();
 						}
@@ -248,32 +247,35 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 		SharedPreferences sp = getSharedPreferences(LoginActivity.SAVEHASH, 0);
 		User.hash = sp.getString("hashval", null);
-		/*
-		 * if (User.hash != null) { Intent intent = new Intent(getBaseContext(),
-		 * MainActivity.class); intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		 * startActivity(intent); } else {
-		 */
-		mPlusClient = new PlusClient.Builder(this, this, this).setVisibleActivities("http://schemas.google.com/AddActivity",
-				"http://schemas.google.com/ListenActivity").build();
 
-		Log.e("Shout!-REGID", getRegistrationId(this));
-		context = this;
-		checkPlayServices();
-		login_activity = this;
+		if (User.hash != null) {
+			Intent intent = new Intent(getBaseContext(), MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		} else {
 
-		setContentView(R.layout.login);
-		SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
-		gp_login.setOnClickListener(this);
+			mPlusClient = new PlusClient.Builder(this, this, this).setVisibleActivities("http://schemas.google.com/AddActivity",
+					"http://schemas.google.com/ListenActivity").build();
 
-		for (int i = 0; i < gp_login.getChildCount(); i++) {
-			View v = gp_login.getChildAt(i);
-			if (v instanceof TextView) {
-				TextView tv = (TextView) v;
-				tv.setText("Log in with Google");
+			Log.e("Shout!-REGID", getRegistrationId(this));
+			context = this;
+			checkPlayServices();
+			login_activity = this;
+
+			setContentView(R.layout.login);
+			SignInButton gp_login = (SignInButton) findViewById(R.id.gp_login_btn);
+			gp_login.setOnClickListener(this);
+
+			for (int i = 0; i < gp_login.getChildCount(); i++) {
+				View v = gp_login.getChildAt(i);
+				if (v instanceof TextView) {
+					TextView tv = (TextView) v;
+					tv.setText("Log in with Google");
+				}
 			}
+			mConnectionProgressDialog = new ProgressDialog(this);
+			mConnectionProgressDialog.setMessage("Signing in...");
 		}
-		mConnectionProgressDialog = new ProgressDialog(this);
-		mConnectionProgressDialog.setMessage("Signing in...");
 	}
 
 	private void registerInBackground() {
