@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 import com.shoutapp.GPSTracker;
@@ -12,21 +13,25 @@ import com.shoutapp.entity.FetchJsonTask.Callback;
 
 public class Event {
 	public static void fetchEventDetails(int id, Callback<Event> c) {
+		Log.d("ID", id+"");
 		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEvent", c);
 		u.execute("id", id);
 	}
 
 	public static void fetchEventsOfUser(int userId, Callback<Event[]> c) {
+		Log.d("userid", userId+"");
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
 		u.execute("userId", userId);
 	}
 
 	public static void fetchNearbyEventList(String hash, double lat, double lon, Callback<Event[]> c) {
+		Log.d("ID-HASH", hash);
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getNearbyEvents", c);
 		u.execute("hash", hash, "lat", lat, "lon", lon);
 	}
 
 	public static void removeEvent(String hash, int eventId, Callback<Status> c) {
+		Log.d("hash-eventid", hash+" - " + eventId +"");
 		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "removeEvent", c);
 		u.execute("hash", hash, "eventId", eventId);
 	}

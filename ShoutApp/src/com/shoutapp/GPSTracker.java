@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -71,6 +72,7 @@ public class GPSTracker extends Service implements LocationListener {
 
 	public Location getLocation() {
 		try {
+			Log.d("Location", "Getting location...");
 			locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
 
 			// getting GPS status
@@ -113,9 +115,10 @@ public class GPSTracker extends Service implements LocationListener {
 			}
 
 		} catch (Exception e) {
+			Log.e("Network", "cannot get location.");
 			e.printStackTrace();
 		}
-
+		Log.d("Location", "Lat: " + latitude + " Lon: " + longitude);
 		return location;
 	}
 

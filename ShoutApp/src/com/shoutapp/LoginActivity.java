@@ -338,6 +338,7 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 			if (mConnectionResult == null) {
 				Log.d("aa", "dialog show");
 				mConnectionProgressDialog.show();
+				mPlusClient.connect();
 			} else {
 				Log.d("aa", "start reoslution 1");
 				try {
@@ -354,12 +355,12 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	@Override
 	protected void onStart() {
 		super.onStart();
-		mPlusClient.connect();
+//		mPlusClient.connect();
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		mPlusClient.disconnect();
+		//mPlusClient.disconnect();
 	}
 }

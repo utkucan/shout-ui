@@ -67,7 +67,7 @@ public class PeriodicService extends Service{
 
 	class MyTimerTask extends TimerTask {
 		public void run() {
-			if(gps != null && gps.latitude != prevLat || gps.longitude != prevLong || true){
+			if(gps != null && gps.latitude != prevLat || gps.longitude != prevLong){
 				prevLat = gps.latitude; 
 				prevLong = gps.longitude;
 
