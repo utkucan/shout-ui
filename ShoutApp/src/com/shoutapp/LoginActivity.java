@@ -76,7 +76,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 				Login.peform(mPlusClient.getCurrentPerson().getId(), regid, new Callback<Login>() {
 					@Override
 					public void onFail() {
-						Log.d("Shout-registration", "sýkýntý oldu gibi");
 						if (pd != null) {
 							pd.dismiss();
 						}
@@ -92,7 +91,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 					@Override
 					public void onSuccess(Login login) {
 
-						Log.d("Shout-registration", "oldu gibi");
 						Intent intent = new Intent(getBaseContext(), MainActivity.class);
 						User.hash = login.getHash();
 						User.user_id = login.getUserId();
@@ -294,15 +292,11 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
-		Log.d("fail", "noluo amk");
 		if (mConnectionProgressDialog.isShowing()) {
-			Log.d("fail", "if icinde");
 			if (result.hasResolution()) {
-				Log.d("fail", "bi daha if icinde");
-				try {
+			try {
 					result.startResolutionForResult(this, REQUEST_CODE_RESOLVE_ERR);
-					Log.d("fail", "startaa resolution after");
-				} catch (SendIntentException e) {
+			} catch (SendIntentException e) {
 					mPlusClient.connect();
 				}
 			}
@@ -322,8 +316,6 @@ public class LoginActivity extends FragmentActivity implements ConnectionCallbac
 	public void onConnected(Bundle connectionHint) {
 		String accountName = mPlusClient.getAccountName();
 		mConnectionProgressDialog.dismiss();
-		// Toast.makeText(this, accountName + " is connected.",
-		// Toast.LENGTH_LONG).show();
 		registerInBackground();
 	}
 
