@@ -3,7 +3,6 @@ package com.shoutapp;
 import java.util.ArrayList;
 
 public class Model {
-
 	public static String userName;
 	public static String profile_pic_url;
 

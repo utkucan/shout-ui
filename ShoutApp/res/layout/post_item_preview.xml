@@ -243,7 +243,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="1dp"
                                     android:layout_toRightOf="@+id/post_item_star"
-                                    android:text="423"
+                                    android:text="0"
                                     android:textColor="#787878"
                                     android:textSize="11sp" />
                             </RelativeLayout>

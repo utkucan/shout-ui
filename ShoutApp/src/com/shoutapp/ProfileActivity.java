@@ -345,9 +345,10 @@ public class ProfileActivity extends BaseActivity {
 			@Override
 			public void onSuccess(Profile p) {
 				((TextView) findViewById(R.id.userName)).setText(p.getName());
-				getProfilePhoto.execute(p.getPicture());
 				((TextView) findViewById(R.id.location_name)).setText(p.getLocation());
-				// ((TextView)findViewById(R.id.profile_rating)).setText(p.getPopularity());
+				((TextView)findViewById(R.id.profile_rating)).setText(p.getRating() + "");
+
+				getProfilePhoto.execute(p.getPicture());
 			}
 		});
 

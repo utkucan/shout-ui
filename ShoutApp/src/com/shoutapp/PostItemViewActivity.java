@@ -52,7 +52,7 @@ public class PostItemViewActivity extends BaseActivity {
 	Event event;
 	EditText textBox;
 	Context cxt;
-	TextView title_view, category_view, time_view, distance_view, description_view, owner_view;
+	TextView title_view, category_view, time_view, distance_view, description_view, owner_view, rating_view;
 
 	private OnClickListener deleteClickListener = new OnClickListener() {
 
@@ -82,7 +82,26 @@ public class PostItemViewActivity extends BaseActivity {
 
 		@Override
 		public void onClick(View v) {
+			Event.upvoteEvent(User.hash, eventId, new Callback<Status>() {
 
+				@Override
+				public void onFail() {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onStart() {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onSuccess(Status obj) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 	};
 
@@ -162,9 +181,11 @@ public class PostItemViewActivity extends BaseActivity {
 		title_view = ((TextView) findViewById(R.id.post_item_title));
 		category_view = (TextView) findViewById(R.id.post_item_category);
 		time_view = (TextView) findViewById(R.id.post_item_time);
+		rating_view = (TextView) findViewById(R.id.post_item_rating);
 		distance_view = (TextView) findViewById(R.id.post_item_distance);
 		description_view = (TextView) findViewById(R.id.post_item_description);
 		owner_view = (TextView) findViewById(R.id.post_item_owner);
+
 
 		title_view.setText("");
 		category_view.setText("");
@@ -172,6 +193,7 @@ public class PostItemViewActivity extends BaseActivity {
 		distance_view.setText("");
 		description_view.setText("");
 		owner_view.setText("");
+		rating_view.setText("");
 
 		Bundle extras = getIntent().getExtras();
 		eventId = extras.getInt("eventId");
@@ -304,6 +326,9 @@ public class PostItemViewActivity extends BaseActivity {
 				distance_view.setText(obj.distance(cxt));
 				description_view.setText(obj.getDescription());
 				owner_view.setText(obj.getCreatorName());
+
+				rating_view.setText("" + obj.getRating());
+				
 				eventOwner = obj.getCreatorid();
 
 				comment_list_lay.removeAllViews();

@@ -13,13 +13,13 @@ import com.shoutapp.entity.FetchJsonTask.Callback;
 
 public class Event {
 	public static void fetchEventDetails(int id, Callback<Event> c) {
-		Log.d("ID", id+"");
+		Log.d("ID", id + "");
 		FetchJsonTask<Event> u = new FetchJsonTask<Event>(Event.class, "getEvent", c);
 		u.execute("id", id);
 	}
 
 	public static void fetchEventsOfUser(int userId, Callback<Event[]> c) {
-		Log.d("userid", userId+"");
+		Log.d("userid", userId + "");
 		FetchJsonTask<Event[]> u = new FetchJsonTask<Event[]>(Event[].class, "getUserEvents", c);
 		u.execute("userId", userId);
 	}
@@ -31,7 +31,7 @@ public class Event {
 	}
 
 	public static void removeEvent(String hash, int eventId, Callback<Status> c) {
-		Log.d("hash-eventid", hash+" - " + eventId +"");
+		Log.d("hash-eventid", hash + " - " + eventId + "");
 		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "removeEvent", c);
 		u.execute("hash", hash, "eventId", eventId);
 	}
@@ -41,6 +41,12 @@ public class Event {
 		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "submitEvent", c);
 		u.execute("hash", hash, "lat", lat, "lon", lon, "category", category, "title", title, "description", description, "creation", creation,
 				"expire", expire);
+	}
+
+	public static void upvoteEvent(String hash, int eventId, Callback<Status> c) {
+		FetchJsonTask<Status> u = new FetchJsonTask<Status>(Status.class, "upvoteEvent", c);
+		u.execute("hash", hash, "eventid", eventId);
+
 	}
 
 	private int id;
@@ -54,6 +60,12 @@ public class Event {
 	private String creatorname;
 
 	private String title;
+
+	private int rating;
+
+	public int getRating() {
+		return rating;
+	}
 
 	private String description;
 
